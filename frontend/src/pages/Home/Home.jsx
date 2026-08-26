@@ -20,7 +20,12 @@ import {
   Settings,
 } from "lucide-react";
 
-import JobSphere3D from "./JobSphere3D";
+import CareerNetwork from "../../components/three/CareerNetwork";
+import CareerConstellation from "../../components/three/CareerConstellation";
+import SceneCanvas from "../../components/three/SceneCanvas";
+import JobUniverse from "../../components/three/JobUniverse";
+import JobGlobe from "../../components/three/JobGlobe";
+import FloatingParticles from "../../components/three/FloatingParticles";
 import "./Home.css";
 
 const CATEGORIES = [
@@ -307,9 +312,9 @@ const Home = () => {
           >
 
             <div className="hero-3d">
-
-              <JobSphere3D />
-
+              <SceneCanvas minHeight="360px">
+                <CareerNetwork />
+              </SceneCanvas>
             </div>
 
             {/* TOP LABEL */}
@@ -504,6 +509,16 @@ const Home = () => {
               );
             })}
 
+          </div>
+
+          <div style={{ marginTop: '2.5rem' }}>
+            <span className="section-eyebrow" style={{ marginBottom: '0.75rem', display: 'block' }}>
+              <span className="label-dot" />
+              INTERACTIVE 3D ECOSYSTEM
+            </span>
+            <SceneCanvas minHeight="320px">
+              <JobUniverse onSelectCategory={(cat) => handleCategoryClick(cat)} />
+            </SceneCanvas>
           </div>
 
         </div>

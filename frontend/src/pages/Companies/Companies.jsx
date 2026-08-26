@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { getCompanies } from '../../services/companyService';
 import CompanyCard from '../../components/companies/CompanyCard';
-import Loader from '../../components/common/Loader';
 import Button from '../../components/common/Button';
 import { Search } from 'lucide-react';
+import CompanyNetwork from '../../components/three/CompanyNetwork';
+import SceneCanvas from '../../components/three/SceneCanvas';
 import './Companies.css';
 
 const Companies = () => {
@@ -42,24 +43,32 @@ const Companies = () => {
     <div className="companies-page">
       {/* Hero Banner */}
       <div className="companies-hero">
-        <div className="container">
-          <h1>Discover Great Companies</h1>
-          <p>Find the right company culture for your next career move.</p>
+        <div className="container grid grid-cols-2 gap-8 items-center">
+          <div>
+            <h1>Discover Great Companies</h1>
+            <p className="mb-4 text-muted">Find the right company culture for your next career move across global tech hubs.</p>
 
-          <form className="companies-search-bar" onSubmit={handleSearch}>
-            <div className="company-search-field">
-              <Search size={20} className="company-search-icon" />
-              <input
-                type="text"
-                placeholder="Search by company name or industry..."
-                className="company-search-input"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                aria-label="Search companies"
-              />
-            </div>
-            <Button type="submit">Search</Button>
-          </form>
+            <form className="companies-search-bar" onSubmit={handleSearch}>
+              <div className="company-search-field">
+                <Search size={20} className="company-search-icon" />
+                <input
+                  type="text"
+                  placeholder="Search by company name or industry..."
+                  className="company-search-input"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  aria-label="Search companies"
+                />
+              </div>
+              <Button type="submit">Search</Button>
+            </form>
+          </div>
+
+          <div className="desktop-only">
+            <SceneCanvas minHeight="300px">
+              <CompanyNetwork activeCompany={searchQuery} />
+            </SceneCanvas>
+          </div>
         </div>
       </div>
 

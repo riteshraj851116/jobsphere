@@ -80,7 +80,7 @@ const RecruiterDashboard = () => {
               </div>
             </div>
 
-            <div className="stat-card stat-card--purple">
+            <div className="stat-card stat-card--blue">
               <div className="stat-icon"><Briefcase size={22} /></div>
               <div className="stat-body">
                 <span className="stat-value">{loading ? '—' : jobs.length}</span>

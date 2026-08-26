@@ -1,65 +1,57 @@
-﻿/* =========================================================
-   JOBSPHERE
-   APP LEVEL STYLES
+/* =========================================================
+   APP — Global App Layout
 ========================================================= */
 
-#root {
+.app-layout {
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
 }
 
-.app {
-  min-height: 100vh;
-
-  background: var(--bg);
-  color: var(--text);
+.app-layout > main,
+.app-layout > .page {
+  flex: 1;
 }
 
 /* =========================================================
-   ROUTE TRANSITION
+   NOT FOUND PAGE
 ========================================================= */
 
-.route-page {
-  min-height: calc(100vh - var(--header-height));
+.not-found-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding: 4rem 2rem;
+  text-align: center;
 }
 
-/* =========================================================
-   APP CONTENT
-========================================================= */
-
-.app-content {
-  position: relative;
-
-  min-height: calc(100vh - var(--header-height));
+.not-found-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-soft);
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
 }
 
-/* =========================================================
-   GLOBAL BUTTON POLISH
-========================================================= */
-
-button {
-  -webkit-appearance: none;
-  appearance: none;
+.not-found-page h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
 }
 
-button:disabled {
-  opacity: 0.6;
+.not-found-page p {
+  color: var(--text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: 2rem;
 }
 
-/* =========================================================
-   GLOBAL LINK
-========================================================= */
-
-a {
-  text-decoration-thickness: 1px;
-  text-underline-offset: 3px;
-}
-
-/* =========================================================
-   MOBILE
-========================================================= */
-
-@media (max-width: 640px) {
-  .app-content {
-    min-height: calc(100vh - var(--header-height));
-  }
+.not-found-page .btn {
+  gap: 0.5rem;
 }

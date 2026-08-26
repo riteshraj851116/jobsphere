@@ -10,6 +10,9 @@ import {
   X,
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
+import JobsHeaderVisual from "../../components/three/JobsHeaderVisual";
+import JobField from "../../components/three/JobField";
+import SceneCanvas from "../../components/three/SceneCanvas";
 import "./Jobs.css";
 
 const JOBS = [
@@ -244,11 +247,17 @@ const Jobs = () => {
 
   return (
     <main className="jobs-page">
-      <section className="jobs-hero">
-        <div className="container">
-          <div className="jobs-eyebrow">
-            <span />
-            JobSphere / Opportunities
+      <section className="jobs-hero" style={{ position: 'relative' }}>
+        <JobField />
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
+          <div className="jobs-eyebrow flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span />
+              JobSphere / Opportunities
+            </div>
+            <SceneCanvas minHeight="80px" height="80px">
+              <JobsHeaderVisual />
+            </SceneCanvas>
           </div>
 
           <h1>

@@ -10,7 +10,7 @@ const STATUS_COLORS = {
   applied:     'badge-info',
   reviewing:   'badge-warning',
   shortlisted: 'badge-primary',
-  interview:   'badge-purple',
+  interview:   'badge-info',
   hired:       'badge-success',
   rejected:    'badge-danger'
 };

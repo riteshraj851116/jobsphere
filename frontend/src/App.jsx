@@ -1,4 +1,4 @@
-﻿import React from "react";
+import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -53,31 +53,30 @@ import ManageJobs from "./pages/Recruiter/ManageJobs";
 import Applicants from "./pages/Recruiter/Applicants";
 import CompanyProfile from "./pages/Recruiter/CompanyProfile";
 
+import NotFoundScene from "./components/three/NotFoundScene";
+import ThreeScene from "./components/three/ThreeScene";
+
 /* =========================================================
    404 PAGE
 ========================================================= */
 
 function NotFound() {
   return (
-    <section className="not-found">
-      <div className="not-found__inner">
-
-        <p className="eyebrow">404</p>
-
-        <h1>PAGE NOT FOUND.</h1>
-
-        <p>
-          The page you're looking for doesn't exist or has been moved.
-        </p>
-
-        <Link
-          to="/"
-          className="btn btn--primary btn--md"
-        >
-          RETURN HOME
-        </Link>
-
-      </div>
+    <section className="not-found-page">
+      <ThreeScene minHeight="220px" height="220px">
+        <NotFoundScene />
+      </ThreeScene>
+      <span className="section-eyebrow mt-4">404 ERROR</span>
+      <h1 className="mt-2 text-2xl font-bold">Looks like this opportunity doesn't exist.</h1>
+      <p className="mt-2 text-muted max-w-md mx-auto">
+        The position or page you are trying to reach could not be found or has been moved.
+      </p>
+      <Link
+        to="/jobs"
+        className="btn btn--primary btn--md mt-6"
+      >
+        Back to Jobs
+      </Link>
     </section>
   );
 }

@@ -4,12 +4,14 @@ import { useAuth } from '../../hooks/useAuth';
 import { getMyApplications } from '../../services/applicationService';
 import { getSavedJobs } from '../../services/userService';
 import { Briefcase, Bookmark, CheckCircle, Clock, Search } from 'lucide-react';
+import DataFlow from '../../components/three/DataFlow';
+import SceneCanvas from '../../components/three/SceneCanvas';
 import './Dashboard.css';
 
 const STAT_STATUS_MAP = {
   applied:     { label: 'Applied',     color: 'stat-blue' },
   reviewing:   { label: 'Reviewing',   color: 'stat-yellow' },
-  shortlisted: { label: 'Shortlisted', color: 'stat-purple' },
+  shortlisted: { label: 'Shortlisted', color: 'stat-blue' },
   interview:   { label: 'Interview',   color: 'stat-indigo' },
   hired:       { label: 'Hired',       color: 'stat-green' },
   rejected:    { label: 'Rejected',    color: 'stat-red' }
@@ -91,9 +93,16 @@ const Dashboard = () => {
 
         {/* Main */}
         <main className="dashboard-main">
-          <div className="dashboard-header">
-            <h1>Welcome back, {user?.name?.split(' ')[0] || 'User'}!</h1>
-            <p className="text-muted">Here's an overview of your job search activity.</p>
+          <div className="dashboard-header flex justify-between items-center">
+            <div>
+              <h1>Welcome back, {user?.name?.split(' ')[0] || 'User'}!</h1>
+              <p className="text-muted">Here's an overview of your job search activity.</p>
+            </div>
+            <div className="desktop-only" style={{ width: '180px' }}>
+              <SceneCanvas minHeight="120px" height="120px">
+                <DataFlow />
+              </SceneCanvas>
+            </div>
           </div>
 
           {/* Stats Grid */}
@@ -108,7 +117,7 @@ const Dashboard = () => {
               </div>
             </div>
 
-            <div className="stat-card stat-card--purple">
+            <div className="stat-card stat-card--blue">
               <div className="stat-icon">
                 <CheckCircle size={22} />
               </div>

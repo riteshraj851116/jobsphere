@@ -3,7 +3,7 @@ import { useLocation, Link } from 'react-router-dom';
 import { getJobApplicants, updateApplicationStatus } from '../../services/applicationService';
 import Loader from '../../components/common/Loader';
 import Button from '../../components/common/Button';
-import { Users, Check, X, FileText, ArrowLeft, Mail, Calendar } from 'lucide-react';
+import { Users, FileText, ArrowLeft, Mail, Calendar } from 'lucide-react';
 import './Applicants.css';
 
 const STATUS_OPTIONS = [

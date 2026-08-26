@@ -1,4 +1,4 @@
-﻿name: Deploy JobSphere frontend to GitHub Pages
+name: Deploy JobSphere frontend to GitHub Pages
 
 on:
   push:
@@ -36,7 +36,7 @@ jobs:
 
       - name: Build frontend
         working-directory: frontend
-        run: npm run build -- --base=/jobsphere/
+        run: npm run build
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

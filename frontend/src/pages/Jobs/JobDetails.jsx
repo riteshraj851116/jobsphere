@@ -11,6 +11,9 @@ import {
   Share2,
   Bookmark,
 } from "lucide-react";
+import CareerGraph from "../../components/three/CareerGraph";
+import CareerPath from "../../components/three/CareerPath";
+import ThreeScene from "../../components/three/ThreeScene";
 import "./JobDetails.css";
 
 const JOBS = [
@@ -382,6 +385,25 @@ const JobDetails = () => {
                     </li>
                   ))}
                 </ul>
+              </div>
+            </div>
+
+            <div className="detail-block">
+              <span className="block-number">04</span>
+
+              <div>
+                <h2>Where this role can take you</h2>
+                <p style={{ marginBottom: "1rem", fontSize: "0.875rem", color: "var(--text-secondary)" }}>
+                  Skill graph & 3D career progression pathway for this position.
+                </p>
+                <div className="grid grid-cols-2 gap-4">
+                  <SceneCanvas minHeight="260px">
+                    <CareerGraph skills={job.skills} />
+                  </SceneCanvas>
+                  <SceneCanvas minHeight="260px">
+                    <CareerPath />
+                  </SceneCanvas>
+                </div>
               </div>
             </div>
           </article>

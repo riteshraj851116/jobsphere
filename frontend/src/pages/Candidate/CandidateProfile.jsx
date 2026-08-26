@@ -4,7 +4,9 @@ import { getMyProfile, updateProfile, updateSkills } from '../../services/userSe
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
-import { User, Mail, MapPin, Briefcase } from 'lucide-react';
+import { MapPin, Briefcase } from 'lucide-react';
+import SkillConstellation from '../../components/three/SkillConstellation';
+import SceneCanvas from '../../components/three/SceneCanvas';
 import './CandidateProfile.css';
 
 const CandidateProfile = () => {
@@ -118,6 +120,13 @@ const CandidateProfile = () => {
             <div className="profile-quick-info text-left mt-6 pt-6 border-t border-border-light">
               <div className="info-row"><Briefcase size={16}/> {profile?.headline || 'No headline'}</div>
               <div className="info-row"><MapPin size={16}/> {profile?.location || 'No location set'}</div>
+            </div>
+
+            <div className="mt-4 text-left">
+              <span className="text-xs font-semibold text-muted block mb-2">SKILL CONSTELLATION</span>
+              <ThreeScene minHeight="240px">
+                <SkillConstellation skills={profile?.skills} />
+              </ThreeScene>
             </div>
 
             {profile?.skills && profile.skills.length > 0 && (
