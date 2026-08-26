@@ -1,0 +1,63 @@
+.candidate-profile-page {
+  min-height: calc(100vh - var(--navbar-height));
+  padding: 3rem 0;
+  background: var(--bg);
+  animation: fadeIn 0.4s var(--t-normal);
+}
+
+.profile-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .profile-layout {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}
+
+.profile-sidebar {
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .profile-sidebar {
+    width: 320px;
+    flex-shrink: 0;
+  }
+}
+
+.profile-avatar-large {
+  width: 140px;
+  height: 140px;
+  background-color: var(--bg);
+  color: var(--text);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  font-weight: 500;
+  border: 1px solid var(--text);
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.profile-main {
+  flex: 1;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}

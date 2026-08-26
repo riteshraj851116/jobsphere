@@ -1,0 +1,29 @@
+/* Recruiter Dashboard */
+.recruiter-dashboard-page {
+  background: var(--bg);
+  min-height: calc(100vh - var(--navbar-height));
+  padding: 3rem 0 5rem;
+}
+
+/* Inherits dashboard layout from Dashboard.css */
+.recruiter-stats {
+  grid-template-columns: repeat(2, 1fr) !important;
+}
+
+.recruiter-avatar {
+  background: var(--bg);
+  border: 1px solid var(--text);
+}
+
+.recruiter-badge {
+  display: inline-block;
+  background: transparent;
+  color: var(--text);
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border: 1px solid var(--text);
+  margin-top: 0.75rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}

@@ -1,0 +1,263 @@
+﻿/* =========================================================
+   JOBSPHERE — DESIGN TOKENS
+   Black / White Editorial System
+========================================================= */
+
+:root {
+  /* =======================================================
+     COLORS
+  ======================================================= */
+
+  --bg: #ffffff;
+  --surface: #ffffff;
+
+  --surface-soft: #f7f7f7;
+  --surface-hover: #f1f1f1;
+  --surface-active: #e8e8e8;
+
+  --text: #000000;
+  --text-secondary: #555555;
+  --text-muted: #888888;
+  --text-placeholder: #a0a0a0;
+
+  --text-inverse: #ffffff;
+
+  /* =======================================================
+     PRIMARY
+  ======================================================= */
+
+  --primary: #000000;
+  --primary-hover: #222222;
+
+  --primary-light: #f5f5f5;
+  --primary-light-hover: #e9e9e9;
+
+  --primary-text: #000000;
+
+  /* =======================================================
+     BORDERS
+  ======================================================= */
+
+  --border: #dedede;
+  --border-light: #eeeeee;
+  --border-focus: #000000;
+
+  --border-dark: #000000;
+
+  /* =======================================================
+     STATUS
+  ======================================================= */
+
+  --success: #111111;
+  --success-bg: #f3f3f3;
+  --success-border: #dcdcdc;
+
+  --danger: #b00000;
+  --danger-bg: #fff0f0;
+  --danger-border: #e6b0b0;
+
+  --warning: #8a4b00;
+  --warning-bg: #fff7ed;
+  --warning-border: #e8c99e;
+
+  --info: #111111;
+  --info-bg: #f4f4f4;
+  --info-border: #dddddd;
+
+  /* =======================================================
+     RADIUS
+     Sharp editorial design
+  ======================================================= */
+
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+
+  --radius-full: 9999px;
+
+  /* =======================================================
+     LAYOUT
+  ======================================================= */
+
+  --container: 1200px;
+  --container-wide: 1440px;
+  --container-xl: 1800px;
+
+  --navbar-height: 80px;
+
+  /* =======================================================
+     SPACING
+  ======================================================= */
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+
+  /* =======================================================
+     SHADOWS
+     Keep interface mostly flat
+  ======================================================= */
+
+  --shadow-xs: none;
+  --shadow-sm: none;
+
+  --shadow-md:
+    0 8px 30px rgba(0, 0, 0, 0.05);
+
+  --shadow-lg:
+    0 20px 60px rgba(0, 0, 0, 0.06);
+
+  --shadow-xl:
+    0 30px 100px rgba(0, 0, 0, 0.08);
+
+  /* =======================================================
+     TRANSITIONS
+  ======================================================= */
+
+  --ease-out:
+    cubic-bezier(0.16, 1, 0.3, 1);
+
+  --ease-smooth:
+    cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  --ease-in-out:
+    cubic-bezier(0.65, 0, 0.35, 1);
+
+  --t-fast:
+    0.18s var(--ease-out);
+
+  --t-normal:
+    0.35s var(--ease-out);
+
+  --t-slow:
+    0.6s var(--ease-smooth);
+
+  --t-page:
+    0.9s var(--ease-smooth);
+
+  /* =======================================================
+     Z-INDEX
+  ======================================================= */
+
+  --z-base: 0;
+
+  --z-content: 10;
+
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-navbar: 300;
+
+  --z-overlay: 350;
+
+  --z-modal: 400;
+
+  --z-toast: 500;
+
+  --z-cursor: 900;
+
+  --z-debug: 9999;
+
+  /* =======================================================
+     GSAP
+  ======================================================= */
+
+  --reveal-distance: 40px;
+  --reveal-distance-large: 80px;
+
+  --animation-duration-fast: 0.3s;
+  --animation-duration-normal: 0.6s;
+  --animation-duration-slow: 1s;
+
+  /* =======================================================
+     THREE.JS
+  ======================================================= */
+
+  --three-opacity: 0.85;
+
+  --three-z-index: 0;
+
+  /* =======================================================
+     TYPOGRAPHY
+  ======================================================= */
+
+  --font-sans:
+    Inter,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  --font-display:
+    Inter,
+    Helvetica,
+    Arial,
+    sans-serif;
+
+  --font-mono:
+    "SFMono-Regular",
+    Consolas,
+    "Liberation Mono",
+    monospace;
+}
+
+/* =========================================================
+   DARK THEME SUPPORT
+   Reserved for future use.
+   Main JobSphere UI remains white/black.
+========================================================= */
+
+[data-theme="dark"] {
+  --bg: #050505;
+  --surface: #0b0b0b;
+
+  --surface-soft: #111111;
+  --surface-hover: #171717;
+  --surface-active: #202020;
+
+  --text: #ffffff;
+  --text-secondary: #b5b5b5;
+  --text-muted: #777777;
+  --text-placeholder: #666666;
+
+  --text-inverse: #000000;
+
+  --primary: #ffffff;
+  --primary-hover: #dddddd;
+
+  --primary-light: #181818;
+  --primary-light-hover: #222222;
+
+  --primary-text: #ffffff;
+
+  --border: #292929;
+  --border-light: #1c1c1c;
+  --border-focus: #ffffff;
+
+  --border-dark: #ffffff;
+}
+
+/* =========================================================
+   MOBILE VARIABLES
+========================================================= */
+
+@media (max-width: 700px) {
+  :root {
+    --navbar-height: 68px;
+
+    --space-20: 4rem;
+    --space-24: 5rem;
+    --space-32: 6rem;
+  }
+}

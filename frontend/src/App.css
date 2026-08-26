@@ -1,0 +1,65 @@
+﻿/* =========================================================
+   JOBSPHERE
+   APP LEVEL STYLES
+========================================================= */
+
+#root {
+  min-height: 100vh;
+}
+
+.app {
+  min-height: 100vh;
+
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* =========================================================
+   ROUTE TRANSITION
+========================================================= */
+
+.route-page {
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* =========================================================
+   APP CONTENT
+========================================================= */
+
+.app-content {
+  position: relative;
+
+  min-height: calc(100vh - var(--header-height));
+}
+
+/* =========================================================
+   GLOBAL BUTTON POLISH
+========================================================= */
+
+button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+button:disabled {
+  opacity: 0.6;
+}
+
+/* =========================================================
+   GLOBAL LINK
+========================================================= */
+
+a {
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 640px) {
+  .app-content {
+    min-height: calc(100vh - var(--header-height));
+  }
+}

@@ -1,0 +1,24 @@
+﻿/* =========================================================
+   JOBSPHERE
+   ROOT / DOCUMENT RESET
+========================================================= */
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100vh;
+}

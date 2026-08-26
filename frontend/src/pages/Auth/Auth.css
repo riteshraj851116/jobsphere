@@ -1,0 +1,464 @@
+.auth-page {
+position: relative;
+
+min-height: 100vh;
+
+display: flex;
+align-items: center;
+justify-content: center;
+
+padding: 2rem 1rem;
+
+background: #ffffff;
+
+color: #000000;
+
+overflow: hidden;
+}
+
+/* ---------------------------------------------
+BACKGROUND LAYER
+--------------------------------------------- */
+
+.auth-page .auth-background {
+position: fixed;
+
+inset: 0;
+
+z-index: 0;
+}
+
+/* ---------------------------------------------
+AUTH CARD
+--------------------------------------------- */
+
+.auth-card {
+position: relative;
+
+z-index: 2;
+
+width: 100%;
+max-width: 480px;
+
+padding: 3rem 2.5rem;
+
+background: rgba(255, 255, 255, 0.94);
+
+border: 1px solid #000000;
+
+box-shadow:
+12px 12px 0 #000000;
+
+backdrop-filter: blur(18px);
+
+animation:
+authCardIn 0.6s
+cubic-bezier(
+0.16,
+1,
+0.3,
+1
+);
+}
+
+/* ---------------------------------------------
+LOGO
+--------------------------------------------- */
+
+.auth-logo {
+margin-bottom: 2.2rem;
+
+color: #000000;
+
+font-size: 1rem;
+
+font-weight: 800;
+
+letter-spacing: 0.18em;
+
+text-align: center;
+
+text-transform: uppercase;
+}
+
+/* ---------------------------------------------
+HEADER
+--------------------------------------------- */
+
+.auth-header {
+margin-bottom: 2rem;
+
+text-align: center;
+}
+
+.auth-header h2 {
+margin: 0 0 0.65rem;
+
+color: #000000;
+
+font-size: clamp(
+1.8rem,
+4vw,
+2.4rem
+);
+
+font-weight: 500;
+
+line-height: 1;
+
+letter-spacing: -0.045em;
+}
+
+.auth-header p {
+margin: 0;
+
+color: #666666;
+
+font-size: 0.9rem;
+
+line-height: 1.6;
+}
+
+/* ---------------------------------------------
+ERROR
+--------------------------------------------- */
+
+.auth-error {
+margin-bottom: 1.5rem;
+
+padding: 0.85rem 1rem;
+
+border: 1px solid #000000;
+
+background: #f5f5f5;
+
+color: #000000;
+
+font-size: 0.78rem;
+
+line-height: 1.5;
+
+text-align: center;
+}
+
+/* ---------------------------------------------
+FORM
+--------------------------------------------- */
+
+.auth-form {
+display: flex;
+
+flex-direction: column;
+
+gap: 1.15rem;
+}
+
+/* ---------------------------------------------
+ROLE
+--------------------------------------------- */
+
+.role-selector {
+display: flex;
+
+flex-direction: column;
+
+gap: 0.7rem;
+}
+
+.input-label {
+color: #000000;
+
+font-size: 0.65rem;
+
+font-weight: 800;
+
+letter-spacing: 0.12em;
+
+text-transform: uppercase;
+}
+
+.role-options {
+display: grid;
+
+grid-template-columns:
+repeat(2, 1fr);
+
+gap: 0.8rem;
+}
+
+.role-option {
+position: relative;
+
+min-height: 125px;
+
+display: flex;
+
+flex-direction: column;
+
+align-items: center;
+
+justify-content: center;
+
+gap: 0.45rem;
+
+padding: 1rem;
+
+border: 1px solid #d8d8d8;
+
+background: #ffffff;
+
+color: #000000;
+
+cursor: pointer;
+
+text-align: center;
+
+transition:
+border-color 0.25s ease,
+background 0.25s ease,
+transform 0.25s ease;
+}
+
+.role-option:hover {
+border-color: #000000;
+
+transform:
+translateY(-2px);
+}
+
+.role-option.selected {
+border-color: #000000;
+
+background: #f4f4f4;
+
+box-shadow:
+4px 4px 0 #000000;
+}
+
+.role-option input {
+position: absolute;
+
+width: 1px;
+height: 1px;
+
+opacity: 0;
+}
+
+.role-icon {
+font-size: 1.35rem;
+}
+
+.role-option strong {
+display: block;
+
+color: #000000;
+
+font-size: 0.72rem;
+
+font-weight: 800;
+
+letter-spacing: 0.08em;
+
+text-transform: uppercase;
+}
+
+.role-desc {
+display: block;
+
+margin-top: 0.25rem;
+
+color: #777777;
+
+font-size: 0.65rem;
+
+line-height: 1.4;
+}
+
+/* ---------------------------------------------
+FOOTER
+--------------------------------------------- */
+
+.auth-footer {
+margin-top: 2rem;
+
+padding-top: 1.5rem;
+
+border-top: 1px solid #e5e5e5;
+
+color: #777777;
+
+font-size: 0.82rem;
+
+text-align: center;
+}
+
+.auth-footer p {
+margin: 0;
+}
+
+.auth-link {
+color: #000000;
+
+font-weight: 700;
+
+text-decoration: none;
+
+border-bottom: 1px solid #000000;
+
+transition:
+opacity 0.2s ease;
+}
+
+.auth-link:hover {
+opacity: 0.55;
+}
+
+/* ---------------------------------------------
+BUTTON FIX
+--------------------------------------------- */
+
+.auth-card button[type="submit"] {
+min-height: 52px;
+
+width: 100%;
+
+margin-top: 0.25rem;
+
+border: 1px solid #000000;
+
+background: #000000;
+
+color: #ffffff;
+
+font-weight: 700;
+
+letter-spacing: 0.05em;
+
+cursor: pointer;
+}
+
+.auth-card button[type="submit"]:hover:not(:disabled) {
+background: #222222;
+}
+
+.auth-card button[type="submit"]:disabled {
+cursor: not-allowed;
+
+opacity: 0.55;
+}
+
+/* ---------------------------------------------
+INPUT OVERRIDES
+--------------------------------------------- */
+
+.auth-card input[type="text"],
+.auth-card input[type="email"],
+.auth-card input[type="password"] {
+box-sizing: border-box;
+
+width: 100%;
+
+min-height: 50px;
+
+border: 1px solid #d7d7d7;
+
+border-radius: 0;
+
+background: #ffffff;
+
+color: #000000;
+
+outline: none;
+
+transition:
+border-color 0.2s ease,
+box-shadow 0.2s ease;
+}
+
+.auth-card input[type="text"]:focus,
+.auth-card input[type="email"]:focus,
+.auth-card input[type="password"]:focus {
+border-color: #000000;
+
+box-shadow:
+4px 4px 0 #000000;
+}
+
+.auth-card input::placeholder {
+color: #999999;
+}
+
+/* ---------------------------------------------
+ANIMATION
+--------------------------------------------- */
+
+@keyframes authCardIn {
+from {
+opacity: 0;
+
+
+transform:
+  translateY(30px)
+  scale(0.97);
+
+
+}
+
+to {
+opacity: 1;
+
+
+transform:
+  translateY(0)
+  scale(1);
+
+
+}
+}
+
+/* ---------------------------------------------
+MOBILE
+--------------------------------------------- */
+
+@media (max-width: 600px) {
+.auth-page {
+padding: 1rem;
+}
+
+.auth-card {
+padding: 2rem 1.25rem;
+
+
+box-shadow:
+  7px 7px 0 #000000;
+
+
+}
+
+.role-options {
+grid-template-columns: 1fr;
+}
+
+.role-option {
+min-height: 90px;
+
+
+flex-direction: row;
+
+justify-content: flex-start;
+
+text-align: left;
+
+
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+.auth-card {
+animation: none;
+}
+
+.role-option {
+transition: none;
+}
+}

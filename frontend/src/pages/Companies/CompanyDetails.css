@@ -1,0 +1,163 @@
+/* Company Details Page */
+.company-details-page {
+  min-height: calc(100vh - var(--navbar-height));
+  padding-bottom: 5rem;
+  background: var(--bg);
+  animation: fadeIn 0.4s var(--t-normal);
+}
+
+.company-cover {
+  background-color: var(--surface-soft);
+  padding: 4rem 0;
+  margin-bottom: -5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.company-header-card {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  position: relative;
+  top: 2.5rem;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  .company-header-card {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+}
+
+.company-header-main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  text-align: center;
+}
+
+@media (min-width: 768px) {
+  .company-header-main {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+  }
+}
+
+.cd-logo,
+.cd-logo-placeholder {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+
+.cd-logo-placeholder {
+  background-color: var(--surface-soft);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3.5rem;
+  font-weight: 400;
+}
+
+.cd-info h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.03em;
+}
+
+.cd-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  .cd-meta {
+    justify-content: flex-start;
+  }
+}
+
+.cd-industry {
+  background-color: transparent;
+  border: 1px solid var(--text);
+  color: var(--text);
+  padding: 0.35rem 1rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cd-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
+
+.company-content-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 6rem;
+}
+
+@media (min-width: 1024px) {
+  .company-content-container {
+    flex-direction: row;
+  }
+}
+
+.company-main-content {
+  flex: 1;
+}
+
+.company-main-content h2 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+}
+
+.cd-description {
+  color: var(--text-secondary);
+  line-height: 1.8;
+  font-size: 1.0625rem;
+  white-space: pre-wrap;
+}
+
+.company-jobs-sidebar {
+  width: 100%;
+}
+
+@media (min-width: 1024px) {
+  .company-jobs-sidebar {
+    width: 360px;
+    flex-shrink: 0;
+  }
+}
+
+.company-jobs-sidebar h3 {
+  font-size: 1.25rem;
+  margin-bottom: 1.5rem;
+  color: var(--text);
+  font-weight: 500;
+}
+
+.block {
+  display: block;
+}
