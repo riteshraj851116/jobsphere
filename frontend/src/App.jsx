@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -90,7 +90,7 @@ function App() {
   return (
     <AuthProvider>
 
-      <Router>
+      <Router basename="/jobsphere/">
 
         <div className="page-container">
 
