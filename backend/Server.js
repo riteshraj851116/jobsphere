@@ -22,8 +22,11 @@ dotenv.config();
 const app = express();
 
 const allowedOrigins = [
- "http://localhost:5173",
- "http://localhost:5174"
+  "https://riteshraj851116.github.io",
+  "https://riteshraj851116.github.io/jobsphere",
+  "http://localhost:5173",
+  "http://localhost:5174",
+  "http://localhost:3000"
 ];
 
 const server = http.createServer(app);
@@ -48,7 +51,22 @@ const io = new Server(server, {
 global.io = io;
 
 const PORT =
-  process.env.PORT || 5000;
+  process.env.PORT || 5002;
+
+// ==========================================
+// HEALTH ENDPOINT
+// ==========================================
+
+app.get(
+  "/api/health",
+  (req, res) => {
+    res.status(200).json({
+      success: true,
+      message: "JobSphere API is running",
+      version: "1.0.0"
+    });
+  }
+);
 
 
 // ==========================================
