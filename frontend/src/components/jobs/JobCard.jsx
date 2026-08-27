@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -45,11 +44,10 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
     skills,
   } = job;
 
-  const companyName =
-    company?.name || "Unknown Company";
+  const companyName = company?.name || "Unknown Company";
 
   const companyInitial =
-    companyName.charAt(0).toUpperCase();
+    companyName.charAt(0).toUpperCase() || "C";
 
   const formatDate = (dateString) => {
     if (!dateString) {
@@ -145,6 +143,7 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
 
   const handleCardClick = () => {
     if (!_id) {
+      console.error("Cannot open job: Job ID missing");
       return;
     }
 
@@ -183,7 +182,6 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
       console.error(
         "Cannot save job: Job ID missing"
       );
-
       return;
     }
 
@@ -295,7 +293,8 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
                     .nextElementSibling;
 
                 if (fallback) {
-                  fallback.style.display = "flex";
+                  fallback.style.display =
+                    "flex";
                 }
               }}
             />
@@ -337,7 +336,9 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
             <MapPin size={15} />
 
             <span>
-              {isRemote ? "Remote" : location}
+              {isRemote
+                ? "Remote"
+                : location}
             </span>
           </div>
         )}
@@ -346,7 +347,9 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
           <div className="job-meta-item">
             <Briefcase size={15} />
 
-            <span>{jobType}</span>
+            <span>
+              {jobType}
+            </span>
           </div>
         )}
 
@@ -354,7 +357,9 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
           <div className="job-meta-item">
             <Clock size={15} />
 
-            <span>{experienceLevel}</span>
+            <span>
+              {experienceLevel}
+            </span>
           </div>
         )}
 
@@ -362,7 +367,9 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
           <div className="job-meta-item job-meta-salary">
             <DollarSign size={15} />
 
-            <span>{salaryText}</span>
+            <span>
+              {salaryText}
+            </span>
           </div>
         )}
       </div>
@@ -418,7 +425,9 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
             handleCardClick();
           }}
         >
-          <span>View Job</span>
+          <span>
+            View Job
+          </span>
 
           <ArrowUpRight size={16} />
         </button>
@@ -428,4 +437,3 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
 };
 
 export default JobCard;
-

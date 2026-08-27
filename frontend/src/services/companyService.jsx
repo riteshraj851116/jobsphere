@@ -1,4 +1,5 @@
 import api from './api';
+import { isValidObjectId } from '../utils/validation';
 
 const MOCK_COMPANIES = [
   {
@@ -85,7 +86,6 @@ export const getCompanies = async (params = {}) => {
     console.warn("Using offline mock companies fallback:", err.message);
   }
 
-  // Fallback filtering by search
   let filtered = [...MOCK_COMPANIES];
   if (params.search) {
     const q = params.search.toLowerCase();
@@ -109,9 +109,11 @@ export const getCompanies = async (params = {}) => {
 
 export const getCompanyById = async (id) => {
   try {
-    const res = await api.get(`/companies/${id}`);
-    if (res.data?.company || res.data?.data?.company) {
-      return res.data;
+    if (isValidObjectId(id)) {
+      const res = await api.get(`/companies/${id}`);
+      if (res.data?.company || res.data?.data?.company) {
+        return res.data;
+      }
     }
   } catch (err) {
     console.warn("Using offline mock company fallback:", err.message);
@@ -123,6 +125,11 @@ export const getCompanyById = async (id) => {
     data: { company: found },
     company: found
   };
+};
+
+export const getMyCompanies = async () => {
+  const res = await api.get('/companies/mine');
+  return res.data;
 };
 
 export const createCompany = async (data) => {
@@ -137,18 +144,32 @@ export const createCompany = async (data) => {
 
 export const updateCompany = async (id, data) => {
   try {
-    const res = await api.put(`/companies/${id}`, data);
-    return res.data;
+    if (isValidObjectId(id)) {
+      const res = await api.put(`/companies/${id}`, data);
+      return res.data;
+    }
   } catch (err) {
-    return { success: true, data: { company: { _id: id, ...data } } };
+    console.warn("Update company API fallback");
   }
+  return { success: true, data: { company: { _id: id, ...data } } };
 };
 
 export const deleteCompany = async (id) => {
   try {
-    const res = await api.delete(`/companies/${id}`);
-    return res.data;
+    if (isValidObjectId(id)) {
+      const res = await api.delete(`/companies/${id}`);
+      return res.data;
+    }
   } catch (err) {
-    return { success: true, message: 'Company removed' };
+    console.warn("Delete company API fallback");
   }
+  return { success: true, message: 'Company removed' };
+};
+
+export const followCompany = async (id) => {
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid company ID');
+  }
+  const res = await api.post(`/companies/${id}/follow`);
+  return res.data;
 };

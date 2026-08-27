@@ -49,6 +49,7 @@ const io = new Server(server, {
 });
 
 global.io = io;
+global.onlineUsers = new Map();
 
 const PORT =
   process.env.PORT || 5002;
@@ -109,98 +110,75 @@ app.use(
 // ==========================================
 
 io.on("connection", (socket) => {
+  socket.on("join-user", (userId) => {
+    if (!userId || String(userId).length !== 24) {
+      return;
+    }
 
-  console.log(
-    "🔌 Socket connected:",
-    socket.id
-  );
+    socket.data.userId = String(userId);
+    socket.join(`user:${userId}`);
 
+    const current = global.onlineUsers.get(String(userId)) || new Set();
+    current.add(socket.id);
+    global.onlineUsers.set(String(userId), current);
 
-  // ================================
-  // JOIN USER ROOM
-  // ================================
+    io.emit("presence-update", {
+      userId: String(userId),
+      online: true,
+    });
+  });
 
-  socket.on(
-    "join-user",
-    (userId) => {
+  socket.on("join-conversation", (conversationId) => {
+    if (!conversationId) {
+      return;
+    }
 
-      if (!userId) {
-        return;
+    socket.join(`conversation:${conversationId}`);
+  });
+
+  socket.on("leave-conversation", (conversationId) => {
+    if (!conversationId) {
+      return;
+    }
+
+    socket.leave(`conversation:${conversationId}`);
+  });
+
+  socket.on("typing", ({ conversationId, isTyping }) => {
+    if (!conversationId) {
+      return;
+    }
+
+    socket.to(`conversation:${conversationId}`).emit("typing", {
+      conversationId,
+      userId: socket.data.userId,
+      isTyping: Boolean(isTyping),
+    });
+  });
+
+  socket.on("disconnect", () => {
+    const userId = socket.data.userId;
+
+    if (!userId) {
+      return;
+    }
+
+    const current = global.onlineUsers.get(userId);
+
+    if (current) {
+      current.delete(socket.id);
+
+      if (current.size === 0) {
+        global.onlineUsers.delete(userId);
+        io.emit("presence-update", {
+          userId,
+          online: false,
+        });
+      } else {
+        global.onlineUsers.set(userId, current);
       }
-
-      socket.join(
-        `user:${userId}`
-      );
-
-      console.log(
-        `👤 User ${userId} joined`
-      );
     }
-  );
-
-
-  // ================================
-  // JOIN CONVERSATION
-  // ================================
-
-  socket.on(
-    "join-conversation",
-    (conversationId) => {
-
-      if (!conversationId) {
-        return;
-      }
-
-      socket.join(
-        `conversation:${conversationId}`
-      );
-
-      console.log(
-        `💬 Joined conversation ${conversationId}`
-      );
-    }
-  );
-
-
-  // ================================
-  // LEAVE CONVERSATION
-  // ================================
-
-  socket.on(
-    "leave-conversation",
-    (conversationId) => {
-
-      if (!conversationId) {
-        return;
-      }
-
-      socket.leave(
-        `conversation:${conversationId}`
-      );
-
-      console.log(
-        `👋 Left conversation ${conversationId}`
-      );
-    }
-  );
-
-
-  // ================================
-  // DISCONNECT
-  // ================================
-
-  socket.on(
-    "disconnect",
-    () => {
-
-      console.log(
-        "❌ Socket disconnected:",
-        socket.id
-      );
-
-    }
-  );
-
+  });
 });
 
 

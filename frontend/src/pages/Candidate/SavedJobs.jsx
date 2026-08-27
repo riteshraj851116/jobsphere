@@ -56,11 +56,25 @@ const SavedJobs = () => {
       const jobs =
         response?.data?.savedJobs || [];
 
-      setSavedJobs(
-        Array.isArray(jobs)
-          ? jobs
-          : []
-      );
+      /*
+      De-duplicate by _id so a repeated populate/expand
+      or duplicated backend entry cannot render the same
+      job twice (React duplicate-key guard).
+      */
+
+      const uniqueJobs = [];
+      const seenIds = new Set();
+
+      for (const job of Array.isArray(jobs) ? jobs : []) {
+        const id = job?._id?.toString?.() || job?._id;
+        if (!id || seenIds.has(id)) {
+          continue;
+        }
+        seenIds.add(id);
+        uniqueJobs.push(job);
+      }
+
+      setSavedJobs(uniqueJobs);
     } catch (error) {
       console.error(
         "Fetch Saved Jobs Error:",
@@ -94,37 +108,12 @@ const SavedJobs = () => {
   ========================================================
   */
 
-  const handleUnsave = async (jobId) => {
-    try {
-      /*
-      Backend toggles save/unsave.
-      */
-      const response =
-        await saveJob(jobId);
-
-      /*
-      Remove immediately from UI.
-      */
+  const handleUnsave = (jobId, isNowSaved) => {
+    if (!isNowSaved) {
       setSavedJobs((previousJobs) =>
         previousJobs.filter(
-          (job) =>
-            job._id !== jobId
+          (job) => job._id !== jobId
         )
-      );
-
-      console.log(
-        response?.message ||
-        "Job removed from saved list"
-      );
-    } catch (error) {
-      console.error(
-        "Unsave Job Error:",
-        error
-      );
-
-      setError(
-        error?.response?.data?.message ||
-        "Failed to remove saved job."
       );
     }
   };
@@ -243,14 +232,12 @@ const SavedJobs = () => {
               it here.
             </p>
 
-            <Button
-              onClick={() => {
-                window.location.href =
-                  "/jobs";
-              }}
+            <Link
+              to="/jobs"
+              className="btn btn--primary btn--md"
             >
               Browse Jobs
-            </Button>
+            </Link>
 
           </div>
 

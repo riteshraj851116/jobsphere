@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 
@@ -122,14 +122,15 @@ const JobGlobe = () => {
         position: 'relative'
       }}
     >
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.2], fov: 45 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        height="320px"
+        minHeight="320px"
       >
         <ambientLight intensity={0.8} />
         <GlobeMesh />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

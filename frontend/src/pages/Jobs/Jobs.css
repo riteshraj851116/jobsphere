@@ -548,6 +548,57 @@
   background: var(--bg, #fff);
 }
 
+/* LOADING STATE */
+
+.loading-state {
+  padding: 3rem 2rem;
+
+  text-align: center;
+
+  color: var(--text-secondary, #666);
+
+  font-size: 0.875rem;
+}
+
+/* ERROR STATE */
+
+.error-state {
+  padding: 2rem;
+
+  text-align: center;
+
+  border: 1px solid var(--danger-border, #e0baba);
+  border-radius: var(--radius-md);
+
+  background: var(--danger-bg, #fff5f5);
+  color: var(--danger, #a00000);
+
+  font-size: 0.875rem;
+}
+
+.error-state p {
+  margin: 0 0 1rem;
+}
+
+.error-state button {
+  padding: 0.5rem 1rem;
+
+  border: 1px solid var(--danger, #a00000);
+
+  background: var(--danger, #a00000);
+  color: white;
+
+  font-family: inherit;
+  font-size: 0.75rem;
+  font-weight: 500;
+
+  cursor: pointer;
+}
+
+.error-state button:hover {
+  background: #800000;
+}
+
 .empty-jobs > div {
   width: 58px;
   height: 58px;

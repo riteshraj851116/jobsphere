@@ -5,6 +5,11 @@ export const getFeed = async () => {
   return res.data;
 };
 
+export const getUserPosts = async (userId) => {
+  const res = await api.get(`/posts/user/${userId}`);
+  return res.data;
+};
+
 export const createPost = async (data) => {
   const res = await api.post('/posts', data);
   return res.data;
@@ -17,6 +22,11 @@ export const likePost = async (id) => {
 
 export const addComment = async (id, text) => {
   const res = await api.post(`/posts/${id}/comment`, { text });
+  return res.data;
+};
+
+export const deleteComment = async (id, commentId) => {
+  const res = await api.delete(`/posts/${id}/comment/${commentId}`);
   return res.data;
 };
 

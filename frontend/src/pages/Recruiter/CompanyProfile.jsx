@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getCompanies, createCompany, updateCompany } from '../../services/companyService';
+import { getMyCompanies, createCompany, updateCompany } from '../../services/companyService';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import Loader from '../../components/common/Loader';
@@ -34,7 +34,7 @@ const CompanyProfile = () => {
   const fetchRecruiterCompany = async () => {
     try {
       setLoading(true);
-      const res = await getCompanies();
+      const res = await getMyCompanies();
       const companyList = res.data?.companies || [];
       if (companyList.length > 0) {
         const comp = companyList[0];

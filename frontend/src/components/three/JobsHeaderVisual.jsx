@@ -1,6 +1,7 @@
-import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useMemo, memo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const ClusterMesh = () => {
   const meshRef = useRef();
@@ -58,19 +59,22 @@ const ClusterMesh = () => {
   );
 };
 
-const JobsHeaderVisual = () => {
+const JobsHeaderVisual = memo(() => {
   return (
     <div style={{ width: '120px', height: '80px', position: 'relative' }}>
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 4], fov: 45 }}
         dpr={[1, 1.25]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
+        height="80px"
+        minHeight="80px"
       >
         <ambientLight intensity={0.8} />
         <ClusterMesh />
-      </Canvas>
+      </SceneShell>
     </div>
   );
-};
+});
+
+JobsHeaderVisual.displayName = 'JobsHeaderVisual';
 
 export default JobsHeaderVisual;

@@ -1,6 +1,7 @@
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import SceneShell from './SceneShell';
 import * as THREE from 'three';
 
 const PATH_STAGES = [
@@ -75,14 +76,14 @@ const ConstellationScene = () => {
 const CareerConstellation = () => {
   return (
     <div style={{ width: '100%', height: '260px', position: 'relative' }}>
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.5], fov: 45 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        height="260px"
+        minHeight="260px"
       >
         <ambientLight intensity={0.8} />
         <ConstellationScene />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

@@ -1,6 +1,7 @@
 const Connection = require("../models/Connection");
 const User = require("../models/User");
 const createNotification = require("../utils/createNotification");
+const { isValidObjectId } = require("../middleware/validateObjectId");
 
 
 // ==========================================
@@ -9,12 +10,19 @@ const createNotification = require("../utils/createNotification");
 
 const sendConnectionRequest = async (req, res) => {
   try {
-    const { userId } = req.body;
+    const userId = req.body.userId || req.body.receiverId;
 
     if (!userId) {
       return res.status(400).json({
         success: false,
         message: "User ID is required"
+      });
+    }
+
+    if (!isValidObjectId(String(userId))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
       });
     }
 
@@ -158,7 +166,13 @@ const getPendingRequests = async (req, res) => {
 
 const respondToRequest = async (req, res) => {
   try {
-    const { status } = req.body;
+    const rawAction = req.body.status || req.body.action;
+    const status =
+      rawAction === "accept"
+        ? "accepted"
+        : rawAction === "reject"
+          ? "rejected"
+          : rawAction;
 
     if (
       !["accepted", "rejected"].includes(status)

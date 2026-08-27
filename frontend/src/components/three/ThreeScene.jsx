@@ -1,81 +1,195 @@
-import React, { useState, useEffect, useRef, Component } from 'react';
+import React, {
+  Component,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 
-// Error boundary for WebGL / R3F Canvas errors
 class WebGLErrorBoundary extends Component {
   constructor(props) {
     super(props);
-    this.state = { hasError: false };
+
+    this.state = {
+      hasError: false
+    };
   }
 
   static getDerivedStateFromError() {
-    return { hasError: true };
+    return {
+      hasError: true
+    };
   }
 
   componentDidCatch(error, errorInfo) {
-    console.warn("WebGL Scene Error, rendering fallback UI:", error, errorInfo);
+    console.warn(
+      "WebGL Scene Error:",
+      error,
+      errorInfo
+    );
   }
 
   render() {
     if (this.state.hasError) {
-      return this.props.fallback || <DefaultFallback />;
+      return this.props.fallback;
     }
+
     return this.props.children;
   }
 }
 
-const DefaultFallback = () => (
-  <div
-    style={{
-      width: '100%',
-      height: '100%',
-      minHeight: '200px',
-      background: 'radial-gradient(circle, rgba(244,244,245,0.8) 0%, rgba(255,255,255,1) 80%)',
-      borderRadius: '12px',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    }}
-    aria-hidden="true"
-  >
-    <div style={{ width: '40px', height: '40px', borderRadius: '50%', border: '1px dashed #D4D4D8' }} />
-  </div>
-);
+const DefaultFallback = () => {
+  return (
+    <div
+      style={{
+        width: "100%",
+        height: "100%",
+        minHeight: "240px",
+        background:
+          "radial-gradient(circle, rgba(244,244,245,0.8) 0%, rgba(255,255,255,1) 80%)",
+        borderRadius: "12px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden"
+      }}
+      aria-hidden="true"
+    >
+      <div
+        style={{
+          width: "40px",
+          height: "40px",
+          borderRadius: "50%",
+          border: "1px dashed #D4D4D8"
+        }}
+      />
+    </div>
+  );
+};
 
-const isWebGLSupported = () => {
+const checkWebGL = () => {
   try {
-    const canvas = document.createElement('canvas');
-    return !!(window.WebGLRenderingContext && (canvas.getContext('webgl') || canvas.getContext('experimental-webgl')));
+    if (typeof window === "undefined") {
+      return false;
+    }
+
+    const canvas = document.createElement("canvas");
+
+    const gl =
+      canvas.getContext("webgl") ||
+      canvas.getContext("experimental-webgl");
+
+    return Boolean(gl);
   } catch {
     return false;
   }
 };
 
-const ThreeScene = ({ children, fallback = <DefaultFallback />, height = '100%', minHeight = '300px', className = '' }) => {
+const ThreeScene = ({
+  children,
+  fallback = <DefaultFallback />,
+  height = "100%",
+  minHeight = "300px",
+  className = ""
+}) => {
   const containerRef = useRef(null);
-  const [isVisible, setIsVisible] = useState(false);
+
+  const [visible, setVisible] = useState(false);
   const [webGLAvailable, setWebGLAvailable] = useState(true);
+  const [contextLost, setContextLost] = useState(false);
 
   useEffect(() => {
-    setWebGLAvailable(isWebGLSupported());
+    const supported = checkWebGL();
+
+    setWebGLAvailable(supported);
+
+    if (!supported) {
+      setContextLost(true);
+    }
   }, []);
 
   useEffect(() => {
-    if (!containerRef.current) return;
+    const element = containerRef.current;
+
+    if (!element) {
+      return undefined;
+    }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        setVisible(entry.isIntersecting);
       },
-      { threshold: 0.05 }
+      {
+        threshold: 0.05
+      }
     );
 
-    observer.observe(containerRef.current);
-    return () => observer.disconnect();
+    observer.observe(element);
+
+    return () => {
+      observer.disconnect();
+    };
   }, []);
 
-  if (!webGLAvailable) {
+  useEffect(() => {
+    const element = containerRef.current;
+
+    if (!element) {
+      return undefined;
+    }
+
+    const handleContextLost = (event) => {
+      event.preventDefault();
+
+      console.warn(
+        "THREE WebGL context lost. Showing fallback."
+      );
+
+      setContextLost(true);
+    };
+
+    const handleContextRestored = () => {
+      console.info(
+        "THREE WebGL context restored."
+      );
+
+      setContextLost(false);
+    };
+
+    element.addEventListener(
+      "webglcontextlost",
+      handleContextLost,
+      false
+    );
+
+    element.addEventListener(
+      "webglcontextrestored",
+      handleContextRestored,
+      false
+    );
+
+    return () => {
+      element.removeEventListener(
+        "webglcontextlost",
+        handleContextLost
+      );
+
+      element.removeEventListener(
+        "webglcontextrestored",
+        handleContextRestored
+      );
+    };
+  }, []);
+
+  if (!webGLAvailable || contextLost) {
     return (
-      <div className={`three-fallback-container ${className}`} style={{ width: '100%', height, minHeight }}>
+      <div
+        className={`three-fallback-container ${className}`}
+        style={{
+          width: "100%",
+          height,
+          minHeight
+        }}
+      >
         {fallback}
       </div>
     );
@@ -85,11 +199,17 @@ const ThreeScene = ({ children, fallback = <DefaultFallback />, height = '100%',
     <div
       ref={containerRef}
       className={`three-scene-wrapper ${className}`}
-      style={{ width: '100%', height, minHeight, position: 'relative' }}
+      style={{
+        width: "100%",
+        height,
+        minHeight,
+        position: "relative",
+        overflow: "hidden"
+      }}
       aria-hidden="true"
     >
       <WebGLErrorBoundary fallback={fallback}>
-        {isVisible ? children : fallback}
+        {visible ? children : fallback}
       </WebGLErrorBoundary>
     </div>
   );

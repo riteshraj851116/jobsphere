@@ -300,10 +300,87 @@ const deleteCompany = async (req, res) => {
   }
 };
 
+const getMyCompanies = async (req, res) => {
+  try {
+    const companies = await Company.find({
+      recruiter: req.user._id
+    }).sort({ createdAt: -1 });
+
+    res.status(200).json({
+      success: true,
+      data: {
+        companies
+      }
+    });
+  } catch (error) {
+    console.error("Get My Companies Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching your companies"
+    });
+  }
+};
+
+const followCompany = async (req, res) => {
+  try {
+    if (!req.params.id || req.params.id.length !== 24) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid company ID"
+      });
+    }
+
+    const company = await Company.findById(req.params.id);
+
+    if (!company) {
+      return res.status(404).json({
+        success: false,
+        message: "Company not found"
+      });
+    }
+
+    const followerId = req.user._id.toString();
+    const alreadyFollowing = company.followers.some(
+      (id) => id.toString() === followerId
+    );
+
+    if (alreadyFollowing) {
+      company.followers = company.followers.filter(
+        (id) => id.toString() !== followerId
+      );
+    } else {
+      company.followers.push(req.user._id);
+    }
+
+    await company.save();
+
+    res.status(200).json({
+      success: true,
+      message: alreadyFollowing
+        ? "Unfollowed company"
+        : "Following company",
+      data: {
+        isFollowing: !alreadyFollowing,
+        followersCount: company.followers.length
+      }
+    });
+  } catch (error) {
+    console.error("Follow Company Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error while updating follow status"
+    });
+  }
+};
+
 module.exports = {
   createCompany,
   getCompanies,
+  getMyCompanies,
   getCompanyById,
   updateCompany,
-  deleteCompany
+  deleteCompany,
+  followCompany
 };

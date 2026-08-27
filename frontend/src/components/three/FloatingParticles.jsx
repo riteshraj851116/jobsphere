@@ -1,5 +1,5 @@
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 const ParticleField = () => {
@@ -59,13 +59,9 @@ const FloatingParticles = () => {
       }}
       aria-hidden="true"
     >
-      <Canvas
-        camera={{ position: [0, 0, 6], fov: 45 }}
-        dpr={[1, 1.25]}
-        gl={{ antialias: false, alpha: true, powerPreference: 'low-power' }}
-      >
+      <SceneShell camera={{ position: [0, 0, 6], fov: 45 }} dpr={[1, 1.25]}>
         <ParticleField />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

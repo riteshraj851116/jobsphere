@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { createJob } from '../../services/jobService';
-import { getCompanies, createCompany } from '../../services/companyService';
+import { getMyCompanies } from '../../services/companyService';
 import Input from '../../components/common/Input';
 import Button from '../../components/common/Button';
 import { Building, PlusCircle, AlertCircle } from 'lucide-react';
@@ -50,7 +50,7 @@ const CreateJob = () => {
   const fetchMyCompanies = async () => {
     try {
       setCompaniesLoading(true);
-      const res = await getCompanies();
+      const res = await getMyCompanies();
       const all = res.data?.companies || [];
       setCompanies(all);
       // Pre-select first company if available

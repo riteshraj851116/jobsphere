@@ -1,6 +1,7 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import SceneShell from './SceneShell';
 import * as THREE from 'three';
 
 const ConstellationScene = ({ skills = [] }) => {
@@ -147,14 +148,14 @@ const SkillConstellation = ({ skills = [] }) => {
         position: 'relative'
       }}
     >
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.5], fov: 45 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        height="240px"
+        minHeight="240px"
       >
         <ambientLight intensity={0.8} />
         <ConstellationScene skills={skills} />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

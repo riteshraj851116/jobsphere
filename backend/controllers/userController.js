@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Job = require("../models/Job");
+const { isValidObjectId } = require("../middleware/validateObjectId");
 
 /*
 =========================================================
@@ -463,6 +464,50 @@ const deleteExperience = async (req, res) => {
 
 /*
 =========================================================
+GET USER BY ID
+=========================================================
+*/
+const getUserById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(String(id))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    const user = await User.findById(id).select(
+      "name username profilePicture headline location skills role"
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        user
+      }
+    });
+  } catch (error) {
+    console.error("Get User By ID Error:", error);
+
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching user"
+    });
+  }
+};
+
+
+/*
+=========================================================
 GET USER PROFILE
 =========================================================
 */
@@ -600,6 +645,13 @@ SAVE / UNSAVE JOB
 const saveJob = async (req, res) => {
   try {
     const { jobId } = req.params;
+
+    if (!isValidObjectId(String(jobId))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid job ID"
+      });
+    }
 
     /*
     Validate job ID / job existence
@@ -769,6 +821,7 @@ module.exports = {
   addExperience,
   deleteExperience,
   getUserProfile,
+  getUserById,
   searchUsers,
   saveJob,
   getSavedJobs

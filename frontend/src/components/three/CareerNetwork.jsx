@@ -1,6 +1,7 @@
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const NetworkMesh = () => {
   const groupRef = useRef();
@@ -128,17 +129,12 @@ const NetworkMesh = () => {
 };
 
 const CareerNetwork = () => {
+  const camera = useMemo(() => ({ position: [0, 0, 7], fov: 45 }), []);
   return (
-    <div style={{ width: '100%', height: '100%', minHeight: '380px', position: 'relative' }}>
-      <Canvas
-        camera={{ position: [0, 0, 7], fov: 45 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
-      >
-        <ambientLight intensity={0.9} />
-        <NetworkMesh />
-      </Canvas>
-    </div>
+    <SceneShell camera={camera} minHeight="380px">
+      <ambientLight intensity={0.9} />
+      <NetworkMesh />
+    </SceneShell>
   );
 };
 

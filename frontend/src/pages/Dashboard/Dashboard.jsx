@@ -5,7 +5,6 @@ import { getMyApplications } from '../../services/applicationService';
 import { getSavedJobs } from '../../services/userService';
 import { Briefcase, Bookmark, CheckCircle, Clock, Search } from 'lucide-react';
 import DataFlow from '../../components/three/DataFlow';
-import SceneCanvas from '../../components/three/SceneCanvas';
 import './Dashboard.css';
 
 const STAT_STATUS_MAP = {
@@ -99,9 +98,7 @@ const Dashboard = () => {
               <p className="text-muted">Here's an overview of your job search activity.</p>
             </div>
             <div className="desktop-only" style={{ width: '180px' }}>
-              <SceneCanvas minHeight="120px" height="120px">
-                <DataFlow />
-              </SceneCanvas>
+              <DataFlow />
             </div>
           </div>
 

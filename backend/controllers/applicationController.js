@@ -1,5 +1,7 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
+const createNotification = require("../utils/createNotification");
+const { isValidObjectId } = require("../middleware/validateObjectId");
 
 const applyForJob = async (req, res) => {
   try {
@@ -13,6 +15,13 @@ const applyForJob = async (req, res) => {
       return res.status(400).json({
         success: false,
         message: "Job ID is required"
+      });
+    }
+
+    if (!isValidObjectId(String(jobId))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid job ID"
       });
     }
 
@@ -97,6 +106,14 @@ const applyForJob = async (req, res) => {
           "recruiter",
           "name username email profilePicture"
         );
+
+    await createNotification({
+      recipient: job.recruiter,
+      sender: req.user._id,
+      type: "job_application",
+      message: `${req.user.name} applied for ${job.title}`,
+      relatedId: application._id
+    });
 
     res.status(201).json({
       success: true,
@@ -448,6 +465,14 @@ const updateApplicationStatus = async (
           "applicant",
           "name username email profilePicture headline"
         );
+
+    await createNotification({
+      recipient: application.applicant,
+      sender: req.user._id,
+      type: "application_status",
+      message: `Your application for ${updatedApplication.job?.title || "a job"} was updated to ${status}`,
+      relatedId: application._id
+    });
 
     res.status(200).json({
       success: true,

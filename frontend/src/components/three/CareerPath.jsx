@@ -1,7 +1,8 @@
-import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useState, useMemo, memo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const STEPS = ['Student', 'Intern', 'Junior Dev', 'Developer', 'Senior Dev', 'Lead / Staff'];
 
@@ -88,7 +89,7 @@ const PathScene = () => {
   );
 };
 
-const CareerPath = () => {
+const CareerPath = memo(() => {
   return (
     <div
       style={{
@@ -101,16 +102,18 @@ const CareerPath = () => {
         position: 'relative'
       }}
     >
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.5], fov: 45 }}
-        dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        height="240px"
+        minHeight="240px"
       >
         <ambientLight intensity={0.8} />
         <PathScene />
-      </Canvas>
+      </SceneShell>
     </div>
   );
-};
+});
+
+CareerPath.displayName = 'CareerPath';
 
 export default CareerPath;

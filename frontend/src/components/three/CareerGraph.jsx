@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useRef, useState, useMemo, memo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -118,7 +118,7 @@ const GraphContent = ({ skills = [] }) => {
   );
 };
 
-const CareerGraph = ({ skills = [] }) => {
+const CareerGraph = memo(({ skills = [] }) => {
   return (
     <div
       style={{
@@ -134,13 +134,20 @@ const CareerGraph = ({ skills = [] }) => {
       <Canvas
         camera={{ position: [0, 0, 5.5], fov: 45 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        gl={{ 
+          antialias: true, 
+          alpha: true,
+          preserveDrawingBuffer: false 
+        }}
+        frameloop="demand"
       >
         <ambientLight intensity={0.8} />
         <GraphContent skills={skills} />
       </Canvas>
     </div>
   );
-};
+});
+
+CareerGraph.displayName = 'CareerGraph';
 
 export default CareerGraph;

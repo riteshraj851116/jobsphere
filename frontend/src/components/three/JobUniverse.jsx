@@ -1,7 +1,8 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const CATEGORIES = [
   { name: 'Frontend', pos: [-2.2, 0.8, 0], color: '#18181B' },
@@ -120,14 +121,15 @@ const JobUniverse = ({ onSelectCategory }) => {
         position: 'relative'
       }}
     >
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 6], fov: 45 }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, alpha: true }}
+        height="100%"
+        minHeight="320px"
       >
         <ambientLight intensity={0.8} />
         <UniverseScene onSelectCategory={onSelectCategory} />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

@@ -9,6 +9,7 @@ const {
   addExperience,
   deleteExperience,
   getUserProfile,
+  getUserById,
   searchUsers,
   saveJob,
   getSavedJobs
@@ -106,6 +107,11 @@ SEARCH USERS
 router.get(
   "/search",
   searchUsers
+);
+
+router.get(
+  "/id/:id",
+  getUserById
 );
 
 

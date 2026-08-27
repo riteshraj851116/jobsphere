@@ -4,7 +4,6 @@ import CompanyCard from '../../components/companies/CompanyCard';
 import Button from '../../components/common/Button';
 import { Search } from 'lucide-react';
 import CompanyNetwork from '../../components/three/CompanyNetwork';
-import SceneCanvas from '../../components/three/SceneCanvas';
 import './Companies.css';
 
 const Companies = () => {
@@ -15,24 +14,34 @@ const Companies = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
-    fetchCompanies(searchQuery);
-  }, [searchQuery]);
+    let cancelled = false;
 
-  const fetchCompanies = async (search = '') => {
-    try {
-      setLoading(true);
-      setError(null);
-      const params = search ? { search } : {};
-      const res = await getCompanies(params);
-      // Backend returns: { success: true, data: { companies: [...] } }
-      setCompanies(res.data?.companies || []);
-    } catch (err) {
-      setError('Failed to load companies. Please try again.');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+    const load = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const params = searchQuery ? { search: searchQuery } : {};
+        const res = await getCompanies(params);
+        if (cancelled) return;
+        // Backend returns: { success: true, data: { companies: [...] } }
+        setCompanies(res.data?.companies || []);
+      } catch (err) {
+        if (cancelled) return;
+        setError('Failed to load companies. Please try again.');
+        console.error(err);
+      } finally {
+        if (!cancelled) {
+          setLoading(false);
+        }
+      }
+    };
+
+    load();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [searchQuery]);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -65,9 +74,7 @@ const Companies = () => {
           </div>
 
           <div className="desktop-only">
-            <SceneCanvas minHeight="300px">
-              <CompanyNetwork activeCompany={searchQuery} />
-            </SceneCanvas>
+            <CompanyNetwork activeCompany={searchQuery} />
           </div>
         </div>
       </div>
@@ -102,7 +109,7 @@ const Companies = () => {
         ) : error ? (
           <div className="companies-error-state">
             <p>{error}</p>
-            <Button onClick={() => fetchCompanies(searchQuery)} variant="outline">Retry</Button>
+            <Button onClick={() => setSearchQuery(searchQuery)} variant="outline">Retry</Button>
           </div>
         ) : companies.length > 0 ? (
           <div className="companies-grid">

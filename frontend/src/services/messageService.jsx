@@ -1,100 +1,132 @@
 import api from "./api";
+import { isValidObjectId } from "../utils/validation";
 
-// ==========================================
+// =========================================================
 // GET ALL CONVERSATIONS
-// ==========================================
+// =========================================================
 
 export const getConversations = async () => {
-  const response = await api.get("/messages/conversations");
-  return response.data;
+  try {
+    const response = await api.get("/messages/conversations");
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-
-// ==========================================
+// =========================================================
 // GET MESSAGES
-// ==========================================
+// =========================================================
 
 export const getMessages = async (conversationId) => {
   if (!conversationId) {
     throw new Error("Conversation ID is required");
   }
 
-  const response = await api.get(
-    `/messages/${conversationId}`
-  );
+  if (!isValidObjectId(conversationId)) {
+    throw new Error("Invalid conversation ID");
+  }
 
-  return response.data;
+  try {
+    const response = await api.get(
+      `/messages/${conversationId}`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-
-// ==========================================
+// =========================================================
 // SEND MESSAGE
-// Supports text message
-// ==========================================
+// =========================================================
 
 export const sendMessage = async ({
   receiverId,
-  text,
-  image = null
+  text = "",
+  image = null,
 }) => {
+  // -------------------------------------------------------
+  // VALIDATE RECEIVER
+  // -------------------------------------------------------
+
   if (!receiverId) {
     throw new Error("Receiver ID is required");
   }
 
-  if (!text?.trim() && !image) {
+  if (!isValidObjectId(receiverId)) {
+    throw new Error("Invalid receiver ID");
+  }
+
+  const cleanText =
+    typeof text === "string"
+      ? text.trim()
+      : "";
+
+  // -------------------------------------------------------
+  // VALIDATE MESSAGE
+  // -------------------------------------------------------
+
+  if (!cleanText && !image) {
     throw new Error("Message cannot be empty");
   }
 
-  // If image is being sent, use FormData
-  if (image) {
-    const formData = new FormData();
+  try {
+    // -----------------------------------------------------
+    // IMAGE MESSAGE
+    // -----------------------------------------------------
 
-    formData.append(
-      "receiverId",
-      receiverId
-    );
+    if (image) {
+      const formData = new FormData();
 
-    if (text?.trim()) {
       formData.append(
-        "text",
-        text.trim()
+        "receiverId",
+        String(receiverId)
       );
+
+      if (cleanText) {
+        formData.append(
+          "text",
+          cleanText
+        );
+      }
+
+      formData.append(
+        "image",
+        image
+      );
+
+      const response = await api.post(
+        "/messages",
+        formData
+      );
+
+      return response.data;
     }
 
-    formData.append(
-      "image",
-      image
-    );
+    // -----------------------------------------------------
+    // NORMAL TEXT MESSAGE
+    // -----------------------------------------------------
 
     const response = await api.post(
       "/messages",
-      formData,
       {
-        headers: {
-          "Content-Type": "multipart/form-data"
-        }
+        receiverId: String(receiverId),
+        text: cleanText,
       }
     );
 
     return response.data;
+  } catch (error) {
+    throw error;
   }
-
-  // Normal text message
-  const response = await api.post(
-    "/messages",
-    {
-      receiverId,
-      text: text.trim()
-    }
-  );
-
-  return response.data;
 };
 
-
-// ==========================================
+// =========================================================
 // MARK MESSAGES AS READ
-// ==========================================
+// =========================================================
 
 export const markMessagesAsRead = async (
   conversationId
@@ -105,38 +137,47 @@ export const markMessagesAsRead = async (
     );
   }
 
-  const response = await api.put(
-    `/messages/${conversationId}/read`
-  );
+  if (!isValidObjectId(conversationId)) {
+    throw new Error("Invalid conversation ID");
+  }
 
-  return response.data;
+  try {
+    const response = await api.put(
+      `/messages/${conversationId}/read`
+    );
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
 };
 
-
-// ==========================================
+// =========================================================
 // GET UNREAD MESSAGE COUNT
-// ==========================================
+// =========================================================
 
-export const getUnreadMessageCount =
-  async () => {
+export const getUnreadMessageCount = async () => {
+  try {
     const response = await api.get(
       "/messages/unread-count"
     );
 
     return response.data;
-  };
+  } catch (error) {
+    throw error;
+  }
+};
 
-
-// ==========================================
+// =========================================================
 // DEFAULT EXPORT
-// ==========================================
+// =========================================================
 
 const messageService = {
   getConversations,
   getMessages,
   sendMessage,
   markMessagesAsRead,
-  getUnreadMessageCount
+  getUnreadMessageCount,
 };
 
 export default messageService;

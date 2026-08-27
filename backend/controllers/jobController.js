@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 const Company = require("../models/Company");
+const { isValidObjectId } = require("../middleware/validateObjectId");
 
 const createJob = async (req, res) => {
   try {
@@ -141,6 +142,7 @@ const getJobs = async (req, res) => {
       minSalary,
       maxSalary,
       remote,
+      company = "",
       status = "active",
       page = 1,
       limit = 10,
@@ -217,6 +219,14 @@ const getJobs = async (req, res) => {
 
     if (remote === "true") {
       filter.isRemote = true;
+    }
+
+    if (remote === "false") {
+      filter.isRemote = false;
+    }
+
+    if (company.trim() && isValidObjectId(company.trim())) {
+      filter.company = company.trim();
     }
 
     if (minSalary !== undefined) {
@@ -297,7 +307,18 @@ const getJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
   try {
-    const job = await Job.findById(req.params.id)
+    if (!isValidObjectId(String(req.params.id))) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid job ID"
+      });
+    }
+
+    const job = await Job.findByIdAndUpdate(
+      req.params.id,
+      { $inc: { views: 1 } },
+      { new: true }
+    )
       .populate(
         "company",
         "name logo description website industry location companySize foundedYear"
@@ -313,9 +334,6 @@ const getJobById = async (req, res) => {
         message: "Job not found"
       });
     }
-
-    job.views += 1;
-    await job.save();
 
     res.status(200).json({
       success: true,

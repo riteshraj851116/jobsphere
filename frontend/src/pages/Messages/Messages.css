@@ -537,6 +537,31 @@
   min-height: 60vh;
 }
 
+/* RESPONSIVE BACK BUTTON */
+
+.mobile-back-button {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .mobile-back-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    padding: 0.5rem;
+    
+    border: none;
+    background: transparent;
+    color: #111;
+    
+    font-size: 14px;
+    font-weight: 500;
+    
+    cursor: pointer;
+  }
+}
+
 /* TABLET */
 
 @media (max-width: 1000px) {
@@ -574,6 +599,10 @@
   }
 
   .messages-sidebar {
+    display: flex;
+  }
+
+  .messages-sidebar.has-conversation {
     display: none;
   }
 

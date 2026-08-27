@@ -1,4 +1,5 @@
 import api from "./api";
+import { isValidObjectId } from "../utils/validation";
 
 export const getMyProfile = async () => {
   const res = await api.get("/users/me");
@@ -28,6 +29,9 @@ export const addExperience = async (data) => {
 };
 
 export const deleteExperience = async (id) => {
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid experience ID');
+  }
   const res = await api.delete(
     `/users/experience/${id}`
   );
@@ -45,6 +49,9 @@ export const addEducation = async (data) => {
 };
 
 export const deleteEducation = async (id) => {
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid education ID');
+  }
   const res = await api.delete(
     `/users/education/${id}`
   );
@@ -64,6 +71,10 @@ export const deleteEducation = async (id) => {
 export const saveJob = async (jobId) => {
   if (!jobId) {
     throw new Error("Job ID is required");
+  }
+
+  if (!isValidObjectId(jobId)) {
+    throw new Error('Invalid job ID');
   }
 
   const res = await api.post(
@@ -89,6 +100,22 @@ export const getUserProfile = async (
 ) => {
   const res = await api.get(
     `/users/${username}`
+  );
+
+  return res.data;
+};
+
+export const getUserById = async (id) => {
+  if (!id) {
+    throw new Error("User ID is required");
+  }
+
+  if (!isValidObjectId(id)) {
+    throw new Error('Invalid user ID');
+  }
+
+  const res = await api.get(
+    `/users/id/${id}`
   );
 
   return res.data;

@@ -22,7 +22,6 @@ import {
 
 import CareerNetwork from "../../components/three/CareerNetwork";
 import CareerConstellation from "../../components/three/CareerConstellation";
-import SceneCanvas from "../../components/three/SceneCanvas";
 import JobUniverse from "../../components/three/JobUniverse";
 import JobGlobe from "../../components/three/JobGlobe";
 import FloatingParticles from "../../components/three/FloatingParticles";
@@ -312,9 +311,7 @@ const Home = () => {
           >
 
             <div className="hero-3d">
-              <SceneCanvas minHeight="360px">
-                <CareerNetwork />
-              </SceneCanvas>
+              <CareerNetwork />
             </div>
 
             {/* TOP LABEL */}
@@ -516,9 +513,7 @@ const Home = () => {
               <span className="label-dot" />
               INTERACTIVE 3D ECOSYSTEM
             </span>
-            <SceneCanvas minHeight="320px">
-              <JobUniverse onSelectCategory={(cat) => handleCategoryClick(cat)} />
-            </SceneCanvas>
+            <JobUniverse onSelectCategory={(cat) => handleCategoryClick(cat)} />
           </div>
 
         </div>

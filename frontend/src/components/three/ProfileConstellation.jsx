@@ -1,7 +1,8 @@
 import React, { useRef, useState, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const ConstellationMesh = ({ skills = [] }) => {
   const groupRef = useRef();
@@ -123,14 +124,15 @@ const ProfileConstellation = ({ skills = [] }) => {
 
   return (
     <div style={{ width: '100%', height: '240px', position: 'relative' }}>
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.5], fov: 45 }}
         dpr={[1, 1.25]}
-        gl={{ antialias: true, alpha: true }}
+        height="240px"
+        minHeight="240px"
       >
         <ambientLight intensity={0.8} />
         <ConstellationMesh skills={skills} />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

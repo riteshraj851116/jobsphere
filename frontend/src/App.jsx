@@ -7,6 +7,7 @@ import {
 } from "react-router-dom";
 
 import { AuthProvider } from "./context/AuthContext";
+import { SocketProvider } from "./context/SocketContext";
 
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
@@ -88,6 +89,7 @@ function NotFound() {
 function App() {
   return (
     <AuthProvider>
+      <SocketProvider>
 
       <Router basename="/jobsphere/">
 
@@ -237,6 +239,7 @@ function App() {
 
       </Router>
 
+      </SocketProvider>
     </AuthProvider>
   );
 }

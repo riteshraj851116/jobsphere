@@ -22,7 +22,8 @@ const notificationSchema = new mongoose.Schema(
         "job_application",
         "application_status",
         "post_like",
-        "post_comment"
+        "post_comment",
+        "message"
       ],
       required: true
     },

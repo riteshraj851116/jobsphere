@@ -1,6 +1,7 @@
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const StreamMesh = () => {
   const groupRef = useRef();
@@ -60,14 +61,15 @@ const StreamMesh = () => {
 const DataFlow = () => {
   return (
     <div style={{ width: '100%', height: '220px', position: 'relative' }}>
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.0], fov: 45 }}
         dpr={[1, 1.25]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
+        height="100%"
+        minHeight="120px"
       >
         <ambientLight intensity={0.8} />
         <StreamMesh />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };

@@ -12,6 +12,8 @@ const {
   protect
 } = require("../middleware/authMiddleware");
 
+const { validateObjectId } = require("../middleware/validateObjectId");
+
 const upload =
   require("../utils/upload");
 
@@ -52,6 +54,7 @@ router.get(
 router.get(
   "/:conversationId",
   protect,
+  validateObjectId("conversationId"),
   getMessages
 );
 
@@ -61,6 +64,7 @@ router.get(
 router.put(
   "/:conversationId/read",
   protect,
+  validateObjectId("conversationId"),
   markMessagesAsRead
 );
 

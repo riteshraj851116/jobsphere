@@ -1,6 +1,7 @@
-import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { useRef, useMemo, memo } from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const CLUSTERS = [
   { name: 'Frontend', pos: [-2.2, 0.6, 0], color: '#2563EB' },
@@ -68,7 +69,7 @@ const FieldScene = ({ activeCategory }) => {
   );
 };
 
-const JobField = ({ activeCategory }) => {
+const JobField = memo(({ activeCategory }) => {
   return (
     <div
       style={{
@@ -80,16 +81,19 @@ const JobField = ({ activeCategory }) => {
       }}
       aria-hidden="true"
     >
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5.5], fov: 45 }}
         dpr={[1, 1.25]}
-        gl={{ antialias: true, alpha: true, powerPreference: 'low-power' }}
+        height="100%"
+        minHeight="80px"
       >
         <ambientLight intensity={0.8} />
         <FieldScene activeCategory={activeCategory} />
-      </Canvas>
+      </SceneShell>
     </div>
   );
-};
+});
+
+JobField.displayName = 'JobField';
 
 export default JobField;

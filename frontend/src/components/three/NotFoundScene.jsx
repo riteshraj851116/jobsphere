@@ -1,6 +1,7 @@
 import React, { useRef, useMemo } from 'react';
-import { Canvas, useFrame } from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const DisconnectedMesh = () => {
   const groupRef = useRef();
@@ -68,14 +69,15 @@ const DisconnectedMesh = () => {
 const NotFoundScene = () => {
   return (
     <div style={{ width: '100%', height: '220px', maxWidth: '400px', margin: '0 auto', position: 'relative' }}>
-      <Canvas
+      <SceneShell
         camera={{ position: [0, 0, 5], fov: 45 }}
         dpr={[1, 1.25]}
-        gl={{ antialias: true, alpha: true }}
+        height="220px"
+        minHeight="220px"
       >
         <ambientLight intensity={0.8} />
         <DisconnectedMesh />
-      </Canvas>
+      </SceneShell>
     </div>
   );
 };
