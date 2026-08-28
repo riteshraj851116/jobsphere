@@ -1,198 +1,208 @@
-import React, { useState } from 'react';
-import {
-  Link,
-  useNavigate,
-} from 'react-router-dom';
+import React, { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-import { useAuth } from '../../hooks/useAuth';
+import { useAuth } from "../../hooks/useAuth";
+import Loader from "../../components/common/Loader";
 
-import Input from '../../components/common/Input';
-import Button from '../../components/common/Button';
-import AuthBackground from '../../components/auth/AuthBackground';
-
-import './Auth.css';
+import "./Auth.css";
 
 const Login = () => {
-  const [email, setEmail] =
-    useState('');
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [password, setPassword] =
-    useState('');
+  const {
+    login,
+    isAuthenticated,
+    loading,
+  } = useAuth();
 
-  const [error, setError] =
-    useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const [isSubmitting, setIsSubmitting] =
-    useState(false);
-
-  const { login } = useAuth();
-
-  const navigate =
-    useNavigate();
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    setError('');
+    if (submitting) {
+      return;
+    }
 
-    const cleanEmail =
-      email.trim();
+    const cleanEmail = email.trim().toLowerCase();
 
     if (!cleanEmail || !password) {
-      setError(
-        'Please enter your email and password.'
-      );
-
+      setError("Email and password are required.");
       return;
     }
 
     try {
-      setIsSubmitting(true);
+      setSubmitting(true);
+      setError("");
 
-      const user =
-        await login(
-          cleanEmail,
-          password
-        );
+      const loggedInUser = await login(
+        cleanEmail,
+        password
+      );
 
-      if (
-        user?.role ===
-        'recruiter'
-      ) {
+      const from =
+        location.state?.from?.pathname;
+
+      if (from && from !== "/login") {
+        navigate(from, {
+          replace: true,
+        });
+
+        return;
+      }
+
+      const role = String(
+        loggedInUser?.role || ""
+      ).toLowerCase();
+
+      if (role === "recruiter") {
         navigate(
-          '/recruiter-dashboard'
+          "/recruiter-dashboard",
+          {
+            replace: true,
+          }
         );
       } else {
-        navigate('/dashboard');
+        navigate(
+          "/dashboard",
+          {
+            replace: true,
+          }
+        );
       }
     } catch (err) {
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        'Login failed. Please check your credentials.'
+          err?.message ||
+          "Unable to login. Please try again."
       );
     } finally {
-      setIsSubmitting(false);
+      setSubmitting(false);
     }
   };
 
+  if (loading) {
+    return <Loader fullscreen />;
+  }
+
+  if (isAuthenticated) {
+    const storedUser = JSON.parse(
+      localStorage.getItem("user") || "null"
+    );
+
+    const role = String(
+      storedUser?.role || ""
+    ).toLowerCase();
+
+    return (
+      <Navigate
+        to={
+          role === "recruiter"
+            ? "/recruiter-dashboard"
+            : "/dashboard"
+        }
+        replace
+      />
+    );
+  }
+
   return (
-    <main className="auth-page">
-      <AuthBackground />
+    <section className="auth-page">
+      <div className="auth-container">
 
-      <div className="auth-overlay" />
+        <div className="auth-card">
+          <div className="auth-header">
+            <span className="auth-eyebrow">
+              WELCOME BACK
+            </span>
 
-      <section
-        className="auth-card"
-        aria-labelledby="login-title"
-      >
-        <div className="auth-header">
+            <h1>
+              Sign in to JobSphere
+            </h1>
 
-          <Link
-            to="/"
-            className="auth-logo"
-          >
-            JOBSPHERE
-          </Link>
-
-          <div className="auth-kicker">
-            <span />
-            Welcome back
+            <p>
+              Continue building your
+              professional journey.
+            </p>
           </div>
 
-          <h1 id="login-title">
-            Sign in to
-            <span> JobSphere.</span>
-          </h1>
+          {error && (
+            <div
+              className="auth-error"
+              role="alert"
+            >
+              {error}
+            </div>
+          )}
 
-          <p>
-            Access your profile,
-            applications and
-            career opportunities.
+          <form
+            className="auth-form"
+            onSubmit={handleSubmit}
+          >
+            <div className="form-group">
+              <label htmlFor="email">
+                Email
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                value={email}
+                onChange={(event) => {
+                  setEmail(event.target.value);
+                  setError("");
+                }}
+                placeholder="Enter your email"
+                autoComplete="email"
+                disabled={submitting}
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="password">
+                Password
+              </label>
+
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setError("");
+                }}
+                placeholder="Enter your password"
+                autoComplete="current-password"
+                disabled={submitting}
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="auth-submit"
+              disabled={submitting}
+            >
+              {submitting
+                ? "Signing in..."
+                : "Sign In"}
+            </button>
+          </form>
+
+          <p className="auth-footer-text">
+            Don't have an account?{" "}
+            <Link to="/register">
+              Create an account
+            </Link>
           </p>
-
         </div>
 
-        {error && (
-          <div
-            className="auth-error"
-            role="alert"
-          >
-            {error}
-          </div>
-        )}
-
-        <form
-          onSubmit={handleSubmit}
-          className="auth-form"
-          noValidate
-        >
-
-          <Input
-            label="Email address"
-            type="email"
-            id="login-email"
-            name="email"
-            placeholder="you@example.com"
-            value={email}
-            onChange={(event) =>
-              setEmail(
-                event.target.value
-              )
-            }
-            disabled={isSubmitting}
-            autoComplete="email"
-          />
-
-          <Input
-            label="Password"
-            type="password"
-            id="login-password"
-            name="password"
-            placeholder="Enter your password"
-            value={password}
-            onChange={(event) =>
-              setPassword(
-                event.target.value
-              )
-            }
-            disabled={isSubmitting}
-            autoComplete="current-password"
-          />
-
-          <Button
-            type="submit"
-            fullWidth
-            disabled={isSubmitting}
-            loading={isSubmitting}
-          >
-            {isSubmitting
-              ? 'Signing in...'
-              : 'Sign In'}
-          </Button>
-
-        </form>
-
-        <div className="auth-footer">
-          <span>
-            Don't have an account?
-          </span>
-
-          <Link
-            to="/register"
-            className="auth-link"
-          >
-            Create one free
-          </Link>
-        </div>
-
-        <div className="auth-security">
-          <span className="security-dot" />
-          Secure JobSphere access
-        </div>
-
-      </section>
-    </main>
+      </div>
+    </section>
   );
 };
 

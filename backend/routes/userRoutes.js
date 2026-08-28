@@ -1,5 +1,4 @@
 const express = require("express");
-
 const {
   getMyProfile,
   updateProfile,
@@ -14,141 +13,52 @@ const {
   saveJob,
   getSavedJobs
 } = require("../controllers/userController");
-
-const {
-  protect
-} = require("../middleware/authMiddleware");
+const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-/*
-=========================================================
-CURRENT USER PROFILE
-=========================================================
-*/
+/* ==================================
+   PUBLIC ROUTES
+================================== */
+router.get("/search", searchUsers);
+router.get("/profile/:username", getUserProfile);
 
-router.get(
-  "/me",
-  protect,
-  getMyProfile
-);
+/* ==================================
+   CURRENT LOGGED-IN USER (/me)
+================================== */
+// Profile retrieval (with backward compatibility)
+router.get("/me", protect, getMyProfile);
+router.get("/me/profile", protect, getMyProfile);
 
+// Profile updates (with backward compatibility)
+router.put("/me", protect, updateProfile);
+router.put("/me/profile", protect, updateProfile);
 
-/*
-=========================================================
-UPDATE PROFILE
-=========================================================
-*/
+// Skills
+router.put("/me/skills", protect, updateSkills);
 
-router.put(
-  "/profile",
-  protect,
-  updateProfile
-);
+/* ==================================
+   EDUCATION
+================================== */
+router.post("/me/education", protect, addEducation);
+router.delete("/me/education/:educationId", protect, deleteEducation);
 
+/* ==================================
+   EXPERIENCE
+================================== */
+router.post("/me/experience", protect, addExperience);
+router.delete("/me/experience/:experienceId", protect, deleteExperience);
 
-/*
-=========================================================
-SKILLS
-=========================================================
-*/
+/* ==================================
+   SAVED JOBS
+================================== */
+router.get("/saved-jobs", protect, getSavedJobs);
+router.post("/saved-jobs/:jobId", protect, saveJob);
+router.post("/save-job/:jobId", protect, saveJob);
 
-router.put(
-  "/skills",
-  protect,
-  updateSkills
-);
-
-
-/*
-=========================================================
-EDUCATION
-=========================================================
-*/
-
-router.post(
-  "/education",
-  protect,
-  addEducation
-);
-
-router.delete(
-  "/education/:educationId",
-  protect,
-  deleteEducation
-);
-
-
-/*
-=========================================================
-EXPERIENCE
-=========================================================
-*/
-
-router.post(
-  "/experience",
-  protect,
-  addExperience
-);
-
-router.delete(
-  "/experience/:experienceId",
-  protect,
-  deleteExperience
-);
-
-
-/*
-=========================================================
-SEARCH USERS
-=========================================================
-*/
-
-router.get(
-  "/search",
-  searchUsers
-);
-
-router.get(
-  "/id/:id",
-  getUserById
-);
-
-
-/*
-=========================================================
-SAVED JOBS
-=========================================================
-*/
-
-/*
-IMPORTANT:
-These routes MUST come before /:username
-*/
-
-router.post(
-  "/save-job/:jobId",
-  protect,
-  saveJob
-);
-
-router.get(
-  "/saved-jobs",
-  protect,
-  getSavedJobs
-);
-
-
-/*
-=========================================================
-PUBLIC USER PROFILE
-=========================================================
-*/
-
-router.get(
-  "/:username",
-  getUserProfile
-);
-
+/* ==================================
+   DYNAMIC ROUTE (MUST STAY AT BOTTOM)
+================================== */
+router.get("/:id", getUserById);
 
 module.exports = router;

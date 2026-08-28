@@ -1,329 +1,152 @@
 const express = require("express");
-const cors = require("cors");
-const dotenv = require("dotenv");
 const http = require("http");
+const cors = require("cors");
 const { Server } = require("socket.io");
-const path = require("path");
+const dotenv = require("dotenv");
 
+dotenv.config();
 const connectDB = require("./config/db");
 
+// ==============================
+// ROUTES
+// ==============================
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
-const companyRoutes = require("./routes/companyRoutes");
 const jobRoutes = require("./routes/jobRoutes");
+const companyRoutes = require("./routes/companyRoutes");
 const applicationRoutes = require("./routes/applicationRoutes");
-const connectionRoutes = require("./routes/connectionRoutes");
 const postRoutes = require("./routes/postRoutes");
 const notificationRoutes = require("./routes/notificationRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const connectionRoutes = require("./routes/connectionRoutes");
+const aiRoutes = require("./routes/aiRoutes");
 
-dotenv.config();
-
+// ==============================
+// APP & SERVER
+// ==============================
 const app = express();
-
-const allowedOrigins = [
-  "https://riteshraj851116.github.io",
-  "https://riteshraj851116.github.io/jobsphere",
-  "http://localhost:5173",
-  "http://localhost:5174",
-  "http://localhost:3000"
-];
-
 const server = http.createServer(app);
 
-// ==========================================
-// SOCKET.IO
-// ==========================================
-
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: [
-      "GET",
-      "POST",
-      "PUT",
-      "DELETE"
-    ],
-    credentials: true
-  }
-});
-
-global.io = io;
-global.onlineUsers = new Map();
-
-const PORT =
-  process.env.PORT || 5002;
-
-// ==========================================
-// HEALTH ENDPOINT
-// ==========================================
-
-app.get(
-  "/api/health",
-  (req, res) => {
-    res.status(200).json({
-      success: true,
-      message: "JobSphere API is running",
-      version: "1.0.0"
-    });
-  }
-);
-
-
-// ==========================================
+// ==============================
 // DATABASE
-// ==========================================
-
+// ==============================
 connectDB();
 
-
-// ==========================================
+// ==============================
 // MIDDLEWARE
-// ==========================================
-
+// ==============================
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin || origin.includes("localhost") || origin.includes("127.0.0.1") || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    credentials: true,
   })
 );
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true }));
 
-app.use(
-  express.json()
-);
+// ==============================
+// HEALTH CHECK
+// ==============================
+app.get("/", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "JobSphere API is running",
+  });
+});
 
-app.use(
-  express.urlencoded({
-    extended: true
-  })
-);
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "JobSphere backend is healthy",
+    timestamp: new Date().toISOString(),
+  });
+});
 
+// ==============================
+// API ROUTES
+// ==============================
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
+app.use("/api/jobs", jobRoutes);
+app.use("/api/companies", companyRoutes);
+app.use("/api/applications", applicationRoutes);
+app.use("/api/posts", postRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/messages", messageRoutes);
+app.use("/api/connections", connectionRoutes);
+app.use("/api/ai", aiRoutes);
 
-// ==========================================
-// SOCKET CONNECTION
-// ==========================================
+// ==============================
+// SOCKET.IO
+// ==============================
+const io = new Server(server, {
+  cors: {
+    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
+});
+app.set("io", io);
 
 io.on("connection", (socket) => {
-  socket.on("join-user", (userId) => {
-    if (!userId || String(userId).length !== 24) {
-      return;
-    }
-
-    socket.data.userId = String(userId);
-    socket.join(`user:${userId}`);
-
-    const current = global.onlineUsers.get(String(userId)) || new Set();
-    current.add(socket.id);
-    global.onlineUsers.set(String(userId), current);
-
-    io.emit("presence-update", {
-      userId: String(userId),
-      online: true,
-    });
-  });
-
-  socket.on("join-conversation", (conversationId) => {
-    if (!conversationId) {
-      return;
-    }
-
-    socket.join(`conversation:${conversationId}`);
-  });
-
-  socket.on("leave-conversation", (conversationId) => {
-    if (!conversationId) {
-      return;
-    }
-
-    socket.leave(`conversation:${conversationId}`);
-  });
-
-  socket.on("typing", ({ conversationId, isTyping }) => {
-    if (!conversationId) {
-      return;
-    }
-
-    socket.to(`conversation:${conversationId}`).emit("typing", {
-      conversationId,
-      userId: socket.data.userId,
-      isTyping: Boolean(isTyping),
-    });
-  });
-
-  socket.on("disconnect", () => {
-    const userId = socket.data.userId;
-
+  // FIX: Added backticks here
+  console.log(`Socket connected: ${socket.id}`);
+  
+  socket.on("join", (userId) => {
     if (!userId) {
       return;
     }
+    socket.join(userId);
+    // FIX: Added backticks here
+    console.log(`User ${userId} joined personal socket room`);
+  });
 
-    const current = global.onlineUsers.get(userId);
-
-    if (current) {
-      current.delete(socket.id);
-
-      if (current.size === 0) {
-        global.onlineUsers.delete(userId);
-        io.emit("presence-update", {
-          userId,
-          online: false,
-        });
-      } else {
-        global.onlineUsers.set(userId, current);
-      }
-    }
+  socket.on("disconnect", () => {
+    // FIX: Added backticks here
+    console.log(`Socket disconnected: ${socket.id}`);
   });
 });
 
-
-// ==========================================
-// BASIC ROUTES
-// ==========================================
-
-app.get(
-  "/",
-  (req, res) => {
-
-    res.status(200).json({
-      success: true,
-      message:
-        "JobSphere API is running",
-      version: "1.0.0"
-    });
-
-  }
-);
-
-
-app.get(
-  "/api/test",
-  (req, res) => {
-
-    res.status(200).json({
-      success: true,
-      message:
-        "JobSphere backend is working"
-    });
-
-  }
-);
-
-
-// ==========================================
-// API ROUTES
-// ==========================================
-
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-
-app.use(
-  "/api/auth",
-  authRoutes
-);
-
-app.use(
-  "/api/users",
-  userRoutes
-);
-
-app.use(
-  "/api/companies",
-  companyRoutes
-);
-
-app.use(
-  "/api/jobs",
-  jobRoutes
-);
-
-app.use(
-  "/api/applications",
-  applicationRoutes
-);
-
-app.use(
-  "/api/connections",
-  connectionRoutes
-);
-
-app.use(
-  "/api/posts",
-  postRoutes
-);
-
-app.use(
-  "/api/notifications",
-  notificationRoutes
-);
-
-app.use(
-  "/api/messages",
-  messageRoutes
-);
-
-
-// ==========================================
+// ==============================
 // 404 HANDLER
-// ==========================================
+// IMPORTANT: This must stay AFTER all API routes
+// ==============================
+app.use((req, res) => {
+  res.status(404).json({
+    success: false,
+    // FIX: Added backticks here
+    message: `Route not found: ${req.method}${req.originalUrl}`,
+  });
+});
 
-app.use(
-  (req, res) => {
-
-    res.status(404).json({
-      success: false,
-      message:
-        `Route not found: ${req.method} ${req.originalUrl}`
-    });
-
-  }
-);
-
-
-// ==========================================
+// ==============================
 // GLOBAL ERROR HANDLER
-// ==========================================
+// ==============================
+app.use((error, req, res, next) => {
+  console.error("Server Error:", error);
+  const statusCode = error.statusCode || 500;
+  res.status(statusCode).json({
+    success: false,
+    message: error.message || "Something went wrong on the server",
+  });
+});
 
-app.use(
-  (err, req, res, next) => {
-
-    console.error(
-      "Server Error:",
-      err
-    );
-
-    res.status(
-      err.statusCode || 500
-    ).json({
-      success: false,
-      message:
-        err.message ||
-        "Internal Server Error"
-    });
-
-  }
-);
-
-
-// ==========================================
+// ==============================
 // START SERVER
-// ==========================================
+// ==============================
+const PORT = process.env.PORT || 5002;
 
-server.listen(
-  PORT,
-  () => {
-
-    console.log(
-      `🚀 JobSphere server running on http://localhost:${PORT}`
-    );
-
-    console.log(
-      "🔌 Socket.IO enabled"
-    );
-
-  }
-);
+server.listen(PORT, () => {
+  console.log("");
+  console.log("======================================");
+  console.log(" JOBSPHERE BACKEND RUNNING");
+  console.log("======================================");
+  // FIX: Added backticks to all below
+  console.log(`Server: http://localhost:${PORT}`);
+  console.log(`API: http://localhost:${PORT}/api`);
+  console.log(`Health: http://localhost:${PORT}/api/health`);
+  console.log("Socket.IO: Enabled");
+  console.log("AI Assistant: Enabled");
+  console.log("======================================");
+  console.log("");
+});

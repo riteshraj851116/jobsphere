@@ -1,11 +1,15 @@
 import axios from "axios";
 
-const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5002/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_URL ||
+  "http://localhost:5002/api";
 
 const api = axios.create({
-  baseURL: API_BASE,
-  headers: { "Content-Type": "application/json" },
+  baseURL: API_BASE_URL,
   timeout: 20000,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 api.interceptors.request.use(
@@ -23,7 +27,6 @@ api.interceptors.request.use(
     return config;
   },
   (error) => {
-    console.error("API Request Error:", error);
     return Promise.reject(error);
   }
 );
@@ -32,39 +35,25 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
-    const url = String(error.config?.url || "");
-    const isAuthRequest =
-      url.includes("/auth/login") || url.includes("/auth/register");
+    const requestUrl = String(error.config?.url || "");
 
-    // Handle 401 Unauthorized
+    const isAuthRequest =
+      requestUrl.includes("/auth/login") ||
+      requestUrl.includes("/auth/register");
+
     if (status === 401 && !isAuthRequest) {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
-      
-      // Only redirect if we're in a browser environment
-      if (typeof window !== 'undefined') {
-        window.location.href = '/jobsphere/login';
+      localStorage.removeItem("refreshToken");
+
+      if (typeof window !== "undefined") {
+        const isGitHubPages =
+          window.location.pathname.startsWith("/jobsphere/");
+
+        window.location.href = isGitHubPages
+          ? "/jobsphere/login"
+          : "/login";
       }
-    }
-
-    // Handle 403 Forbidden
-    if (status === 403) {
-      console.error("Access forbidden:", error.response?.data?.message || "You don't have permission to access this resource");
-    }
-
-    // Handle 404 Not Found
-    if (status === 404) {
-      console.error("Resource not found:", error.response?.data?.message || "The requested resource was not found");
-    }
-
-    // Handle 500 Server Error
-    if (status === 500) {
-      console.error("Server error:", error.response?.data?.message || "Internal server error");
-    }
-
-    // Handle network errors
-    if (!error.response) {
-      console.error("Network error:", error.message || "Unable to connect to the server");
     }
 
     return Promise.reject(error);

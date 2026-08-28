@@ -35,7 +35,11 @@ const getOrCreateConversation = async (userId, otherUserId) => {
 
 const sendMessage = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
+    // -----------------------------------------------------
+    // AUTH CHECK
+    // -----------------------------------------------------
+
+    if (!req.user?._id) {
       return res.status(401).json({
         success: false,
         message: "Authentication required",
@@ -45,22 +49,27 @@ const sendMessage = async (req, res) => {
     const senderId = req.user._id;
 
     let receiverId = req.body?.receiverId;
-    let text = req.body?.text;
+    let text =
+      typeof req.body?.text === "string"
+        ? req.body.text.trim()
+        : "";
 
-    if (typeof receiverId === "string") {
-      receiverId = receiverId.trim();
-    }
-
-    if (typeof text !== "string") {
-      text = "";
-    }
-
-    text = text.trim();
+    // -----------------------------------------------------
+    // IMAGE
+    // -----------------------------------------------------
 
     let image = "";
 
     if (req.file) {
       image = `/uploads/${req.file.filename}`;
+    }
+
+    // -----------------------------------------------------
+    // RECEIVER VALIDATION
+    // -----------------------------------------------------
+
+    if (typeof receiverId === "string") {
+      receiverId = receiverId.trim();
     }
 
     if (!receiverId) {
@@ -78,12 +87,10 @@ const sendMessage = async (req, res) => {
     }
 
     // -----------------------------------------------------
-    // MESSAGE VALIDATION
+    // EMPTY MESSAGE CHECK
     // -----------------------------------------------------
 
     if (!text && !image) {
-      console.log("ERROR: Empty message");
-
       return res.status(400).json({
         success: false,
         message: "Message cannot be empty",
@@ -91,13 +98,10 @@ const sendMessage = async (req, res) => {
     }
 
     // -----------------------------------------------------
-    // SELF MESSAGE
+    // SELF MESSAGE CHECK
     // -----------------------------------------------------
 
-    if (
-      senderId.toString() ===
-      receiverId.toString()
-    ) {
+    if (String(senderId) === String(receiverId)) {
       return res.status(400).json({
         success: false,
         message: "You cannot send a message to yourself",
@@ -108,7 +112,9 @@ const sendMessage = async (req, res) => {
     // CHECK RECEIVER
     // -----------------------------------------------------
 
-    const receiver = await User.findById(receiverId);
+    const receiver = await User.findById(receiverId).select(
+      "_id name username profilePicture headline"
+    );
 
     if (!receiver) {
       return res.status(404).json({
@@ -118,7 +124,7 @@ const sendMessage = async (req, res) => {
     }
 
     // -----------------------------------------------------
-    // CONVERSATION
+    // GET OR CREATE CONVERSATION
     // -----------------------------------------------------
 
     const conversation =
@@ -126,13 +132,6 @@ const sendMessage = async (req, res) => {
         senderId,
         receiverId
       );
-
-    if (!conversation) {
-      return res.status(500).json({
-        success: false,
-        message: "Unable to create conversation",
-      });
-    }
 
     // -----------------------------------------------------
     // CREATE MESSAGE
@@ -142,13 +141,13 @@ const sendMessage = async (req, res) => {
       conversation: conversation._id,
       sender: senderId,
       receiver: receiverId,
-      text: text || " ",
-      image: image || "",
+      text,
+      image,
       isRead: false,
     });
 
     // -----------------------------------------------------
-    // UPDATE LAST MESSAGE
+    // UPDATE CONVERSATION
     // -----------------------------------------------------
 
     conversation.lastMessage = message._id;
@@ -156,7 +155,7 @@ const sendMessage = async (req, res) => {
     await conversation.save();
 
     // -----------------------------------------------------
-    // POPULATE
+    // POPULATE MESSAGE
     // -----------------------------------------------------
 
     const populatedMessage =
@@ -169,7 +168,14 @@ const sendMessage = async (req, res) => {
           "receiver",
           "name username profilePicture headline"
         )
-        .populate("conversation");
+        .populate({
+          path: "conversation",
+          populate: {
+            path: "participants",
+            select:
+              "name username profilePicture headline",
+          },
+        });
 
     // -----------------------------------------------------
     // SOCKET.IO
@@ -179,37 +185,90 @@ const sendMessage = async (req, res) => {
 
     if (io) {
       const receiverRoom =
-        `user:${receiverId.toString()}`;
+        `user:${String(receiverId)}`;
 
       const senderRoom =
-        `user:${senderId.toString()}`;
+        `user:${String(senderId)}`;
 
       const conversationRoom =
-        `conversation:${conversation._id.toString()}`;
+        `conversation:${conversation._id}`;
 
+      // Receiver gets new message
       io.to(receiverRoom).emit(
         "new-message",
         populatedMessage
       );
 
+      // Sender also gets message for multi-tab sync
       io.to(senderRoom).emit(
         "new-message",
         populatedMessage
       );
 
+      // Users currently inside conversation
       io.to(conversationRoom).emit(
         "conversation-message",
         populatedMessage
       );
+
+      // Update conversation list in real time
+      const conversationPayload = {
+        conversationId:
+          conversation._id.toString(),
+
+        lastMessage: populatedMessage,
+
+        senderId:
+          senderId.toString(),
+
+        receiverId:
+          receiverId.toString(),
+
+        updatedAt:
+          conversation.updatedAt,
+      };
+
+      io.to(receiverRoom).emit(
+        "conversation-updated",
+        conversationPayload
+      );
+
+      io.to(senderRoom).emit(
+        "conversation-updated",
+        conversationPayload
+      );
+
+      // Increase unread message count
+      io.to(receiverRoom).emit(
+        "unread-message-count",
+        {
+          increment: 1,
+          conversationId:
+            conversation._id.toString(),
+        }
+      );
     }
+
+    // -----------------------------------------------------
+    // CREATE MESSAGE NOTIFICATION
+    // -----------------------------------------------------
+
+    const senderName =
+      req.user.name ||
+      req.user.username ||
+      "Someone";
 
     await createNotification({
       recipient: receiverId,
       sender: senderId,
       type: "message",
-      message: `${req.user.name} sent you a message`,
+      message: `${senderName} sent you a message`,
       relatedId: conversation._id,
     });
+
+    // -----------------------------------------------------
+    // RESPONSE
+    // -----------------------------------------------------
 
     return res.status(201).json({
       success: true,
@@ -220,14 +279,19 @@ const sendMessage = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("SEND MESSAGE ERROR:", error.message);
+    console.error(
+      "SEND MESSAGE ERROR:",
+      error
+    );
 
     return res.status(500).json({
       success: false,
-      message: "Server error while sending message",
+      message:
+        "Server error while sending message",
 
       error:
-        process.env.NODE_ENV === "development"
+        process.env.NODE_ENV ===
+        "development"
           ? error.message
           : undefined,
     });
@@ -240,7 +304,7 @@ const sendMessage = async (req, res) => {
 
 const getConversations = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!req.user?._id) {
       return res.status(401).json({
         success: false,
         message: "Authentication required",
@@ -264,43 +328,37 @@ const getConversations = async (req, res) => {
         });
 
     const result = await Promise.all(
-      conversations.map(
-        async (conversation) => {
-          const unreadCount =
-            await Message.countDocuments({
-              conversation:
-                conversation._id,
+      conversations.map(async (conversation) => {
+        const unreadCount =
+          await Message.countDocuments({
+            conversation: conversation._id,
+            receiver: req.user._id,
+            isRead: false,
+          });
 
-              receiver:
-                req.user._id,
+        const participant =
+          conversation.participants.find(
+            (user) =>
+              user &&
+              String(user._id) !==
+                String(req.user._id)
+          );
 
-              isRead: false,
-            });
+        return {
+          _id: conversation._id,
 
-          const otherParticipant =
-            conversation.participants.find(
-              (participant) =>
-                participant &&
-                participant._id.toString() !==
-                  req.user._id.toString()
-            );
+          participant:
+            participant || null,
 
-          return {
-            _id: conversation._id,
+          lastMessage:
+            conversation.lastMessage || null,
 
-            participant:
-              otherParticipant || null,
+          unreadCount,
 
-            lastMessage:
-              conversation.lastMessage || null,
-
-            unreadCount,
-
-            updatedAt:
-              conversation.updatedAt,
-          };
-        }
-      )
+          updatedAt:
+            conversation.updatedAt,
+        };
+      })
     );
 
     return res.status(200).json({
@@ -320,11 +378,6 @@ const getConversations = async (req, res) => {
       success: false,
       message:
         "Server error while fetching conversations",
-
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : undefined,
     });
   }
 };
@@ -335,15 +388,14 @@ const getConversations = async (req, res) => {
 
 const getMessages = async (req, res) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!req.user?._id) {
       return res.status(401).json({
         success: false,
         message: "Authentication required",
       });
     }
 
-    const { conversationId } =
-      req.params;
+    const { conversationId } = req.params;
 
     // -----------------------------------------------------
     // VALIDATE ID
@@ -357,7 +409,8 @@ const getMessages = async (req, res) => {
     ) {
       return res.status(400).json({
         success: false,
-        message: "Invalid conversation ID",
+        message:
+          "Invalid conversation ID",
       });
     }
 
@@ -373,7 +426,8 @@ const getMessages = async (req, res) => {
     if (!conversation) {
       return res.status(404).json({
         success: false,
-        message: "Conversation not found",
+        message:
+          "Conversation not found",
       });
     }
 
@@ -383,9 +437,9 @@ const getMessages = async (req, res) => {
 
     const isParticipant =
       conversation.participants.some(
-        (id) =>
-          id.toString() ===
-          req.user._id.toString()
+        (participantId) =>
+          String(participantId) ===
+          String(req.user._id)
       );
 
     if (!isParticipant) {
@@ -417,7 +471,7 @@ const getMessages = async (req, res) => {
       (page - 1) * limit;
 
     // -----------------------------------------------------
-    // FETCH
+    // FETCH MESSAGES
     // -----------------------------------------------------
 
     const [
@@ -449,28 +503,62 @@ const getMessages = async (req, res) => {
     ]);
 
     // -----------------------------------------------------
-    // MARK AS READ
+    // MARK RECEIVED MESSAGES AS READ
     // -----------------------------------------------------
 
-    await Message.updateMany(
-      {
-        conversation:
-          conversation._id,
+    const readResult =
+      await Message.updateMany(
+        {
+          conversation:
+            conversation._id,
 
-        receiver:
-          req.user._id,
+          receiver:
+            req.user._id,
 
-        isRead: false,
-      },
-      {
-        $set: {
-          isRead: true,
+          isRead: false,
         },
-      }
-    );
+        {
+          $set: {
+            isRead: true,
+          },
+        }
+      );
 
     // -----------------------------------------------------
-    // OLDEST -> NEWEST
+    // REAL-TIME READ UPDATE
+    // -----------------------------------------------------
+
+    const io = global.io;
+
+    if (
+      io &&
+      readResult.modifiedCount > 0
+    ) {
+      const otherParticipant =
+        conversation.participants.find(
+          (participantId) =>
+            String(participantId) !==
+            String(req.user._id)
+        );
+
+      if (otherParticipant) {
+        io.to(
+          `user:${String(otherParticipant)}`
+        ).emit(
+          "messages-read",
+          {
+            conversationId:
+              conversation._id.toString(),
+
+            readerId:
+              req.user._id.toString(),
+          }
+        );
+      }
+    }
+
+    // -----------------------------------------------------
+    // RETURN OLDEST -> NEWEST
     // -----------------------------------------------------
 
     messages.reverse();
@@ -505,11 +593,6 @@ const getMessages = async (req, res) => {
       success: false,
       message:
         "Server error while fetching messages",
-
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : undefined,
     });
   }
 };
@@ -523,10 +606,11 @@ const markMessagesAsRead = async (
   res
 ) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!req.user?._id) {
       return res.status(401).json({
         success: false,
-        message: "Authentication required",
+        message:
+          "Authentication required",
       });
     }
 
@@ -541,7 +625,8 @@ const markMessagesAsRead = async (
     ) {
       return res.status(400).json({
         success: false,
-        message: "Invalid conversation ID",
+        message:
+          "Invalid conversation ID",
       });
     }
 
@@ -553,15 +638,16 @@ const markMessagesAsRead = async (
     if (!conversation) {
       return res.status(404).json({
         success: false,
-        message: "Conversation not found",
+        message:
+          "Conversation not found",
       });
     }
 
     const isParticipant =
       conversation.participants.some(
-        (id) =>
-          id.toString() ===
-          req.user._id.toString()
+        (participantId) =>
+          String(participantId) ===
+          String(req.user._id)
       );
 
     if (!isParticipant) {
@@ -590,6 +676,39 @@ const markMessagesAsRead = async (
         }
       );
 
+    // -----------------------------------------------------
+    // SOCKET READ EVENT
+    // -----------------------------------------------------
+
+    const io = global.io;
+
+    if (
+      io &&
+      result.modifiedCount > 0
+    ) {
+      const otherParticipant =
+        conversation.participants.find(
+          (participantId) =>
+            String(participantId) !==
+            String(req.user._id)
+        );
+
+      if (otherParticipant) {
+        io.to(
+          `user:${String(otherParticipant)}`
+        ).emit(
+          "messages-read",
+          {
+            conversationId:
+              conversation._id.toString(),
+
+            readerId:
+              req.user._id.toString(),
+          }
+        );
+      }
+    }
+
     return res.status(200).json({
       success: true,
 
@@ -611,11 +730,6 @@ const markMessagesAsRead = async (
       success: false,
       message:
         "Server error while marking messages",
-
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : undefined,
     });
   }
 };
@@ -629,14 +743,15 @@ const getUnreadMessageCount = async (
   res
 ) => {
   try {
-    if (!req.user || !req.user._id) {
+    if (!req.user?._id) {
       return res.status(401).json({
         success: false,
-        message: "Authentication required",
+        message:
+          "Authentication required",
       });
     }
 
-    const count =
+    const unreadCount =
       await Message.countDocuments({
         receiver: req.user._id,
         isRead: false,
@@ -646,7 +761,7 @@ const getUnreadMessageCount = async (
       success: true,
 
       data: {
-        unreadCount: count,
+        unreadCount,
       },
     });
   } catch (error) {
@@ -659,11 +774,6 @@ const getUnreadMessageCount = async (
       success: false,
       message:
         "Server error while fetching unread count",
-
-      error:
-        process.env.NODE_ENV === "development"
-          ? error.message
-          : undefined,
     });
   }
 };

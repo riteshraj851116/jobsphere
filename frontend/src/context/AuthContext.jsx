@@ -6,48 +6,37 @@ import React, {
 } from "react";
 
 import {
-  login as loginSvc,
-  register as registerSvc,
+  login as loginService,
+  register as registerService,
   getMe,
 } from "../services/authService";
 
 export const AuthContext = createContext(null);
 
+const normalizeUser = (user) => {
+  if (!user) {
+    return null;
+  }
+
+  return {
+    ...user,
+    _id: user._id || user.id || "",
+    id: user.id || user._id || "",
+  };
+};
+
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUserState] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  /*
-   * =========================================================
-   * NORMALIZE USER
-   * =========================================================
-   *
-   * Backend response different shapes mein aa sakta hai:
-   *
-   * { user: {...} }
-   * { data: { user: {...} } }
-   *
-   * Isliye ek hi jagah normalize karenge.
-   */
-
   const extractUser = useCallback((response) => {
-    return (
+    const userData =
       response?.data?.user ||
       response?.user ||
-      response?.data ||
-      null
-    );
-  }, []);
+      null;
 
-  /*
-   * =========================================================
-   * INITIAL AUTH CHECK
-   * =========================================================
-   *
-   * Browser refresh hone ke baad token localStorage mein
-   * rahega. Token hone par current user backend se fetch
-   * karenge.
-   */
+    return normalizeUser(userData);
+  }, []);
 
   useEffect(() => {
     let mounted = true;
@@ -57,7 +46,7 @@ export const AuthProvider = ({ children }) => {
 
       if (!token) {
         if (mounted) {
-          setUser(null);
+          setUserState(null);
           setLoading(false);
         }
 
@@ -66,27 +55,32 @@ export const AuthProvider = ({ children }) => {
 
       try {
         const response = await getMe();
-
         const currentUser = extractUser(response);
 
+        if (!currentUser) {
+          throw new Error("User not found");
+        }
+
         if (mounted) {
-          setUser(currentUser);
+          setUserState(currentUser);
+
+          localStorage.setItem(
+            "user",
+            JSON.stringify(currentUser)
+          );
         }
       } catch (error) {
-        console.warn(
+        console.error(
           "Authentication restore failed:",
-          error?.response?.data?.message || error?.message
+          error?.response?.data?.message ||
+            error?.message
         );
 
-        /*
-         * Token invalid/expired hai.
-         * Clean logout state.
-         */
-
         localStorage.removeItem("token");
+        localStorage.removeItem("user");
 
         if (mounted) {
-          setUser(null);
+          setUserState(null);
         }
       } finally {
         if (mounted) {
@@ -102,154 +96,116 @@ export const AuthProvider = ({ children }) => {
     };
   }, [extractUser]);
 
-  /*
-   * =========================================================
-   * LOGIN
-   * =========================================================
-   */
-
   const login = useCallback(
     async (email, password) => {
-      try {
-        const response = await loginSvc(email, password);
+      const response = await loginService(
+        email,
+        password
+      );
 
-        const token =
-          response?.data?.token ||
-          response?.token;
+      const token =
+        response?.data?.token ||
+        response?.token;
 
-        if (!token) {
-          throw new Error(
-            "Login successful but no authentication token was received."
-          );
-        }
+      const loggedInUser =
+        extractUser(response);
 
-        /*
-         * Save token before requesting user profile.
-         * api interceptor can now authenticate getMe().
-         */
-
-        localStorage.setItem("token", token);
-
-        try {
-          const meResponse = await getMe();
-
-          const currentUser = extractUser(meResponse);
-
-          if (!currentUser) {
-            throw new Error(
-              "Unable to load user profile after login."
-            );
-          }
-
-          setUser(currentUser);
-
-          return currentUser;
-        } catch (profileError) {
-          /*
-           * Login token mil gaya but profile fetch fail hua.
-           * Inconsistent state avoid karne ke liye token remove.
-           */
-
-          localStorage.removeItem("token");
-          setUser(null);
-
-          throw profileError;
-        }
-      } catch (error) {
-        throw error;
+      if (!token) {
+        throw new Error(
+          "Authentication token was not received"
+        );
       }
+
+      if (!loggedInUser) {
+        throw new Error(
+          "User information was not received"
+        );
+      }
+
+      localStorage.setItem(
+        "token",
+        token
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(loggedInUser)
+      );
+
+      setUserState(loggedInUser);
+
+      return loggedInUser;
     },
     [extractUser]
   );
-
-  /*
-   * =========================================================
-   * REGISTER
-   * =========================================================
-   */
 
   const register = useCallback(
     async (userData) => {
-      try {
-        const response = await registerSvc(userData);
+      const response =
+        await registerService(userData);
 
-        const token =
-          response?.data?.token ||
-          response?.token;
+      const token =
+        response?.data?.token ||
+        response?.token;
 
-        /*
-         * Some backends registration ke baad token dete hain,
-         * kuch sirf user create karte hain.
-         */
+      const registeredUser =
+        extractUser(response);
 
-        if (!token) {
-          /*
-           * Agar backend token nahi deta,
-           * registration successful maana jayega.
-           *
-           * User ko login karna padega.
-           */
-
-          return null;
-        }
-
-        localStorage.setItem("token", token);
-
-        try {
-          const meResponse = await getMe();
-
-          const currentUser = extractUser(meResponse);
-
-          if (!currentUser) {
-            throw new Error(
-              "Unable to load user profile after registration."
-            );
-          }
-
-          setUser(currentUser);
-
-          return currentUser;
-        } catch (profileError) {
-          localStorage.removeItem("token");
-          setUser(null);
-
-          throw profileError;
-        }
-      } catch (error) {
-        throw error;
+      if (!registeredUser) {
+        throw new Error(
+          "User information was not received"
+        );
       }
+
+      if (token) {
+        localStorage.setItem(
+          "token",
+          token
+        );
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(registeredUser)
+        );
+
+        setUserState(registeredUser);
+      }
+
+      return registeredUser;
     },
     [extractUser]
   );
 
-  /*
-   * =========================================================
-   * LOGOUT
-   * =========================================================
-   */
-
   const logout = useCallback(() => {
     localStorage.removeItem("token");
-
-    /*
-     * Agar project future mein refresh token use kare
-     * to yahan usko bhi remove kar sakte hain.
-     */
-
+    localStorage.removeItem("user");
     localStorage.removeItem("refreshToken");
+    localStorage.removeItem("local_demo_user");
 
-    setUser(null);
+    setUserState(null);
   }, []);
 
-  /*
-   * =========================================================
-   * AUTH FLAGS
-   * =========================================================
-   */
+  const setUser = useCallback((userData) => {
+    const normalizedUser =
+      normalizeUser(userData);
 
-  const isAuthenticated = Boolean(user);
+    setUserState(normalizedUser);
 
-  const role = String(user?.role || "").toLowerCase();
+    if (normalizedUser) {
+      localStorage.setItem(
+        "user",
+        JSON.stringify(normalizedUser)
+      );
+    } else {
+      localStorage.removeItem("user");
+    }
+  }, []);
+
+  const isAuthenticated =
+    Boolean(user?._id);
+
+  const role =
+    String(user?.role || "").toLowerCase();
 
   const isRecruiter =
     role === "recruiter";
@@ -258,22 +214,13 @@ export const AuthProvider = ({ children }) => {
     role === "user" ||
     role === "candidate";
 
-  /*
-   * =========================================================
-   * CONTEXT
-   * =========================================================
-   */
-
   const value = {
     user,
     setUser,
-
     loading,
-
     isAuthenticated,
     isRecruiter,
     isCandidate,
-
     login,
     register,
     logout,

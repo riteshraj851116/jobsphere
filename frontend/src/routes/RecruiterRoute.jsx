@@ -1,14 +1,43 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
-import Loader from '../components/common/Loader';
+import React from "react";
+import { Navigate, Outlet, useLocation } from "react-router-dom";
+
+import { useAuth } from "../hooks/useAuth";
+import Loader from "../components/common/Loader";
 
 const RecruiterRoute = () => {
-  const { user, loading, isRecruiter } = useAuth();
+  const {
+    isAuthenticated,
+    isRecruiter,
+    loading,
+  } = useAuth();
 
-  if (loading) return <Loader fullscreen />;
-  if (!user) return <Navigate to="/login" replace />;
-  if (!isRecruiter) return <Navigate to="/dashboard" replace />;
+  const location = useLocation();
+
+  if (loading) {
+    return <Loader fullscreen />;
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <Navigate
+        to="/login"
+        state={{
+          from: location,
+        }}
+        replace
+      />
+    );
+  }
+
+  if (!isRecruiter) {
+    return (
+      <Navigate
+        to="/dashboard"
+        replace
+      />
+    );
+  }
+
   return <Outlet />;
 };
 

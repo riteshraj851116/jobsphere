@@ -1,0 +1,891 @@
+/* =========================================================
+   JOBSPHERE AI CAREER ASSISTANT
+========================================================= */
+
+.career-ai-trigger {
+  position: fixed;
+  right: 28px;
+  bottom: 28px;
+  z-index: 1200;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+
+  min-height: 52px;
+  padding: 0 18px;
+
+  border: 1px solid #111;
+  background: #111;
+  color: #fff;
+
+  font-family: inherit;
+  cursor: pointer;
+
+  box-shadow:
+    0 12px 40px rgba(0, 0, 0, 0.16),
+    0 2px 8px rgba(0, 0, 0, 0.08);
+
+  transition:
+    transform 0.25s ease,
+    background 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.career-ai-trigger:hover {
+  background: #222;
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 18px 50px rgba(0, 0, 0, 0.2),
+    0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.career-ai-trigger:active {
+  transform: translateY(0);
+}
+
+.career-ai-trigger-dot {
+  width: 8px;
+  height: 8px;
+
+  border-radius: 50%;
+  background: #fff;
+
+  animation: career-ai-pulse 2s infinite;
+}
+
+.career-ai-trigger-text {
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+}
+
+.career-ai-trigger-label {
+  padding-left: 10px;
+
+  border-left: 1px solid rgba(255, 255, 255, 0.3);
+
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   MAIN PANEL
+========================================================= */
+
+.career-ai-panel {
+  position: fixed;
+  right: 28px;
+  bottom: 92px;
+  z-index: 1200;
+
+  width: min(430px, calc(100vw - 32px));
+  height: min(680px, calc(100vh - 130px));
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.98),
+      rgba(250, 250, 250, 0.98)
+    );
+
+  box-shadow:
+    0 30px 100px rgba(0, 0, 0, 0.16),
+    0 8px 30px rgba(0, 0, 0, 0.08);
+
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+
+  animation: career-ai-open 0.35s
+    cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.career-ai-header {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+
+  padding: 18px 20px;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffffff,
+      #f4f4f4
+    );
+}
+
+.career-ai-header::after {
+  content: "";
+
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(0, 0, 0, 0.3),
+      transparent
+    );
+}
+
+.career-ai-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.career-ai-status {
+  position: relative;
+
+  width: 12px;
+  height: 12px;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+  background: #111;
+
+  box-shadow:
+    0 0 0 4px rgba(0, 0, 0, 0.06);
+}
+
+.career-ai-status::after {
+  content: "";
+
+  position: absolute;
+  inset: -5px;
+
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 50%;
+
+  animation: career-ai-status-pulse 2s infinite;
+}
+
+.career-ai-eyebrow {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: rgba(0, 0, 0, 0.45);
+
+  font-size: 0.52rem;
+  font-weight: 800;
+
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.career-ai-brand h3 {
+  margin: 0;
+
+  color: #090909;
+
+  font-size: 0.95rem;
+  font-weight: 800;
+
+  letter-spacing: -0.02em;
+}
+
+.career-ai-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.career-ai-header-button {
+  min-height: 30px;
+
+  padding: 0 8px;
+
+  border: 0;
+  background: transparent;
+
+  color: rgba(0, 0, 0, 0.48);
+
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.career-ai-header-button:hover {
+  background: rgba(0, 0, 0, 0.06);
+  color: #111;
+}
+
+/* =========================================================
+   MESSAGES AREA
+========================================================= */
+
+.career-ai-messages {
+  flex: 1;
+
+  overflow-y: auto;
+
+  padding: 20px;
+
+  background:
+    linear-gradient(
+      to right,
+      rgba(0, 0, 0, 0.025) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.025) 1px,
+      transparent 1px
+    );
+
+  background-size: 40px 40px;
+}
+
+.career-ai-messages::-webkit-scrollbar {
+  width: 5px;
+}
+
+.career-ai-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.career-ai-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.career-ai-message {
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  margin-bottom: 20px;
+
+  animation: career-ai-message-in 0.3s ease;
+}
+
+.career-ai-message-user {
+  align-items: flex-end;
+}
+
+.career-ai-message-assistant {
+  align-items: flex-start;
+}
+
+.career-ai-message-label {
+  margin-bottom: 6px;
+
+  color: rgba(0, 0, 0, 0.4);
+
+  font-size: 0.5rem;
+  font-weight: 800;
+
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.career-ai-message-user .career-ai-message-label {
+  text-align: right;
+}
+
+.career-ai-message-content {
+  max-width: 88%;
+
+  padding: 13px 15px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  background: #fff;
+
+  color: #171717;
+
+  font-size: 0.82rem;
+  line-height: 1.65;
+
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.035);
+}
+
+.career-ai-message-user .career-ai-message-content {
+  border-color: #111;
+
+  background: #111;
+  color: #fff;
+}
+
+.career-ai-message-error {
+  border-color: rgba(160, 0, 0, 0.25);
+  background: rgba(255, 245, 245, 0.95);
+}
+
+/* =========================================================
+   RECOMMENDED JOBS
+========================================================= */
+
+.career-ai-job-list {
+  width: 100%;
+
+  margin-top: 14px;
+}
+
+.career-ai-job-list-title {
+  margin-bottom: 8px;
+
+  color: rgba(0, 0, 0, 0.42);
+
+  font-size: 0.52rem;
+  font-weight: 800;
+
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.career-ai-job-card {
+  width: 100%;
+
+  margin-bottom: 8px;
+  padding: 14px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  background: rgba(255, 255, 255, 0.94);
+
+  color: #111;
+
+  text-align: left;
+  font-family: inherit;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.career-ai-job-card:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(0, 0, 0, 0.35);
+
+  background: #fff;
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.career-ai-job-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.career-ai-job-title {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color: #090909;
+
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.career-ai-job-company {
+  display: block;
+
+  color: rgba(0, 0, 0, 0.55);
+
+  font-size: 0.68rem;
+}
+
+.career-ai-match {
+  flex-shrink: 0;
+
+  padding: 5px 7px;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+
+  color: #111;
+
+  font-size: 0.58rem;
+  font-weight: 800;
+}
+
+.career-ai-job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  margin-top: 10px;
+}
+
+.career-ai-job-meta span {
+  padding: 4px 6px;
+
+  background: rgba(0, 0, 0, 0.045);
+
+  color: rgba(0, 0, 0, 0.58);
+
+  font-size: 0.58rem;
+  font-weight: 600;
+}
+
+.career-ai-job-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+
+  margin-top: 10px;
+}
+
+.career-ai-job-skills span {
+  padding: 4px 7px;
+
+  border: 1px solid rgba(0, 0, 0, 0.1);
+
+  color: rgba(0, 0, 0, 0.68);
+
+  font-size: 0.55rem;
+  font-weight: 700;
+}
+
+.career-ai-job-view {
+  display: inline-block;
+
+  margin-top: 12px;
+
+  color: #111;
+
+  font-size: 0.58rem;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   THINKING ANIMATION
+========================================================= */
+
+.career-ai-thinking {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  padding: 14px 16px;
+
+  border: 1px solid rgba(0, 0, 0, 0.09);
+
+  background: #fff;
+}
+
+.career-ai-thinking span {
+  width: 5px;
+  height: 5px;
+
+  border-radius: 50%;
+
+  background: #111;
+
+  animation: career-ai-thinking 1.2s infinite ease-in-out;
+}
+
+.career-ai-thinking span:nth-child(2) {
+  animation-delay: 0.15s;
+}
+
+.career-ai-thinking span:nth-child(3) {
+  animation-delay: 0.3s;
+}
+
+/* =========================================================
+   QUICK PROMPTS
+========================================================= */
+
+.career-ai-quick-prompts {
+  display: flex;
+  gap: 7px;
+
+  overflow-x: auto;
+
+  padding: 10px 14px;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  background: rgba(250, 250, 250, 0.95);
+}
+
+.career-ai-quick-prompts::-webkit-scrollbar {
+  display: none;
+}
+
+.career-ai-quick-prompts button {
+  flex-shrink: 0;
+
+  min-height: 32px;
+
+  padding: 0 10px;
+
+  border: 1px solid rgba(0, 0, 0, 0.12);
+
+  background: #fff;
+
+  color: rgba(0, 0, 0, 0.68);
+
+  font-family: inherit;
+  font-size: 0.58rem;
+  font-weight: 700;
+
+  white-space: nowrap;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.career-ai-quick-prompts button:hover:not(:disabled) {
+  border-color: #111;
+
+  background: #111;
+  color: #fff;
+}
+
+.career-ai-quick-prompts button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   INPUT AREA
+========================================================= */
+
+.career-ai-input-area {
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+
+  padding: 14px;
+
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+
+  background: #fff;
+}
+
+.career-ai-input-area textarea {
+  flex: 1;
+
+  min-height: 46px;
+  max-height: 110px;
+
+  padding: 13px 14px;
+
+  resize: none;
+
+  border: 1px solid rgba(0, 0, 0, 0.14);
+
+  outline: none;
+
+  background: #fafafa;
+
+  color: #111;
+
+  font-family: inherit;
+  font-size: 0.75rem;
+  line-height: 1.4;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.career-ai-input-area textarea::placeholder {
+  color: rgba(0, 0, 0, 0.38);
+}
+
+.career-ai-input-area textarea:focus {
+  border-color: #111;
+
+  background: #fff;
+
+  box-shadow:
+    0 0 0 3px rgba(0, 0, 0, 0.04);
+}
+
+.career-ai-input-area textarea:disabled {
+  opacity: 0.6;
+}
+
+.career-ai-input-area button {
+  min-width: 64px;
+  min-height: 46px;
+
+  padding: 0 14px;
+
+  border: 1px solid #111;
+
+  background: #111;
+  color: #fff;
+
+  font-family: inherit;
+  font-size: 0.62rem;
+  font-weight: 800;
+
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.career-ai-input-area button:hover:not(:disabled) {
+  background: #333;
+  transform: translateY(-1px);
+}
+
+.career-ai-input-area button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.career-ai-footer {
+  padding: 8px 14px 10px;
+
+  background: #fff;
+
+  color: rgba(0, 0, 0, 0.35);
+
+  font-size: 0.5rem;
+  font-weight: 600;
+
+  line-height: 1.5;
+
+  text-align: center;
+}
+
+/* =========================================================
+   ANIMATIONS
+========================================================= */
+
+@keyframes career-ai-open {
+  from {
+    opacity: 0;
+    transform:
+      translateY(18px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes career-ai-message-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes career-ai-pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(0.75);
+  }
+}
+
+@keyframes career-ai-status-pulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0.7;
+  }
+
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes career-ai-thinking {
+  0%,
+  60%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.35;
+  }
+
+  30% {
+    transform: translateY(-5px);
+    opacity: 1;
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 768px) {
+  .career-ai-trigger {
+    right: 20px;
+    bottom: 20px;
+  }
+
+  .career-ai-panel {
+    right: 16px;
+    bottom: 84px;
+
+    width: calc(100vw - 32px);
+    height: min(680px, calc(100vh - 110px));
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 520px) {
+  .career-ai-trigger {
+    right: 14px;
+    bottom: 14px;
+
+    min-height: 48px;
+    padding: 0 14px;
+  }
+
+  .career-ai-trigger-label {
+    display: none;
+  }
+
+  .career-ai-panel {
+    right: 0;
+    bottom: 0;
+
+    width: 100vw;
+    height: 100vh;
+
+    border: 0;
+  }
+
+  .career-ai-header {
+    padding: 16px;
+  }
+
+  .career-ai-messages {
+    padding: 16px;
+  }
+
+  .career-ai-message-content {
+    max-width: 92%;
+
+    font-size: 0.78rem;
+  }
+
+  .career-ai-actions {
+    gap: 2px;
+  }
+
+  .career-ai-header-button {
+    padding: 0 6px;
+
+    font-size: 0.55rem;
+  }
+
+  .career-ai-input-area {
+    padding: 10px;
+  }
+
+  .career-ai-input-area textarea {
+    min-height: 44px;
+  }
+
+  .career-ai-input-area button {
+    min-width: 58px;
+    min-height: 44px;
+
+    padding: 0 10px;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  .career-ai-trigger,
+  .career-ai-panel,
+  .career-ai-message,
+  .career-ai-job-card,
+  .career-ai-input-area textarea,
+  .career-ai-input-area button,
+  .career-ai-thinking span,
+  .career-ai-trigger-dot,
+  .career-ai-status::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
