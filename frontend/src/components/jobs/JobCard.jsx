@@ -141,13 +141,15 @@ const JobCard = ({ job, isSaved = false, onSave }) => {
     salaryMax
   );
 
+  const jobId = _id || job.id;
+
   const handleCardClick = () => {
-    if (!_id) {
+    if (!jobId) {
       console.error("Cannot open job: Job ID missing");
       return;
     }
 
-    navigate(`/jobs/${_id}`);
+    navigate(`/jobs/${jobId}`);
   };
 
   const handleCardKeyDown = (event) => {

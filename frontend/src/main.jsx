@@ -10,7 +10,7 @@ import "./styles/global.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     {/* FIX: Added proper provider hierarchy and App component */}
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <AuthProvider>
         <SocketProvider>
           <App />

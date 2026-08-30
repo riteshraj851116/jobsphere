@@ -10,7 +10,7 @@ import { useAuth } from "../hooks/useAuth";
 
 const SocketContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5002";
+const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5005";
 
 export const SocketProvider = ({ children }) => {
   const { user, isAuthenticated } = useAuth();

@@ -5,11 +5,13 @@ const { Server } = require("socket.io");
 const dotenv = require("dotenv");
 
 dotenv.config();
+
 const connectDB = require("./config/db");
 
 // ==============================
 // ROUTES
 // ==============================
+
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
 const jobRoutes = require("./routes/jobRoutes");
@@ -24,29 +26,68 @@ const aiRoutes = require("./routes/aiRoutes");
 // ==============================
 // APP & SERVER
 // ==============================
+
 const app = express();
 const server = http.createServer(app);
 
 // ==============================
 // DATABASE
 // ==============================
+
 connectDB();
+
+// ==============================
+// ALLOWED ORIGINS
+// ==============================
+
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://127.0.0.1:5173",
+  "https://riteshraj851116.github.io",
+];
 
 // ==============================
 // MIDDLEWARE
 // ==============================
+
 app.use(
   cors({
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: (origin, callback) => {
+      // Allow requests without origin such as Postman
+      if (!origin) {
+        return callback(null, true);
+      }
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("Not allowed by CORS"));
+    },
+
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+
+    allowedHeaders: [
+      "Content-Type",
+      "Authorization",
+    ],
   })
 );
+
 app.use(express.json({ limit: "10mb" }));
-app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  express.urlencoded({
+    extended: true,
+    limit: "10mb",
+  })
+);
 
 // ==============================
 // HEALTH CHECK
 // ==============================
+
 app.get("/", (req, res) => {
   res.status(200).json({
     success: true,
@@ -65,75 +106,93 @@ app.get("/api/health", (req, res) => {
 // ==============================
 // API ROUTES
 // ==============================
+
 app.use("/api/auth", authRoutes);
+
 app.use("/api/users", userRoutes);
+
 app.use("/api/jobs", jobRoutes);
+
 app.use("/api/companies", companyRoutes);
+
 app.use("/api/applications", applicationRoutes);
+
 app.use("/api/posts", postRoutes);
+
 app.use("/api/notifications", notificationRoutes);
+
 app.use("/api/messages", messageRoutes);
+
 app.use("/api/connections", connectionRoutes);
+
 app.use("/api/ai", aiRoutes);
 
 // ==============================
 // SOCKET.IO
 // ==============================
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:5173", "http://127.0.0.1:5173"],
+    origin: allowedOrigins,
     methods: ["GET", "POST"],
     credentials: true,
   },
 });
+
 app.set("io", io);
 
 io.on("connection", (socket) => {
-  // FIX: Added backticks here
   console.log(`Socket connected: ${socket.id}`);
-  
+
   socket.on("join", (userId) => {
     if (!userId) {
       return;
     }
+
     socket.join(userId);
-    // FIX: Added backticks here
-    console.log(`User ${userId} joined personal socket room`);
+
+    console.log(
+      `User ${userId} joined personal socket room`
+    );
   });
 
   socket.on("disconnect", () => {
-    // FIX: Added backticks here
     console.log(`Socket disconnected: ${socket.id}`);
   });
 });
 
 // ==============================
 // 404 HANDLER
-// IMPORTANT: This must stay AFTER all API routes
 // ==============================
+
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    // FIX: Added backticks here
-    message: `Route not found: ${req.method}${req.originalUrl}`,
+    message: `Route not found: ${req.method} ${req.originalUrl}`,
   });
 });
 
 // ==============================
 // GLOBAL ERROR HANDLER
 // ==============================
+
 app.use((error, req, res, next) => {
   console.error("Server Error:", error);
+
   const statusCode = error.statusCode || 500;
+
   res.status(statusCode).json({
     success: false,
-    message: error.message || "Something went wrong on the server",
+    message:
+      error.message ||
+      "Something went wrong on the server",
   });
 });
 
 // ==============================
 // START SERVER
 // ==============================
+
 const PORT = process.env.PORT || 5002;
 
 server.listen(PORT, () => {
@@ -141,7 +200,6 @@ server.listen(PORT, () => {
   console.log("======================================");
   console.log(" JOBSPHERE BACKEND RUNNING");
   console.log("======================================");
-  // FIX: Added backticks to all below
   console.log(`Server: http://localhost:${PORT}`);
   console.log(`API: http://localhost:${PORT}/api`);
   console.log(`Health: http://localhost:${PORT}/api/health`);

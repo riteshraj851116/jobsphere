@@ -90,7 +90,11 @@ const Jobs = () => {
 
         const response = await getJobs(params);
         if (cancelled) return;
-        const jobsData = response?.data?.jobs || response?.jobs || [];
+        const jobsData =
+          response?.data?.jobs ||
+          response?.jobs ||
+          (Array.isArray(response?.data) ? response.data : []) ||
+          (Array.isArray(response) ? response : []);
         setJobs(jobsData);
       } catch (err) {
         if (cancelled) return;

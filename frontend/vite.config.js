@@ -9,9 +9,9 @@ export default defineConfig({
 
   server: {
     proxy: {
-      // Backend (Port 5002) par API requests bhejne ke liye
+      // Backend (Port 5005) par API requests bhejne ke liye
       "/api": {
-        target: "http://localhost:5002", 
+        target: "http://localhost:5005", 
         changeOrigin: true,
         secure: false,
       },

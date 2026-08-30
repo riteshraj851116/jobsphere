@@ -21,10 +21,7 @@ import {
 } from "lucide-react";
 
 import CareerNetwork from "../../components/three/CareerNetwork";
-import CareerConstellation from "../../components/three/CareerConstellation";
 import JobUniverse from "../../components/three/JobUniverse";
-import JobGlobe from "../../components/three/JobGlobe";
-import FloatingParticles from "../../components/three/FloatingParticles";
 import "./Home.css";
 
 const CATEGORIES = [

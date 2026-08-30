@@ -24,28 +24,23 @@ const Applicants = () => {
   const queryParams = new URLSearchParams(location.search);
   const jobId = queryParams.get('jobId');
 
-  useEffect(() => {
-    if (jobId) {
-      fetchApplicants();
-    } else {
-      setLoading(false);
-    }
-  }, [jobId]);
-
-  const fetchApplicants = async () => {
+  const fetchApplicants = React.useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await getJobApplicants(jobId);
-      // Backend response: { success: true, data: { applications: [...] } }
-      setApplicants(res.data?.applications || res.applications || []);
+      setApplicants(res.data?.applications || res.applications || res.data || []);
     } catch (err) {
       setError('Failed to load applicants. Please try again.');
       console.error(err);
     } finally {
       setLoading(false);
     }
-  };
+  }, [jobId]);
+
+  useEffect(() => {
+    fetchApplicants();
+  }, [fetchApplicants]);
 
   const handleUpdateStatus = async (id, status) => {
     try {

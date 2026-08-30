@@ -124,13 +124,28 @@ const Navbar = () => {
               <NavLink
                 to={
                   user.role === "recruiter"
-                    ? "/recruiter/dashboard"
+                    ? "/recruiter-dashboard"
                     : "/dashboard"
                 }
                 className={navLinkClass}
               >
                 <span>Dashboard</span>
               </NavLink>
+
+              {/* RECRUITER POST JOB & APPLICANTS */}
+              {user.role === "recruiter" && (
+                <>
+                  <NavLink to="/create-job" className={navLinkClass}>
+                    <span>Post Job</span>
+                  </NavLink>
+                  <NavLink to="/manage-jobs" className={navLinkClass}>
+                    <span>Manage Jobs</span>
+                  </NavLink>
+                  <NavLink to="/applicants" className={navLinkClass}>
+                    <span>Applicants</span>
+                  </NavLink>
+                </>
+              )}
 
               {/* CANDIDATE LINKS */}
               {user.role !== "recruiter" && (
@@ -162,7 +177,7 @@ const Navbar = () => {
               {/* PROFILE */}
               <NavLink
                 to={
-                  user.role === "recruiter" ? "/recruiter/company" : "/profile"
+                  user.role === "recruiter" ? "/company-profile" : "/profile"
                 }
                 className={navLinkClass}
               >
@@ -252,7 +267,7 @@ const Navbar = () => {
               <Link
                 to={
                   user.role === "recruiter"
-                    ? "/recruiter/dashboard"
+                    ? "/recruiter-dashboard"
                     : "/dashboard"
                 }
                 className="navbar-mobile-link"
@@ -262,6 +277,30 @@ const Navbar = () => {
                 Dashboard
                 <ArrowUpRight size={16} />
               </Link>
+
+              {/* RECRUITER POST JOB */}
+              {user.role === "recruiter" && (
+                <>
+                  <Link
+                    to="/create-job"
+                    className="navbar-mobile-link"
+                    onClick={closeMobileMenu}
+                  >
+                    <span>05</span>
+                    Post a Job
+                    <ArrowUpRight size={16} />
+                  </Link>
+                  <Link
+                    to="/manage-jobs"
+                    className="navbar-mobile-link"
+                    onClick={closeMobileMenu}
+                  >
+                    <span>06</span>
+                    Manage Jobs
+                    <ArrowUpRight size={16} />
+                  </Link>
+                </>
+              )}
 
               {/* CANDIDATE LINKS */}
               {user.role !== "recruiter" && (
@@ -293,7 +332,7 @@ const Navbar = () => {
                 className="navbar-mobile-link"
                 onClick={closeMobileMenu}
               >
-                <span>{user.role === "recruiter" ? "05" : "07"}</span>
+                <span>07</span>
                 Messages
                 <ArrowUpRight size={16} />
               </Link>
@@ -304,7 +343,7 @@ const Navbar = () => {
                 className="navbar-mobile-link"
                 onClick={closeMobileMenu}
               >
-                <span>{user.role === "recruiter" ? "06" : "08"}</span>
+                <span>08</span>
                 Notifications
                 {unreadNotificationCount > 0 && (
                   <span className="mobile-notification-count">
@@ -317,12 +356,12 @@ const Navbar = () => {
               {/* PROFILE */}
               <Link
                 to={
-                  user.role === "recruiter" ? "/recruiter/company" : "/profile"
+                  user.role === "recruiter" ? "/company-profile" : "/profile"
                 }
                 className="navbar-mobile-link"
                 onClick={closeMobileMenu}
               >
-                <span>{user.role === "recruiter" ? "07" : "09"}</span>
+                <span>09</span>
                 Profile
                 <ArrowUpRight size={16} />
               </Link>

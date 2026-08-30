@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/layout/Navbar.jsx";
 import Footer from "./components/layout/Footer.jsx";
 import ProtectedRoute from "./components/ProtectedRoute.jsx";
+import CareerAssistant from "./components/ai/CareerAssistant.jsx";
 
 import Home from "./pages/Home/Home.jsx";
 import Login from "./pages/Auth/Login.jsx";
@@ -73,7 +74,9 @@ const App = () => {
             
             {/* RECRUITER ROUTES */}
             <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
+            <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
             <Route path="/company-profile" element={<CompanyProfile />} />
+            <Route path="/recruiter/company" element={<CompanyProfile />} />
             <Route path="/create-job" element={<CreateJob />} />
             <Route path="/manage-jobs" element={<ManageJobs />} />
             <Route path="/applicants" element={<Applicants />} />
@@ -84,6 +87,7 @@ const App = () => {
         </Routes>
       </main>
 
+      <CareerAssistant />
       <Footer />
     </div>
   );

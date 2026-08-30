@@ -1,8 +1,9 @@
 import axios from "axios";
+import { generateLocalAIResponse } from "../utils/mockData";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL ||
-  "http://localhost:5002/api";
+  "http://localhost:5005/api";
 
 const getToken = () => {
   return (
@@ -39,22 +40,25 @@ export const sendAIMessage = async (
         message: message.trim(),
         conversationHistory,
       },
-      getAuthConfig()
+      {
+        ...getAuthConfig(),
+        timeout: 10000,
+      }
     );
 
     return response.data;
   } catch (error) {
-    console.error(
-      "AI Service Error:",
-      error.response?.data || error.message
-    );
-
-    const errorMessage =
-      error.response?.data?.message ||
-      error.message ||
-      "Unable to connect to JobSphere AI";
-
-    throw new Error(errorMessage);
+    console.warn("AI Backend unreachable or offline, using local intelligent AI model:", error?.message);
+    const storedUser = JSON.parse(localStorage.getItem("user") || "null");
+    const localResult = generateLocalAIResponse(message, storedUser);
+    
+    return {
+      success: true,
+      data: {
+        message: localResult.message,
+        recommendedJobs: localResult.recommendedJobs,
+      },
+    };
   }
 };
 

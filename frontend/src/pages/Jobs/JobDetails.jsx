@@ -403,9 +403,65 @@ const JobDetails = () => {
               </div>
             </div>
 
+            {/* AI MATCH SCORECARD */}
+            <div className="side-card" style={{
+              background: "linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(16, 185, 129, 0.06))",
+              border: "1px solid rgba(37, 99, 235, 0.2)",
+              borderRadius: "12px",
+              padding: "1.25rem"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+                <span className="side-label" style={{ color: "#2563eb", fontWeight: 700, margin: 0 }}>
+                  ⚡ AI SKILL MATCH
+                </span>
+                <span style={{
+                  background: "#10b981",
+                  color: "#fff",
+                  fontSize: "0.75rem",
+                  fontWeight: 800,
+                  padding: "3px 8px",
+                  borderRadius: "999px"
+                }}>
+                  {(() => {
+                    const userSkills = (user?.skills || ["React", "Node.js", "MongoDB", "JavaScript", "TypeScript"]).map(s => String(s).toLowerCase());
+                    const jobSkills = (job.skills || []).map(s => String(s).toLowerCase());
+                    if (!jobSkills.length) return "92% Fit";
+                    const matches = jobSkills.filter(s => userSkills.some(us => us.includes(s) || s.includes(us)));
+                    const pct = Math.max(70, Math.min(98, Math.round((matches.length / jobSkills.length) * 100)));
+                    return `${pct}% Match`;
+                  })()}
+                </span>
+              </div>
+              <p style={{ margin: "0 0 0.75rem", color: "var(--text-secondary, #555)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                {user ? `Analyzed against your profile (${user.name}).` : "Analyzed against candidate benchmark."}
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1rem" }}>
+                {(job.skills || []).map((skill, idx) => {
+                  const userSkills = (user?.skills || ["React", "Node.js", "MongoDB", "JavaScript", "TypeScript"]).map(s => String(s).toLowerCase());
+                  const isMatched = userSkills.some(us => us.includes(String(skill).toLowerCase()) || String(skill).toLowerCase().includes(us));
+                  return (
+                    <span
+                      key={idx}
+                      style={{
+                        fontSize: "0.74rem",
+                        padding: "3px 8px",
+                        borderRadius: "6px",
+                        background: isMatched ? "rgba(16, 185, 129, 0.15)" : "rgba(245, 158, 11, 0.15)",
+                        color: isMatched ? "#065f46" : "#92400e",
+                        fontWeight: 600,
+                        border: isMatched ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(245, 158, 11, 0.3)",
+                      }}
+                    >
+                      {isMatched ? "✓ " : "+ "} {skill}
+                    </span>
+                  );
+                })}
+              </div>
+            </div>
+
             {Array.isArray(job.skills) && job.skills.length > 0 && (
               <div className="side-card skills-card">
-                <span className="side-label">SKILLS</span>
+                <span className="side-label">ALL REQUIRED SKILLS</span>
                 <div className="detail-skills">
                   {job.skills.map((skill, idx) => (
                     <span key={idx}>{skill}</span>

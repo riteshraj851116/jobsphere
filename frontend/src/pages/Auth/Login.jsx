@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 
 import { useAuth } from "../../hooks/useAuth";
 import Loader from "../../components/common/Loader";
@@ -21,6 +21,38 @@ const Login = () => {
 
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+
+  const handleDemoLogin = async (type) => {
+    try {
+      setSubmitting(true);
+      setError("");
+
+      const demoEmail =
+        type === "recruiter" ? "recruiter@jobsphere.io" : "ritesh.raj@example.com";
+      const demoPass = "demo123";
+
+      setEmail(demoEmail);
+      setPassword(demoPass);
+
+      const loggedInUser = await login(demoEmail, demoPass);
+
+      const role = String(loggedInUser?.role || "").toLowerCase();
+
+      if (role === "recruiter") {
+        navigate("/recruiter-dashboard", { replace: true });
+      } else {
+        navigate("/dashboard", { replace: true });
+      }
+    } catch (err) {
+      setError(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Unable to login with demo account."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -126,9 +158,72 @@ const Login = () => {
             </h1>
 
             <p>
-              Continue building your
-              professional journey.
+              Continue building your professional journey.
             </p>
+          </div>
+
+          {/* 1-Click Quick Demo Accounts for Resume Reviewers */}
+          <div style={{
+            background: "rgba(15, 23, 42, 0.04)",
+            border: "1px solid rgba(15, 23, 42, 0.1)",
+            borderRadius: "10px",
+            padding: "14px",
+            marginBottom: "20px"
+          }}>
+            <div style={{
+              fontSize: "0.78rem",
+              fontWeight: "700",
+              letterSpacing: "0.08em",
+              textTransform: "uppercase",
+              color: "#475569",
+              marginBottom: "10px",
+              display: "flex",
+              alignItems: "center",
+              gap: "6px"
+            }}>
+              <span>⚡</span>
+              <span>1-Click Instant Demo Login (For Reviewers)</span>
+            </div>
+            
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+              <button
+                type="button"
+                onClick={() => handleDemoLogin("candidate")}
+                disabled={submitting}
+                style={{
+                  background: "#0f172a",
+                  color: "#fff",
+                  padding: "9px 12px",
+                  borderRadius: "8px",
+                  fontSize: "0.82rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                👤 Candidate Demo
+              </button>
+
+              <button
+                type="button"
+                onClick={() => handleDemoLogin("recruiter")}
+                disabled={submitting}
+                style={{
+                  background: "#2563eb",
+                  color: "#fff",
+                  padding: "9px 12px",
+                  borderRadius: "8px",
+                  fontSize: "0.82rem",
+                  fontWeight: "600",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.2s"
+                }}
+              >
+                💼 Recruiter Demo
+              </button>
+            </div>
           </div>
 
           {error && (

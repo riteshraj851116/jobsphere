@@ -22,11 +22,7 @@ const Dashboard = () => {
   const [savedCount, setSavedCount] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
-
-  const loadDashboardData = async () => {
+  const loadDashboardData = React.useCallback(async () => {
     try {
       setLoading(true);
       const [appRes, savedRes] = await Promise.allSettled([
@@ -35,17 +31,21 @@ const Dashboard = () => {
       ]);
 
       if (appRes.status === 'fulfilled') {
-        const apps = appRes.value.data?.applications || [];
+        const apps = appRes.value.data?.applications || appRes.value.applications || appRes.value.data || [];
         setApplications(apps);
       }
       if (savedRes.status === 'fulfilled') {
-        const saved = savedRes.value.data?.savedJobs || [];
+        const saved = savedRes.value.data?.savedJobs || savedRes.value.savedJobs || [];
         setSavedCount(saved.length);
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    loadDashboardData();
+  }, [loadDashboardData]);
 
   const getStatusBadge = (status) => {
     const s = status?.toLowerCase() || 'applied';

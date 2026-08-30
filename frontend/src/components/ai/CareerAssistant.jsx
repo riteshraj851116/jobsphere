@@ -1,66 +1,136 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import { sendAIMessage } from "../../services/aiService";
 import "./CareerAssistant.css";
 
 const STORAGE_KEY = "jobsphere_ai_conversation";
 
 const QUICK_PROMPTS = [
-  "Recommend jobs based on my skills",
-  "Analyze my career path",
-  "What skills should I learn next?",
-  "Help me prepare for interviews",
+  "🎯 Recommend top jobs based on my skills",
+  "📄 Analyze my resume & profile for improvements",
+  "🚀 What high-impact skills should I learn next?",
+  "💡 Prepare me for Full Stack live interview rounds",
 ];
+
+// Simple markdown formatter helper for clean bullet points, bolding, and headings
+const renderFormattedText = (text) => {
+  if (!text) return "";
+  
+  const lines = text.split("\n");
+  return lines.map((line, idx) => {
+    // Heading 4
+    if (line.startsWith("#### ")) {
+      return (
+        <h5 key={idx} style={{ margin: "8px 0 4px", fontSize: "0.95rem", fontWeight: 700, color: "#111" }}>
+          {line.replace("#### ", "")}
+        </h5>
+      );
+    }
+    // Heading 3
+    if (line.startsWith("### ")) {
+      return (
+        <h4 key={idx} style={{ margin: "10px 0 6px", fontSize: "1.05rem", fontWeight: 800, color: "#000" }}>
+          {line.replace("### ", "")}
+        </h4>
+      );
+    }
+    // Bullet item
+    if (line.trim().startsWith("- ") || line.trim().startsWith("* ")) {
+      const content = line.trim().substring(2);
+      return (
+        <div key={idx} style={{ display: "flex", gap: "8px", margin: "4px 0", paddingLeft: "4px" }}>
+          <span style={{ color: "#3b82f6", fontWeight: "bold" }}>•</span>
+          <span>{parseBold(content)}</span>
+        </div>
+      );
+    }
+    // Numbered list item
+    const numMatch = line.trim().match(/^(\d+)\.\s+(.*)/);
+    if (numMatch) {
+      return (
+        <div key={idx} style={{ display: "flex", gap: "8px", margin: "4px 0", paddingLeft: "4px" }}>
+          <span style={{ color: "#10b981", fontWeight: 700 }}>{numMatch[1]}.</span>
+          <span>{parseBold(numMatch[2])}</span>
+        </div>
+      );
+    }
+    // Regular line
+    if (!line.trim()) {
+      return <div key={idx} style={{ height: "6px" }} />;
+    }
+    return <p key={idx} style={{ margin: "4px 0", lineHeight: 1.5 }}>{parseBold(line)}</p>;
+  });
+};
+
+const parseBold = (text) => {
+  const parts = text.split(/(\*\*.*?\*\*|\*.*?\*|`.*?`)/g);
+  return parts.map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index} style={{ fontWeight: 700, color: "#111" }}>{part.slice(2, -2)}</strong>;
+    }
+    if (part.startsWith("*") && part.endsWith("*")) {
+      return <em key={index}>{part.slice(1, -1)}</em>;
+    }
+    if (part.startsWith("`") && part.endsWith("`")) {
+      return (
+        <code
+          key={index}
+          style={{
+            background: "#f1f5f9",
+            padding: "2px 5px",
+            borderRadius: "4px",
+            fontSize: "0.85em",
+            fontFamily: "monospace",
+            color: "#0f172a"
+          }}
+        >
+          {part.slice(1, -1)}
+        </code>
+      );
+    }
+    return part;
+  });
+};
 
 function CareerAssistant() {
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
 
   const [isOpen, setIsOpen] = useState(false);
 
   const [messages, setMessages] = useState(() => {
     try {
-      const savedMessages = localStorage.getItem(STORAGE_KEY);
-
-      if (savedMessages) {
-        return JSON.parse(savedMessages);
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved) {
+        return JSON.parse(saved);
       }
     } catch (error) {
-      console.error(
-        "Could not restore AI conversation:",
-        error
-      );
+      console.error("Could not restore AI conversation:", error);
     }
 
     return [
       {
-        id: Date.now(),
+        id: 1,
         role: "assistant",
         content:
-          "Hi! I'm your JobSphere AI career assistant. I can help you discover jobs, improve your career path, prepare for interviews, and identify skills to learn next.",
+          "### 🤖 JobSphere AI Career Copilot\n\nHi! I'm your AI career and interview assistant. I can analyze your resume, recommend active job matches from top tech companies, help you prepare for live coding rounds, and roadmap your technical skills.",
         recommendedJobs: [],
       },
     ];
   });
 
   const [input, setInput] = useState("");
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
   useEffect(() => {
     try {
-      localStorage.setItem(
-        STORAGE_KEY,
-        JSON.stringify(messages)
-      );
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
     } catch (error) {
-      console.error(
-        "Could not save AI conversation:",
-        error
-      );
+      console.error("Could not save AI conversation:", error);
     }
   }, [messages]);
 
@@ -71,157 +141,75 @@ function CareerAssistant() {
       }, 150);
 
       setTimeout(() => {
-        messagesEndRef.current?.scrollIntoView({
-          behavior: "smooth",
-        });
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
       }, 100);
     }
   }, [isOpen]);
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({
-      behavior: "smooth",
-    });
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isLoading]);
 
   const clearConversation = () => {
-    const welcomeMessage = {
+    const welcome = {
       id: Date.now(),
       role: "assistant",
-      content:
-        "Conversation cleared. What would you like help with?",
+      content: "### Conversation Cleared\n\nHow can I help you accelerate your tech career today?",
       recommendedJobs: [],
     };
-
-    setMessages([welcomeMessage]);
-
-    localStorage.setItem(
-      STORAGE_KEY,
-      JSON.stringify([welcomeMessage])
-    );
+    setMessages([welcome]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([welcome]));
   };
 
-  const handleSendMessage = async (
-    customMessage
-  ) => {
-    const message =
-      typeof customMessage === "string"
-        ? customMessage.trim()
-        : input.trim();
+  const handleSendMessage = async (customMessage) => {
+    const textToSend =
+      typeof customMessage === "string" ? customMessage.trim() : input.trim();
 
-    if (!message || isLoading) {
-      return;
-    }
-
-    if (!user) {
-      setMessages((previousMessages) => [
-        ...previousMessages,
-        {
-          id: Date.now(),
-          role: "assistant",
-          content:
-            "Please log in first so I can give you personalized career and job recommendations.",
-          recommendedJobs: [],
-        },
-      ]);
-
+    if (!textToSend || isLoading) {
       return;
     }
 
     const userMessage = {
       id: Date.now(),
       role: "user",
-      content: message,
+      content: textToSend,
       recommendedJobs: [],
     };
 
-    const updatedMessages = [
-      ...messages,
-      userMessage,
-    ];
-
+    const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setInput("");
     setIsLoading(true);
 
     try {
-      const conversationHistory =
-        updatedMessages
-          .filter(
-            (item) =>
-              item.role === "user" ||
-              item.role === "assistant"
-          )
-          .slice(-12)
-          .map((item) => ({
-            role: item.role,
-            content: item.content,
-          }));
+      const conversationHistory = updatedMessages
+        .filter((item) => item.role === "user" || item.role === "assistant")
+        .slice(-10)
+        .map((item) => ({
+          role: item.role,
+          content: item.content,
+        }));
 
-      const token =
-        localStorage.getItem("token");
-
-      const response = await fetch(
-        "http://localhost:5002/api/ai/chat",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-
-            ...(token
-              ? {
-                  Authorization:
-                    `Bearer ${token}`,
-                }
-              : {}),
-          },
-
-          body: JSON.stringify({
-            message,
-            conversationHistory,
-          }),
-        }
-      );
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(
-          data.message ||
-            "Failed to get AI response"
-        );
-      }
+      const res = await sendAIMessage(textToSend, conversationHistory);
+      const aiReply = res?.data?.message || res?.message || "I've analyzed your query and here are my recommendations.";
+      const recJobs = res?.data?.recommendedJobs || res?.recommendedJobs || [];
 
       const aiMessage = {
         id: Date.now() + 1,
         role: "assistant",
-        content:
-          data?.data?.message ||
-          "Sorry, I could not generate a response.",
-        recommendedJobs:
-          data?.data?.recommendedJobs || [],
+        content: aiReply,
+        recommendedJobs: recJobs,
       };
 
-      setMessages((previousMessages) => [
-        ...previousMessages,
-        aiMessage,
-      ]);
+      setMessages((prev) => [...prev, aiMessage]);
     } catch (error) {
-      console.error(
-        "AI chat error:",
-        error
-      );
-
-      setMessages((previousMessages) => [
-        ...previousMessages,
+      console.error("AI chat error:", error);
+      setMessages((prev) => [
+        ...prev,
         {
           id: Date.now() + 1,
           role: "assistant",
-          content:
-            error.message ||
-            "Something went wrong while connecting to the AI assistant.",
+          content: "Sorry, I encountered a temporary issue generating that response. Please try asking again or select one of the quick topics below.",
           recommendedJobs: [],
           isError: true,
         },
@@ -237,22 +225,15 @@ function CareerAssistant() {
   };
 
   const handleKeyDown = (event) => {
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey
-    ) {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSendMessage();
     }
   };
 
   const handleJobClick = (jobId) => {
-    if (!jobId) {
-      return;
-    }
-
+    if (!jobId) return;
     setIsOpen(false);
-
     navigate(`/jobs/${jobId}`);
   };
 
@@ -261,20 +242,12 @@ function CareerAssistant() {
       <button
         type="button"
         className="career-ai-trigger"
-        onClick={() =>
-          setIsOpen((previous) => !previous)
-        }
+        onClick={() => setIsOpen((prev) => !prev)}
         aria-label="Open JobSphere AI Assistant"
       >
         <span className="career-ai-trigger-dot" />
-
-        <span className="career-ai-trigger-text">
-          AI
-        </span>
-
-        <span className="career-ai-trigger-label">
-          Career Assistant
-        </span>
+        <span className="career-ai-trigger-text">AI</span>
+        <span className="career-ai-trigger-label">Career Copilot</span>
       </button>
 
       {isOpen && (
@@ -282,15 +255,9 @@ function CareerAssistant() {
           <div className="career-ai-header">
             <div className="career-ai-brand">
               <span className="career-ai-status" />
-
               <div>
-                <span className="career-ai-eyebrow">
-                  JOBSPHERE INTELLIGENCE
-                </span>
-
-                <h3>
-                  Career Assistant
-                </h3>
+                <span className="career-ai-eyebrow">JOBSPHERE INTELLIGENCE</span>
+                <h3>AI Career Copilot</h3>
               </div>
             </div>
 
@@ -303,16 +270,13 @@ function CareerAssistant() {
               >
                 Clear
               </button>
-
               <button
                 type="button"
-                onClick={() =>
-                  setIsOpen(false)
-                }
+                onClick={() => setIsOpen(false)}
                 className="career-ai-header-button"
                 title="Close assistant"
               >
-                Close
+                ✕
               </button>
             </div>
           </div>
@@ -324,103 +288,67 @@ function CareerAssistant() {
                 className={`career-ai-message career-ai-message-${message.role}`}
               >
                 <div className="career-ai-message-label">
-                  {message.role === "assistant"
-                    ? "JOBSPHERE AI"
-                    : "YOU"}
+                  {message.role === "assistant" ? "⚡ JOBSPHERE AI" : "👤 YOU"}
                 </div>
 
                 <div
                   className={`career-ai-message-content ${
-                    message.isError
-                      ? "career-ai-message-error"
-                      : ""
+                    message.isError ? "career-ai-message-error" : ""
                   }`}
                 >
-                  {message.content}
+                  {renderFormattedText(message.content)}
                 </div>
 
-                {message.recommendedJobs?.length >
-                  0 && (
+                {message.recommendedJobs?.length > 0 && (
                   <div className="career-ai-job-list">
                     <div className="career-ai-job-list-title">
-                      Recommended opportunities
+                      🎯 Recommended Opportunities for You
                     </div>
 
-                    {message.recommendedJobs.map(
-                      (job) => (
-                        <button
-                          type="button"
-                          key={job.id}
-                          className="career-ai-job-card"
-                          onClick={() =>
-                            handleJobClick(job.id)
-                          }
-                        >
-                          <div className="career-ai-job-top">
-                            <div>
-                              <span className="career-ai-job-title">
-                                {job.title}
-                              </span>
-
-                              <span className="career-ai-job-company">
-                                {
-                                  job.company
-                                    ?.name
-                                }
-                              </span>
-                            </div>
-
-                            {job.matchScore >
-                              0 && (
-                              <span className="career-ai-match">
-                                {job.matchScore}%
-                              </span>
-                            )}
+                    {message.recommendedJobs.map((job) => (
+                      <button
+                        type="button"
+                        key={job._id || job.id}
+                        className="career-ai-job-card"
+                        onClick={() => handleJobClick(job._id || job.id)}
+                      >
+                        <div className="career-ai-job-top">
+                          <div>
+                            <span className="career-ai-job-title">
+                              {job.title}
+                            </span>
+                            <span className="career-ai-job-company">
+                              {job.company?.name || job.companyName || "Top Company"}
+                            </span>
                           </div>
 
-                          <div className="career-ai-job-meta">
-                            {job.location && (
-                              <span>
-                                {job.location}
-                              </span>
-                            )}
-
-                            {job.jobType && (
-                              <span>
-                                {job.jobType}
-                              </span>
-                            )}
-                          </div>
-
-                          {job.skills?.length >
-                            0 && (
-                            <div className="career-ai-job-skills">
-                              {job.skills
-                                .slice(0, 3)
-                                .map((skill) => (
-                                  <span
-                                    key={
-                                      typeof skill ===
-                                      "string"
-                                        ? skill
-                                        : skill.name
-                                    }
-                                  >
-                                    {typeof skill ===
-                                    "string"
-                                      ? skill
-                                      : skill.name}
-                                  </span>
-                                ))}
-                            </div>
+                          {job.matchScore && (
+                            <span className="career-ai-match">
+                              {job.matchScore}% Match
+                            </span>
                           )}
+                        </div>
 
-                          <span className="career-ai-job-view">
-                            View opportunity →
-                          </span>
-                        </button>
-                      )
-                    )}
+                        <div className="career-ai-job-meta">
+                          {job.location && <span>📍 {job.location}</span>}
+                          {job.jobType && <span>💼 {job.jobType}</span>}
+                        </div>
+
+                        {job.skills?.length > 0 && (
+                          <div className="career-ai-job-skills">
+                            {job.skills.slice(0, 3).map((skill) => (
+                              <span key={typeof skill === "string" ? skill : skill.name}>
+                                {typeof skill === "string" ? skill : skill.name}
+                              </span>
+                            ))}
+                          </div>
+                        )}
+
+                        <span className="career-ai-job-view">
+                          View Details & Apply →
+                        </span>
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
@@ -428,10 +356,7 @@ function CareerAssistant() {
 
             {isLoading && (
               <div className="career-ai-message career-ai-message-assistant">
-                <div className="career-ai-message-label">
-                  JOBSPHERE AI
-                </div>
-
+                <div className="career-ai-message-label">⚡ JOBSPHERE AI</div>
                 <div className="career-ai-thinking">
                   <span />
                   <span />
@@ -449,46 +374,34 @@ function CareerAssistant() {
                 key={prompt}
                 type="button"
                 disabled={isLoading}
-                onClick={() =>
-                  handleSendMessage(prompt)
-                }
+                onClick={() => handleSendMessage(prompt)}
               >
                 {prompt}
               </button>
             ))}
           </div>
 
-          <form
-            className="career-ai-input-area"
-            onSubmit={handleSubmit}
-          >
+          <form className="career-ai-input-area" onSubmit={handleSubmit}>
             <textarea
               ref={inputRef}
               value={input}
-              onChange={(event) =>
-                setInput(event.target.value)
-              }
+              onChange={(event) => setInput(event.target.value)}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about jobs, skills, interviews..."
+              placeholder="Ask anything about jobs, salary, resume, or interview questions..."
               disabled={isLoading}
               rows="1"
             />
 
             <button
               type="submit"
-              disabled={
-                !input.trim() || isLoading
-              }
+              disabled={!input.trim() || isLoading}
             >
-              {isLoading
-                ? "..."
-                : "Send"}
+              {isLoading ? "..." : "Send"}
             </button>
           </form>
 
           <div className="career-ai-footer">
-            AI recommendations are based on your
-            JobSphere profile and available jobs.
+            Powered by Google Gemini & JobSphere Matchmaking Engine
           </div>
         </div>
       )}
