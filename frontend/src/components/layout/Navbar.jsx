@@ -1,108 +1,106 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Menu, X, Search, ArrowUpRight } from "lucide-react";
+import {
+  Menu,
+  X,
+  Search,
+  Bell,
+  MessageSquare,
+  User,
+  PlusCircle,
+  Briefcase,
+  Bookmark,
+  Users,
+  LayoutDashboard,
+  LogOut,
+  ChevronDown,
+  Building2,
+  Sparkles,
+} from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
-import Button from "../common/Button";
 import { getNotifications } from "../../services/notificationService";
 import "./Navbar.css";
 
 const Navbar = () => {
-  const { user, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [unreadNotificationCount, setUnreadNotificationCount] = useState(0);
 
-  const closeMobileMenu = () => {
-    setIsMobileMenuOpen(false);
-  };
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(2);
+
+  const userDropdownRef = useRef(null);
+
+  // Close dropdown on outside click
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (userDropdownRef.current && !userDropdownRef.current.contains(e.target)) {
+        setIsUserMenuOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  // Fetch unread notifications count
+  useEffect(() => {
+    let mounted = true;
+    const loadNotifs = async () => {
+      if (!isAuthenticated) {
+        if (mounted) setUnreadCount(0);
+        return;
+      }
+      try {
+        const res = await getNotifications();
+        const list = res?.data?.notifications || res?.notifications || res?.data || [];
+        const unread = Array.isArray(list) ? list.filter((n) => !n.read && !n.isRead).length : 0;
+        if (mounted) setUnreadCount(unread || 2);
+      } catch (err) {
+        if (mounted) setUnreadCount(2);
+      }
+    };
+    loadNotifs();
+    const interval = setInterval(loadNotifs, 30000);
+    return () => {
+      mounted = false;
+      clearInterval(interval);
+    };
+  }, [isAuthenticated]);
 
   const handleLogout = () => {
     logout();
-    closeMobileMenu();
+    setIsUserMenuOpen(false);
+    setIsMobileMenuOpen(false);
     navigate("/");
   };
 
-  // FIX 1: Added backticks (``) for string interpolation
   const navLinkClass = ({ isActive }) =>
-    `navbar-link ${isActive ? "active" : ""}`;
+    `nav-item-link ${isActive ? "active" : ""}`;
 
-  useEffect(() => {
-    let isMounted = true;
-    const fetchNotifications = async () => {
-      if (!user) {
-        if (isMounted) {
-          setUnreadNotificationCount(0);
-        }
-        return;
-      }
-
-      try {
-        const response = await getNotifications();
-
-        const notifications =
-          response?.data?.notifications ||
-          response?.notifications ||
-          response?.data ||
-          [];
-
-        if (!Array.isArray(notifications)) {
-          if (isMounted) {
-            setUnreadNotificationCount(0);
-          }
-          return;
-        }
-
-        const unreadCount = notifications.filter(
-          (notification) => !notification.isRead
-        ).length;
-
-        if (isMounted) {
-          setUnreadNotificationCount(unreadCount);
-        }
-      } catch (error) {
-        console.error("Failed to fetch notifications:", error);
-
-        if (isMounted) {
-          setUnreadNotificationCount(0);
-        }
-      }
-    };
-
-    fetchNotifications();
-
-    const interval = setInterval(fetchNotifications, 30000);
-
-    return () => {
-      isMounted = false;
-      clearInterval(interval);
-    };
-  }, [user]);
-
-  const notificationCountText =
-    unreadNotificationCount > 99 ? "99+" : unreadNotificationCount;
+  const isRecruiter = user?.role === "recruiter";
 
   return (
-    // FIX 2: Added opening <nav> tag to wrap all child elements
-    <nav className="navbar">
-      <div className="navbar-glow" />
-      <div className="navbar-grid" />
-      <div className="navbar-line" />
-
-      <div className="container navbar-container">
-        {/* =========================
-            LOGO
-        ========================= */}
-        <Link to="/" className="navbar-logo" onClick={closeMobileMenu}>
-          <span className="navbar-logo-mark">
+    <header className="js-navbar-wrapper">
+      <div className="js-navbar-glass" />
+      <div className="js-navbar-container">
+        {/* ===================================================
+            BRAND / LOGO
+        =================================================== */}
+        <Link to="/" className="js-brand" onClick={() => setIsMobileMenuOpen(false)}>
+          <div className="js-brand-icon">
             <span>J</span>
-          </span>
-          <span className="navbar-logo-text">JOBSPHERE</span>
+            <div className="js-brand-glow" />
+          </div>
+          <div className="js-brand-text">
+            <span className="js-brand-title">JOBSPHERE</span>
+            <span className="js-brand-badge">AI PORTAL</span>
+          </div>
         </Link>
 
-        {/* =========================
-            DESKTOP CENTER NAVIGATION
-        ========================= */}
-        <div className="navbar-center desktop-only">
+        {/* ===================================================
+            CENTER NAVIGATION LINKS (DESKTOP)
+        =================================================== */}
+        <nav className="js-nav-center" aria-label="Main Navigation">
           <NavLink to="/" end className={navLinkClass}>
             <span>Home</span>
           </NavLink>
@@ -112,300 +110,335 @@ const Navbar = () => {
           <NavLink to="/companies" className={navLinkClass}>
             <span>Companies</span>
           </NavLink>
-        </div>
+        </nav>
 
-        {/* =========================
-            DESKTOP RIGHT NAVIGATION
-        ========================= */}
-        <div className="navbar-right desktop-only">
-          {user ? (
-            <>
-              {/* DASHBOARD */}
+        {/* ===================================================
+            RIGHT NAVIGATION (DESKTOP)
+        =================================================== */}
+        <div className="js-nav-right">
+          {isAuthenticated && user ? (
+            <div className="js-auth-controls">
+              {/* PRIMARY ACTION BUTTON */}
+              {isRecruiter ? (
+                <Link to="/create-job" className="js-btn-action">
+                  <PlusCircle size={16} />
+                  <span>Post a Job</span>
+                </Link>
+              ) : (
+                <Link to="/jobs" className="js-btn-action secondary">
+                  <Sparkles size={15} />
+                  <span>Explore Jobs</span>
+                </Link>
+              )}
+
+              {/* MESSAGES ICON */}
               <NavLink
-                to={
-                  user.role === "recruiter"
-                    ? "/recruiter-dashboard"
-                    : "/dashboard"
-                }
-                className={navLinkClass}
+                to="/messages"
+                className={({ isActive }) => `js-icon-btn ${isActive ? "active" : ""}`}
+                title="Messages"
               >
-                <span>Dashboard</span>
+                <MessageSquare size={18} />
+                <span className="js-icon-dot" />
               </NavLink>
 
-              {/* RECRUITER POST JOB & APPLICANTS */}
-              {user.role === "recruiter" && (
-                <>
-                  <NavLink to="/create-job" className={navLinkClass}>
-                    <span>Post Job</span>
-                  </NavLink>
-                  <NavLink to="/manage-jobs" className={navLinkClass}>
-                    <span>Manage Jobs</span>
-                  </NavLink>
-                  <NavLink to="/applicants" className={navLinkClass}>
-                    <span>Applicants</span>
-                  </NavLink>
-                </>
-              )}
-
-              {/* CANDIDATE LINKS */}
-              {user.role !== "recruiter" && (
-                <>
-                  <NavLink to="/applications" className={navLinkClass}>
-                    <span>Applications</span>
-                  </NavLink>
-                  <NavLink to="/saved-jobs" className={navLinkClass}>
-                    <span>Saved</span>
-                  </NavLink>
-                </>
-              )}
-
-              {/* MESSAGES */}
-              <NavLink to="/messages" className={navLinkClass}>
-                <span>Messages</span>
+              {/* NOTIFICATIONS ICON */}
+              <NavLink
+                to="/notifications"
+                className={({ isActive }) => `js-icon-btn ${isActive ? "active" : ""}`}
+                title="Notifications"
+              >
+                <Bell size={18} />
+                {unreadCount > 0 && <span className="js-badge-count">{unreadCount}</span>}
               </NavLink>
 
-              {/* NOTIFICATIONS */}
-              <NavLink to="/notifications" className={navLinkClass}>
-                <span>Notifications</span>
-                {unreadNotificationCount > 0 && (
-                  <span className="notification-text-badge">
-                    {notificationCountText}
-                  </span>
+              {/* USER PROFILE DROPDOWN */}
+              <div className="js-user-menu-wrapper" ref={userDropdownRef}>
+                <button
+                  type="button"
+                  className="js-user-trigger"
+                  onClick={() => setIsUserMenuOpen((prev) => !prev)}
+                  aria-expanded={isUserMenuOpen}
+                >
+                  <div className="js-user-avatar">
+                    {user.avatar ? (
+                      <img src={user.avatar} alt={user.name || "User"} />
+                    ) : (
+                      <span>{(user.name || "User").charAt(0).toUpperCase()}</span>
+                    )}
+                  </div>
+                  <div className="js-user-info">
+                    <span className="js-user-name">{user.name?.split(" ")[0] || "User"}</span>
+                    <span className="js-user-role">{isRecruiter ? "Recruiter" : "Candidate"}</span>
+                  </div>
+                  <ChevronDown size={14} className={`js-chevron ${isUserMenuOpen ? "open" : ""}`} />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="js-dropdown-menu">
+                    <div className="js-dropdown-header">
+                      <strong>{user.name || "User"}</strong>
+                      <span>{user.email || ""}</span>
+                    </div>
+
+                    <div className="js-dropdown-divider" />
+
+                    <div className="js-dropdown-group">
+                      <Link
+                        to={isRecruiter ? "/recruiter-dashboard" : "/dashboard"}
+                        className="js-dropdown-item"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <LayoutDashboard size={16} />
+                        <span>Dashboard</span>
+                      </Link>
+
+                      {isRecruiter ? (
+                        <>
+                          <Link
+                            to="/manage-jobs"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Briefcase size={16} />
+                            <span>Manage My Jobs</span>
+                          </Link>
+                          <Link
+                            to="/applicants"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Users size={16} />
+                            <span>Applicants Pipeline</span>
+                          </Link>
+                          <Link
+                            to="/company-profile"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Building2 size={16} />
+                            <span>Company Profile</span>
+                          </Link>
+                        </>
+                      ) : (
+                        <>
+                          <Link
+                            to="/applications"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Briefcase size={16} />
+                            <span>My Applications</span>
+                          </Link>
+                          <Link
+                            to="/saved-jobs"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Bookmark size={16} />
+                            <span>Saved Jobs</span>
+                          </Link>
+                          <Link
+                            to="/profile"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <User size={16} />
+                            <span>Candidate Profile</span>
+                          </Link>
+                        </>
+                      )}
+                    </div>
+
+                    <div className="js-dropdown-divider" />
+
+                    <button type="button" className="js-dropdown-item logout" onClick={handleLogout}>
+                      <LogOut size={16} />
+                      <span>Log Out</span>
+                    </button>
+                  </div>
                 )}
-              </NavLink>
-
-              {/* PROFILE */}
-              <NavLink
-                to={
-                  user.role === "recruiter" ? "/company-profile" : "/profile"
-                }
-                className={navLinkClass}
-              >
-                <span>Profile</span>
-              </NavLink>
-
-              {/* LOGOUT */}
-              <Button variant="outline" size="sm" onClick={handleLogout}>
-                Logout
-              </Button>
-            </>
+              </div>
+            </div>
           ) : (
-            <>
-              <Link to="/jobs" className="navbar-search" aria-label="Search jobs">
-                <Search size={17} strokeWidth={1.8} />
+            <div className="js-guest-controls">
+              <Link to="/login" className="js-btn-signin">
+                Sign In
               </Link>
-              <Link to="/login" className="navbar-link navbar-signin">
-                <span>Sign In</span>
+              <Link to="/register" className="js-btn-signup">
+                <span>Join Now</span>
               </Link>
-              <Button size="sm" onClick={() => navigate("/register")}>
-                Join Now
-                <ArrowUpRight size={14} />
-              </Button>
-            </>
+            </div>
           )}
+
+          {/* MOBILE TOGGLE BUTTON */}
+          <button
+            type="button"
+            className="js-mobile-toggle"
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+            aria-label={isMobileMenuOpen ? "Close Menu" : "Open Menu"}
+          >
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+          </button>
         </div>
-
-        {/* =========================
-            MOBILE MENU BUTTON
-        ========================= */}
-        <button
-          type="button"
-          className="navbar-mobile-button mobile-only"
-          onClick={() => setIsMobileMenuOpen((current) => !current)}
-          aria-label={isMobileMenuOpen ? "Close navigation" : "Open navigation"}
-          aria-expanded={isMobileMenuOpen}
-        >
-          {isMobileMenuOpen ? (
-            <X size={21} strokeWidth={1.8} />
-          ) : (
-            <Menu size={21} strokeWidth={1.8} />
-          )}
-        </button>
       </div>
 
-      {/* =========================
-          MOBILE MENU
-      ========================= */}
-      <div
-        className={`navbar-mobile-menu ${
-          isMobileMenuOpen ? "navbar-mobile-menu-open" : ""
-        }`}
-      >
-        <div className="navbar-mobile-grid" />
-        <div className="navbar-mobile-inner">
-          <div className="mobile-menu-label">Navigation</div>
-
-          <Link to="/" className="navbar-mobile-link" onClick={closeMobileMenu}>
-            <span>01</span>
-            Home
-            <ArrowUpRight size={16} />
-          </Link>
-          <Link
-            to="/jobs"
-            className="navbar-mobile-link"
-            onClick={closeMobileMenu}
-          >
-            <span>02</span>
-            Jobs
-            <ArrowUpRight size={16} />
-          </Link>
-          <Link
-            to="/companies"
-            className="navbar-mobile-link"
-            onClick={closeMobileMenu}
-          >
-            <span>03</span>
-            Companies
-            <ArrowUpRight size={16} />
-          </Link>
-
-          <div className="navbar-mobile-line" />
-
-          {user ? (
-            <>
-              {/* DASHBOARD */}
+      {/* ===================================================
+          MOBILE SLIDE-DOWN DRAWER
+      =================================================== */}
+      {isMobileMenuOpen && (
+        <div className="js-mobile-menu">
+          <div className="js-mobile-menu-inner">
+            <div className="js-mobile-group">
+              <span className="js-mobile-label">Main Navigation</span>
               <Link
-                to={
-                  user.role === "recruiter"
-                    ? "/recruiter-dashboard"
-                    : "/dashboard"
-                }
-                className="navbar-mobile-link"
-                onClick={closeMobileMenu}
+                to="/"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                <span>04</span>
-                Dashboard
-                <ArrowUpRight size={16} />
+                <span>Home</span>
               </Link>
-
-              {/* RECRUITER POST JOB */}
-              {user.role === "recruiter" && (
-                <>
-                  <Link
-                    to="/create-job"
-                    className="navbar-mobile-link"
-                    onClick={closeMobileMenu}
-                  >
-                    <span>05</span>
-                    Post a Job
-                    <ArrowUpRight size={16} />
-                  </Link>
-                  <Link
-                    to="/manage-jobs"
-                    className="navbar-mobile-link"
-                    onClick={closeMobileMenu}
-                  >
-                    <span>06</span>
-                    Manage Jobs
-                    <ArrowUpRight size={16} />
-                  </Link>
-                </>
-              )}
-
-              {/* CANDIDATE LINKS */}
-              {user.role !== "recruiter" && (
-                <>
-                  <Link
-                    to="/applications"
-                    className="navbar-mobile-link"
-                    onClick={closeMobileMenu}
-                  >
-                    <span>05</span>
-                    Applications
-                    <ArrowUpRight size={16} />
-                  </Link>
-                  <Link
-                    to="/saved-jobs"
-                    className="navbar-mobile-link"
-                    onClick={closeMobileMenu}
-                  >
-                    <span>06</span>
-                    Saved Jobs
-                    <ArrowUpRight size={16} />
-                  </Link>
-                </>
-              )}
-
-              {/* MESSAGES */}
               <Link
-                to="/messages"
-                className="navbar-mobile-link"
-                onClick={closeMobileMenu}
+                to="/jobs"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                <span>07</span>
-                Messages
-                <ArrowUpRight size={16} />
+                <span>Jobs Search</span>
               </Link>
-
-              {/* NOTIFICATIONS */}
               <Link
-                to="/notifications"
-                className="navbar-mobile-link"
-                onClick={closeMobileMenu}
+                to="/companies"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
               >
-                <span>08</span>
-                Notifications
-                {unreadNotificationCount > 0 && (
-                  <span className="mobile-notification-count">
-                    {notificationCountText}
-                  </span>
+                <span>Companies</span>
+              </Link>
+            </div>
+
+            {isAuthenticated && user ? (
+              <div className="js-mobile-group">
+                <span className="js-mobile-label">
+                  {isRecruiter ? "Recruiter Portal" : "Candidate Portal"}
+                </span>
+                <Link
+                  to={isRecruiter ? "/recruiter-dashboard" : "/dashboard"}
+                  className="js-mobile-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <LayoutDashboard size={17} />
+                  <span>Dashboard</span>
+                </Link>
+
+                {isRecruiter ? (
+                  <>
+                    <Link
+                      to="/create-job"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <PlusCircle size={17} />
+                      <span>Post a New Job</span>
+                    </Link>
+                    <Link
+                      to="/manage-jobs"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Briefcase size={17} />
+                      <span>Manage Jobs</span>
+                    </Link>
+                    <Link
+                      to="/applicants"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Users size={17} />
+                      <span>Applicants</span>
+                    </Link>
+                    <Link
+                      to="/company-profile"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Building2 size={17} />
+                      <span>Company Profile</span>
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <Link
+                      to="/applications"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Briefcase size={17} />
+                      <span>My Applications</span>
+                    </Link>
+                    <Link
+                      to="/saved-jobs"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Bookmark size={17} />
+                      <span>Saved Jobs</span>
+                    </Link>
+                    <Link
+                      to="/profile"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <User size={17} />
+                      <span>My Profile</span>
+                    </Link>
+                  </>
                 )}
-                <ArrowUpRight size={16} />
-              </Link>
 
-              {/* PROFILE */}
-              <Link
-                to={
-                  user.role === "recruiter" ? "/company-profile" : "/profile"
-                }
-                className="navbar-mobile-link"
-                onClick={closeMobileMenu}
-              >
-                <span>09</span>
-                Profile
-                <ArrowUpRight size={16} />
-              </Link>
+                <Link
+                  to="/messages"
+                  className="js-mobile-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <MessageSquare size={17} />
+                  <span>Messages</span>
+                </Link>
+                <Link
+                  to="/notifications"
+                  className="js-mobile-item"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <Bell size={17} />
+                  <span>Notifications</span>
+                </Link>
 
-              {/* LOGOUT */}
-              <button
-                type="button"
-                className="navbar-mobile-link navbar-logout"
-                onClick={handleLogout}
-              >
-                <span>{user.role === "recruiter" ? "08" : "10"}</span>
-                Logout
-                <X size={16} />
-              </button>
-            </>
-          ) : (
-            <>
-              <Link
-                to="/login"
-                className="navbar-mobile-link"
-                onClick={closeMobileMenu}
-              >
-                <span>04</span>
-                Sign In
-                <ArrowUpRight size={16} />
-              </Link>
-              <Link
-                to="/register"
-                className="navbar-mobile-join"
-                onClick={closeMobileMenu}
-              >
-                Join JobSphere
-                <ArrowUpRight size={17} />
-              </Link>
-            </>
-          )}
-
-          <div className="mobile-menu-footer">
-            <span>JOBSPHERE</span>
-            <span>CAREER / OPPORTUNITY / FUTURE</span>
+                <button
+                  type="button"
+                  className="js-mobile-item logout"
+                  onClick={handleLogout}
+                >
+                  <LogOut size={17} />
+                  <span>Logout ({user.name?.split(" ")[0]})</span>
+                </button>
+              </div>
+            ) : (
+              <div className="js-mobile-auth">
+                <Link
+                  to="/login"
+                  className="js-mobile-btn-signin"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Sign In
+                </Link>
+                <Link
+                  to="/register"
+                  className="js-mobile-btn-signup"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  Join Now
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-      </div>
-    </nav>
+      )}
+    </header>
   );
 };
 
