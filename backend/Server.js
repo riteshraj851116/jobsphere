@@ -58,14 +58,13 @@ app.use(
   cors({
     origin: (origin, callback) => {
       // Allow requests without origin (Postman, mobile apps, curl)
-      if (!origin) {
-        return callback(null, true);
-      }
-
       if (
+        !origin ||
         allowedOrigins.includes(origin) ||
         origin.endsWith(".vercel.app") ||
-        origin.includes("localhost")
+        origin.includes("github.io") ||
+        origin.includes("localhost") ||
+        origin.includes("127.0.0.1")
       ) {
         return callback(null, true);
       }
