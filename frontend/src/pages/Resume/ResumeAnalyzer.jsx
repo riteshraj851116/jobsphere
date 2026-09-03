@@ -191,13 +191,14 @@ const ResumeAnalyzer = () => {
         detectedSkills: matchedKeywords,
         requiredSkills: [...matchedKeywords, ...missingKeywords],
         missingSkills: missingKeywords,
-        sectionAnalysis: [
-          { name: "Professional Summary", status: "pass", feedback: "Clear value proposition and headline detected." },
-          { name: "Skills Section", status: "pass", feedback: "Strong technical skill coverage found." },
-          { name: "Work Experience", status: "pass", feedback: "Chronological experience with action verbs." },
-          { name: "Education", status: "pass", feedback: "Degree and university details verified." },
-          { name: "Contact Information", status: "pass", feedback: "Valid email and phone format detected." }
-        ],
+        sectionAnalysis: {
+          contactInfo: true,
+          summary: true,
+          skills: true,
+          experience: true,
+          education: true,
+          projects: true
+        },
         suggestions: [
           "Incorporate missing keywords: GraphQL, Docker, and CI/CD pipelines to achieve a 95%+ match.",
           "Add quantifiable business metrics to your most recent project descriptions (e.g., 'improved performance by 35%').",

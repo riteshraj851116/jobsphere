@@ -26,11 +26,17 @@ router.post(
   applyForJob
 );
 
+// Get all my applications (Root GET /api/applications)
+router.get(
+  "/",
+  protect,
+  getMyApplications
+);
+
 // Get my applications
 router.get(
   "/my-applications",
   protect,
-  authorizeRoles("user"),
   getMyApplications
 );
 

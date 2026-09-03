@@ -133,7 +133,17 @@ const ResumeAnalysisResult = () => {
     atsReadability: 0
   };
 
-  const sections = analysis.sectionAnalysis || {};
+  const rawSections = analysis.sectionAnalysis || {};
+  const sections = Array.isArray(rawSections)
+    ? {
+        contactInfo: rawSections.some((s) => s.name?.toLowerCase().includes("contact")),
+        summary: rawSections.some((s) => s.name?.toLowerCase().includes("summary")),
+        skills: rawSections.some((s) => s.name?.toLowerCase().includes("skill")),
+        experience: rawSections.some((s) => s.name?.toLowerCase().includes("experience")),
+        education: rawSections.some((s) => s.name?.toLowerCase().includes("education")),
+        projects: rawSections.some((s) => s.name?.toLowerCase().includes("project"))
+      }
+    : rawSections;
 
   return (
     <div className="resume-page">
