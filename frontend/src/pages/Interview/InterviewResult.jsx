@@ -31,32 +31,42 @@ const InterviewResult = () => {
       try {
         setLoading(true);
 
-        // Check offline storage first
-        if (sessionId?.startsWith("offline-")) {
-          const cached =
-            localStorage.getItem(`interview_result_${sessionId}`) ||
-            sessionStorage.getItem(`interview_session_${sessionId}`);
-          if (cached && isMounted) {
-            setSession(JSON.parse(cached));
-            setLoading(false);
-            return;
+        // Check offline and completed cached sessions first
+        const localCached =
+          localStorage.getItem(`interview_result_${sessionId}`) ||
+          sessionStorage.getItem(`interview_session_${sessionId}`) ||
+          localStorage.getItem(`interview_session_${sessionId}`);
+        if (localCached && isMounted) {
+          try {
+            const parsed = JSON.parse(localCached);
+            if (parsed.status === "completed" || sessionId?.startsWith("offline-") || sessionId?.startsWith("mock-")) {
+              setSession(parsed);
+              setLoading(false);
+              return;
+            }
+          } catch (e) {
+            console.warn("Error parsing cached result:", e);
           }
         }
 
         const res = await getInterviewSession(sessionId);
         const data = res?.data || res?.session || res;
 
-        if (isMounted) {
+        if (isMounted && data) {
           setSession(data);
         }
       } catch (err) {
         console.error("Failed to fetch interview result:", err);
-        // Last resort: check session storage
         const fallback =
           localStorage.getItem(`interview_result_${sessionId}`) ||
-          sessionStorage.getItem(`interview_session_${sessionId}`);
+          sessionStorage.getItem(`interview_session_${sessionId}`) ||
+          localStorage.getItem(`interview_session_${sessionId}`);
         if (fallback && isMounted) {
-          setSession(JSON.parse(fallback));
+          try {
+            setSession(JSON.parse(fallback));
+          } catch (e) {
+            setError("Failed to load interview results.");
+          }
         } else if (isMounted) {
           setError(err?.message || "Failed to load interview results.");
         }
@@ -109,7 +119,19 @@ const InterviewResult = () => {
     );
   }
 
-  const questions = session.questions || [];
+  const questions = (session.questions || []).map((q, idx) => {
+    const raw = q.questionId && typeof q.questionId === "object" ? q.questionId : q;
+    return {
+      ...raw,
+      _id: raw._id || raw.id || `q-${idx}`,
+      id: raw.id || raw._id || `q-${idx}`,
+      question: raw.question || raw.text || raw.title || `Interview Question ${idx + 1}`,
+      category: raw.category || session.role || "Technical",
+      expectedAnswer: raw.expectedAnswer || raw.sampleAnswer || raw.explanation || "",
+      sampleAnswer: raw.sampleAnswer || raw.expectedAnswer || raw.explanation || "",
+      explanation: raw.explanation || ""
+    };
+  });
   const answersList = session.answers || [];
 
   const answersMap = {};
@@ -144,7 +166,7 @@ const InterviewResult = () => {
           <p className="result-meta">
             Target Role: <strong>{session.role}</strong> &bull; Difficulty:{" "}
             <span style={{ textTransform: "capitalize" }}>{session.difficulty}</span> &bull; Completed on{" "}
-            {new Date(session.completedAt || session.updatedAt).toLocaleDateString(undefined, {
+            {new Date(session.completedAt || session.updatedAt || session.startedAt || Date.now()).toLocaleDateString(undefined, {
               year: "numeric",
               month: "short",
               day: "numeric",
