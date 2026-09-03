@@ -1,0 +1,617 @@
+/* =========================================================
+   JOBSPHERE — AI RESUME ANALYZER & ATS SCORE STYLES
+   Modern, Clean, High-Contrast Professional Design
+========================================================= */
+
+.resume-page {
+  min-height: calc(100vh - var(--navbar-height));
+  background-color: var(--bg-secondary, #fafafa);
+  color: var(--text, #111111);
+  padding: 2.5rem 1rem 4rem;
+}
+
+.resume-container {
+  max-width: 980px;
+  margin: 0 auto;
+}
+
+/* Header */
+.resume-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.resume-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: var(--radius-full, 9999px);
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--accent, #2563eb);
+  margin-bottom: 1rem;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.04));
+}
+
+.resume-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.resume-subtitle {
+  font-size: 1.0625rem;
+  color: var(--text-secondary, #52525b);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.55;
+}
+
+.resume-header-actions {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 1.25rem;
+}
+
+/* Main Form Card */
+.resume-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-xl, 16px);
+  padding: 2.25rem;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+  margin-bottom: 1.5rem;
+}
+
+.step-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--text-primary, #18181b);
+  color: #ffffff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   STEP 1: UPLOAD DROPZONE
+========================================================= */
+
+.dropzone-area {
+  border: 2px dashed var(--border-strong, #d4d4d8);
+  border-radius: var(--radius-lg, 12px);
+  background: var(--surface-soft, #f7f7f5);
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+.dropzone-area:hover,
+.dropzone-area.drag-over {
+  border-color: var(--accent, #2563eb);
+  background: var(--accent-light, #eff6ff);
+}
+
+.dropzone-icon {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent, #2563eb);
+  margin: 0 auto 1rem;
+  box-shadow: var(--shadow-xs, 0 1px 2px rgba(0,0,0,0.04));
+}
+
+.dropzone-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 0.35rem;
+}
+
+.dropzone-sub {
+  font-size: 0.8125rem;
+  color: var(--text-muted, #71717a);
+}
+
+.file-input-hidden {
+  display: none;
+}
+
+/* Uploaded File Pill */
+.uploaded-file-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--border, #e4e4e7);
+  background: var(--surface, #ffffff);
+  margin-top: 1rem;
+}
+
+.file-info-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-icon-badge {
+  width: 38px;
+  height: 38px;
+  border-radius: var(--radius-md, 8px);
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #16a34a;
+}
+
+.file-name {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary, #18181b);
+  line-height: 1.3;
+}
+
+.file-size {
+  font-size: 0.75rem;
+  color: var(--text-muted, #71717a);
+}
+
+.btn-remove-file {
+  background: transparent;
+  border: none;
+  color: var(--text-muted, #71717a);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+
+.btn-remove-file:hover {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+/* =========================================================
+   STEP 2: JOB SELECTION TABS
+========================================================= */
+
+.job-tab-nav {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border, #e4e4e7);
+  margin-bottom: 1.5rem;
+}
+
+.job-tab-btn {
+  padding: 10px 18px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-muted, #71717a);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.18s ease;
+}
+
+.job-tab-btn:hover {
+  color: var(--text-primary, #18181b);
+}
+
+.job-tab-btn.active {
+  color: var(--accent, #2563eb);
+  border-bottom-color: var(--accent, #2563eb);
+}
+
+.job-selector-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.job-select-dropdown {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  border-radius: var(--radius-md, 8px);
+  border: 1.5px solid var(--border, #e4e4e7);
+  background: var(--surface, #ffffff);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--text-primary, #18181b);
+  cursor: pointer;
+}
+
+.job-select-dropdown:focus {
+  outline: none;
+  border-color: var(--accent, #2563eb);
+}
+
+.job-preview-box {
+  background: var(--surface-soft, #f7f7f5);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-lg, 12px);
+  padding: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.job-preview-title {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 0.35rem;
+}
+
+.job-preview-skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.75rem;
+}
+
+.skill-pill {
+  padding: 3px 8px;
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--text-secondary, #52525b);
+}
+
+/* =========================================================
+   ANALYZE CTA
+========================================================= */
+
+.btn-analyze-resume {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  max-width: 380px;
+  padding: 14px 28px;
+  background: var(--text-primary, #18181b);
+  color: #ffffff;
+  border: 1px solid transparent;
+  border-radius: var(--radius-lg, 12px);
+  font-size: 1.0625rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+  transition: all 0.18s ease;
+  font-family: inherit;
+  margin: 1rem auto 0;
+}
+
+.btn-analyze-resume:hover:not(:disabled) {
+  background: #000000;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0,0,0,0.07));
+}
+
+.btn-analyze-resume:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* =========================================================
+   ATS RESULT DASHBOARD
+========================================================= */
+
+.ats-hero {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-xl, 16px);
+  padding: 2.5rem 2rem;
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.06));
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 2rem;
+}
+
+.ats-score-display {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
+}
+
+.score-circle-wrapper {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid;
+  flex-shrink: 0;
+}
+
+.score-circle-wrapper.excellent {
+  border-color: #16a34a;
+  background: #f0fdf4;
+  color: #16a34a;
+}
+
+.score-circle-wrapper.good {
+  border-color: var(--accent, #2563eb);
+  background: var(--accent-light, #eff6ff);
+  color: var(--accent, #2563eb);
+}
+
+.score-circle-wrapper.moderate {
+  border-color: #d97706;
+  background: #fffbeb;
+  color: #d97706;
+}
+
+.score-circle-wrapper.poor {
+  border-color: #dc2626;
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.score-big-num {
+  font-size: 2.25rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.score-max-num {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.8;
+  margin-top: 2px;
+}
+
+.ats-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: var(--radius-full, 9999px);
+  font-size: 0.875rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.ats-status-badge.excellent {
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+}
+
+.ats-status-badge.good {
+  background: var(--accent-light, #eff6ff);
+  color: var(--accent, #2563eb);
+  border: 1px solid #bfdbfe;
+}
+
+.ats-status-badge.moderate {
+  background: #fffbeb;
+  color: #d97706;
+  border: 1px solid #fde68a;
+}
+
+.ats-status-badge.poor {
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
+/* =========================================================
+   SCORE BREAKDOWN PROGRESS BARS
+========================================================= */
+
+.breakdown-card {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-xl, 16px);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.breakdown-row {
+  margin-bottom: 1.25rem;
+}
+
+.breakdown-row:last-child {
+  margin-bottom: 0;
+}
+
+.breakdown-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary, #18181b);
+  margin-bottom: 0.4rem;
+}
+
+.breakdown-bar-track {
+  height: 8px;
+  background: var(--surface-muted, #f3f4f6);
+  border-radius: var(--radius-full, 9999px);
+  overflow: hidden;
+}
+
+.breakdown-bar-fill {
+  height: 100%;
+  border-radius: var(--radius-full, 9999px);
+  transition: width 0.4s ease;
+}
+
+/* =========================================================
+   KEYWORD & SKILLS ANALYSIS PILLS
+========================================================= */
+
+.analysis-grid-2col {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.keywords-tag-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.75rem;
+}
+
+.tag-matched {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.tag-missing {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  background: #fef2f2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+  border-radius: var(--radius-md, 6px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+/* =========================================================
+   SECTION CHECKLIST
+========================================================= */
+
+.section-checks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 12px;
+  margin-top: 1rem;
+}
+
+.section-check-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid var(--border, #e4e4e7);
+  background: var(--surface-soft, #f7f7f5);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.section-check-item.found {
+  border-color: #bbf7d0;
+  background: #f0fdf4;
+  color: #166534;
+}
+
+.section-check-item.missing {
+  border-color: #fecaca;
+  background: #fef2f2;
+  color: #991b1b;
+}
+
+/* =========================================================
+   SUGGESTIONS LIST
+========================================================= */
+
+.suggestion-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.suggestion-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: var(--radius-lg, 12px);
+  border: 1px solid #bfdbfe;
+  background: #eff6ff;
+  font-size: 0.9375rem;
+  color: #1e40af;
+  line-height: 1.5;
+}
+
+/* =========================================================
+   RESPONSIVE ADJUSTMENTS
+========================================================= */
+
+@media (max-width: 640px) {
+  .resume-page {
+    padding: 1.5rem 0.75rem 3rem;
+  }
+
+  .resume-card,
+  .ats-hero,
+  .breakdown-card {
+    padding: 1.5rem 1rem;
+  }
+
+  .resume-title {
+    font-size: 1.75rem;
+  }
+
+  .ats-hero {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .analysis-grid-2col {
+    grid-template-columns: 1fr;
+  }
+}

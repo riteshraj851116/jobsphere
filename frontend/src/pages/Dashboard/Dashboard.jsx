@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import { getMyApplications } from '../../services/applicationService';
 import { getSavedJobs } from '../../services/userService';
-import { Briefcase, Bookmark, CheckCircle, Clock, Search } from 'lucide-react';
+import { Briefcase, Bookmark, CheckCircle, Clock, Search, GraduationCap, FileSearch } from 'lucide-react';
 import DataFlow from '../../components/three/DataFlow';
 import './Dashboard.css';
 
@@ -83,6 +83,12 @@ const Dashboard = () => {
             </Link>
             <Link to="/profile" className="dash-nav-item">
               <Clock size={18} /> My Profile
+            </Link>
+            <Link to="/interview-practice" className="dash-nav-item">
+              <GraduationCap size={18} /> Interview Practice
+            </Link>
+            <Link to="/resume-analyzer" className="dash-nav-item">
+              <FileSearch size={18} /> Resume Analyzer
             </Link>
             <Link to="/jobs" className="dash-nav-item dash-nav-item--cta">
               <Search size={18} /> Browse Jobs

@@ -27,6 +27,15 @@ import CreateJob from "./pages/Recruiter/CreateJob.jsx";
 import ManageJobs from "./pages/Recruiter/ManageJobs.jsx";
 import Applicants from "./pages/Recruiter/Applicants.jsx";
 
+import InterviewPractice from "./pages/Interview/InterviewPractice.jsx";
+import InterviewSession from "./pages/Interview/InterviewSession.jsx";
+import InterviewResult from "./pages/Interview/InterviewResult.jsx";
+import InterviewHistory from "./pages/Interview/InterviewHistory.jsx";
+
+import ResumeAnalyzer from "./pages/Resume/ResumeAnalyzer.jsx";
+import ResumeAnalysisResult from "./pages/Resume/ResumeAnalysisResult.jsx";
+import ResumeAnalysisHistory from "./pages/Resume/ResumeAnalysisHistory.jsx";
+
 const NotFound = () => {
   return (
     <div
@@ -71,6 +80,17 @@ const App = () => {
             <Route path="/messages" element={<Messages />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profile" element={<CandidateProfile />} />
+            
+            {/* INTERVIEW PRACTICE ROUTES */}
+            <Route path="/interview-practice" element={<InterviewPractice />} />
+            <Route path="/interview-practice/session/:sessionId" element={<InterviewSession />} />
+            <Route path="/interview-practice/result/:sessionId" element={<InterviewResult />} />
+            <Route path="/interview-practice/history" element={<InterviewHistory />} />
+            
+            {/* RESUME ANALYZER ROUTES */}
+            <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
+            <Route path="/resume-analyzer/result/:analysisId" element={<ResumeAnalysisResult />} />
+            <Route path="/resume-analyzer/history" element={<ResumeAnalysisHistory />} />
             
             {/* RECRUITER ROUTES */}
             <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />

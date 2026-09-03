@@ -25,6 +25,12 @@ router.post(
 
 // Get feed
 router.get(
+  "/",
+  protect,
+  getFeed
+);
+
+router.get(
   "/feed",
   protect,
   getFeed

@@ -22,6 +22,8 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const connectionRoutes = require("./routes/connectionRoutes");
 const aiRoutes = require("./routes/aiRoutes");
+const interviewRoutes = require("./routes/interviewRoutes");
+const resumeRoutes = require("./routes/resumeRoutes");
 
 // ==============================
 // APP & SERVER
@@ -126,6 +128,8 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/connections", connectionRoutes);
 
 app.use("/api/ai", aiRoutes);
+app.use("/api/interview", interviewRoutes);
+app.use("/api/resume", resumeRoutes);
 
 // ==============================
 // SOCKET.IO

@@ -54,6 +54,7 @@ router.delete("/me/experience/:experienceId", protect, deleteExperience);
 ================================== */
 router.get("/saved-jobs", protect, getSavedJobs);
 router.post("/saved-jobs/:jobId", protect, saveJob);
+router.delete("/saved-jobs/:jobId", protect, saveJob);
 router.post("/save-job/:jobId", protect, saveJob);
 
 /* ==================================

@@ -14,6 +14,8 @@ import {
   BookmarkCheck,
   MessageCircle,
   X,
+  Sparkles,
+  FileSearch,
 } from "lucide-react";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -303,6 +305,16 @@ const JobDetails = () => {
               >
                 <MessageCircle size={18} />
                 <span>Message Recruiter</span>
+              </button>
+
+              <button
+                type="button"
+                className="message-job-button"
+                style={{ background: "#eff6ff", borderColor: "#bfdbfe", color: "#2563eb" }}
+                onClick={() => navigate(`/resume-analyzer?jobId=${job._id}`)}
+              >
+                <FileSearch size={18} />
+                <span>Check Resume Match</span>
               </button>
 
               <div className="secondary-actions">

@@ -383,10 +383,50 @@ const removeConnection = async (req, res) => {
 };
 
 
+// ==========================================
+// GET CONNECTION SUGGESTIONS
+// ==========================================
+
+const getConnectionSuggestions = async (req, res) => {
+  try {
+    const existingConnections = await Connection.find({
+      $or: [{ sender: req.user._id }, { receiver: req.user._id }]
+    });
+
+    const connectedUserIds = [
+      req.user._id,
+      ...existingConnections.map((c) =>
+        c.sender.toString() === req.user._id.toString() ? c.receiver : c.sender
+      )
+    ];
+
+    const suggestions = await User.find({
+      _id: { $nin: connectedUserIds }
+    })
+      .select("name username profilePicture headline location skills role")
+      .limit(10);
+
+    res.status(200).json({
+      success: true,
+      data: {
+        suggestions,
+        total: suggestions.length
+      }
+    });
+  } catch (error) {
+    console.error("Get Suggestions Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching connection suggestions"
+    });
+  }
+};
+
 module.exports = {
   sendConnectionRequest,
   getPendingRequests,
   respondToRequest,
   getMyConnections,
-  removeConnection
+  removeConnection,
+  getConnectionSuggestions
 };

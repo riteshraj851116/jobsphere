@@ -16,6 +16,8 @@ import {
   ChevronDown,
   Building2,
   Sparkles,
+  GraduationCap,
+  FileSearch,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { getNotifications } from "../../services/notificationService";
@@ -109,6 +111,12 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/companies" className={navLinkClass}>
             <span>Companies</span>
+          </NavLink>
+          <NavLink to="/interview-practice" className={navLinkClass}>
+            <span>Interview Practice</span>
+          </NavLink>
+          <NavLink to="/resume-analyzer" className={navLinkClass}>
+            <span>Resume Analyzer</span>
           </NavLink>
         </nav>
 
@@ -244,6 +252,22 @@ const Navbar = () => {
                           >
                             <User size={16} />
                             <span>Candidate Profile</span>
+                          </Link>
+                          <Link
+                            to="/interview-practice"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <GraduationCap size={16} />
+                            <span>Interview Practice</span>
+                          </Link>
+                          <Link
+                            to="/resume-analyzer"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <FileSearch size={16} />
+                            <span>Resume Analyzer</span>
                           </Link>
                         </>
                       )}
@@ -387,6 +411,22 @@ const Navbar = () => {
                     >
                       <User size={17} />
                       <span>My Profile</span>
+                    </Link>
+                    <Link
+                      to="/interview-practice"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <GraduationCap size={17} />
+                      <span>Interview Practice</span>
+                    </Link>
+                    <Link
+                      to="/resume-analyzer"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <FileSearch size={17} />
+                      <span>Resume Analyzer</span>
                     </Link>
                   </>
                 )}

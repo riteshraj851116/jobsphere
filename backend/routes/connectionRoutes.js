@@ -5,7 +5,8 @@ const {
   getPendingRequests,
   respondToRequest,
   getMyConnections,
-  removeConnection
+  removeConnection,
+  getConnectionSuggestions
 } = require("../controllers/connectionController");
 
 const { protect } = require("../middleware/authMiddleware");
@@ -24,6 +25,13 @@ router.get(
   "/requests",
   protect,
   getPendingRequests
+);
+
+// Suggestions
+router.get(
+  "/suggestions",
+  protect,
+  getConnectionSuggestions
 );
 
 // Accept / reject request
