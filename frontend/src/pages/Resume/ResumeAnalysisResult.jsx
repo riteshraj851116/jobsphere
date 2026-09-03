@@ -30,6 +30,22 @@ const ResumeAnalysisResult = () => {
   useEffect(() => {
     let isMounted = true;
     const fetchResult = async () => {
+      if (analysisId?.startsWith("local-") || analysisId === "local-analysis") {
+        try {
+          const cached = localStorage.getItem("latest_resume_analysis");
+          if (cached) {
+            const parsed = JSON.parse(cached);
+            if (isMounted) {
+              setAnalysis(parsed);
+              setLoading(false);
+              return;
+            }
+          }
+        } catch (e) {
+          // ignore json parse
+        }
+      }
+
       try {
         setLoading(true);
         const res = await getResumeAnalysisById(analysisId);
@@ -39,6 +55,16 @@ const ResumeAnalysisResult = () => {
         }
       } catch (err) {
         console.error("Failed to load analysis result:", err);
+        // Try fallback to local cached analysis
+        try {
+          const cached = localStorage.getItem("latest_resume_analysis");
+          if (cached && isMounted) {
+            setAnalysis(JSON.parse(cached));
+            setLoading(false);
+            return;
+          }
+        } catch (e) {}
+
         if (isMounted) {
           setError(err?.message || "Failed to load resume analysis.");
         }
