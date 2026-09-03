@@ -1,0 +1,28 @@
+{
+  "name": "jobsphere-monorepo",
+  "version": "1.0.0",
+  "description": "JobSphere - Advanced Career Intelligence Platform",
+  "main": "api/index.js",
+  "scripts": {
+    "start": "node backend/Server.js",
+    "dev:backend": "node backend/Server.js",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build": "cd frontend && npm run build"
+  },
+  "dependencies": {
+    "@google/genai": "^2.19.0",
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.20.0",
+    "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mammoth": "^1.12.2",
+    "mongoose": "^8.18.0",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0",
+    "pdf-parse": "^2.4.5",
+    "socket.io": "^4.8.3"
+  }
+}
