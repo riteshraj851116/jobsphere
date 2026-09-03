@@ -8,12 +8,9 @@ const connectDB = async () => {
   }
 
   try {
-    const mongoURI = process.env.MONGODB_URI;
-
-    if (!mongoURI) {
-      console.error("❌ MONGODB_URI is not defined in environment variables");
-      return;
-    }
+    const mongoURI =
+      process.env.MONGODB_URI ||
+      "mongodb+srv://CarRentalDB:raj123@cluster0.vpfltmb.mongodb.net/JobSphere?retryWrites=true&w=majority";
 
     const connection = await mongoose.connect(mongoURI, {
       bufferCommands: false,
@@ -26,7 +23,7 @@ const connectDB = async () => {
     return connection;
   } catch (error) {
     console.error("❌ MongoDB connection failed:", error.message);
-    if (process.env.NODE_ENV !== "production") {
+    if (!process.env.VERCEL && process.env.NODE_ENV === "development" && require.main === module) {
       process.exit(1);
     }
   }

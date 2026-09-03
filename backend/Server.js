@@ -37,7 +37,7 @@ const server = http.createServer(app);
 // DATABASE
 // ==============================
 
-if (!process.env.VERCEL) {
+if (require.main === module && !process.env.VERCEL) {
   connectDB();
 }
 
@@ -95,6 +95,16 @@ app.use(
     limit: "10mb",
   })
 );
+
+// Database connection assurance for serverless environments
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+  } catch (e) {
+    console.warn("DB connection warning in middleware:", e.message);
+  }
+  next();
+});
 
 // ==============================
 // HEALTH CHECK
@@ -210,7 +220,7 @@ app.use((error, req, res, next) => {
 
 const PORT = process.env.PORT || 5002;
 
-if (!process.env.VERCEL) {
+if (require.main === module && !process.env.VERCEL) {
   server.listen(PORT, () => {
     console.log("");
     console.log("======================================");
