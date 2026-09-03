@@ -4,8 +4,8 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   
-  // URL mein '/jobsphere/' laane ke liye (GitHub Pages ke liye zaroori hai)
-  base: "/jobsphere/",
+  // Dynamic base URL for Vercel / GitHub Pages / local
+  base: process.env.VITE_BASE_URL || (process.env.VERCEL ? "/" : "/jobsphere/"),
 
   server: {
     proxy: {

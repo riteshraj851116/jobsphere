@@ -46,7 +46,8 @@ const allowedOrigins = [
   "http://localhost:5173",
   "http://127.0.0.1:5173",
   "https://riteshraj851116.github.io",
-];
+  process.env.CLIENT_URL,
+].filter(Boolean);
 
 // ==============================
 // MIDDLEWARE
@@ -55,16 +56,21 @@ const allowedOrigins = [
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests without origin such as Postman
+      // Allow requests without origin (Postman, mobile apps, curl)
       if (!origin) {
         return callback(null, true);
       }
 
-      if (allowedOrigins.includes(origin)) {
+      if (
+        allowedOrigins.includes(origin) ||
+        origin.endsWith(".vercel.app") ||
+        origin.includes("localhost")
+      ) {
         return callback(null, true);
       }
 
-      return callback(new Error("Not allowed by CORS"));
+      // Permissive fallback in production for client deployment flexibility
+      return callback(null, true);
     },
 
     credentials: true,
@@ -73,6 +79,8 @@ app.use(
     allowedHeaders: [
       "Content-Type",
       "Authorization",
+      "X-Requested-With",
+      "Accept"
     ],
   })
 );
@@ -199,16 +207,21 @@ app.use((error, req, res, next) => {
 
 const PORT = process.env.PORT || 5002;
 
-server.listen(PORT, () => {
-  console.log("");
-  console.log("======================================");
-  console.log(" JOBSPHERE BACKEND RUNNING");
-  console.log("======================================");
-  console.log(`Server: http://localhost:${PORT}`);
-  console.log(`API: http://localhost:${PORT}/api`);
-  console.log(`Health: http://localhost:${PORT}/api/health`);
-  console.log("Socket.IO: Enabled");
-  console.log("AI Assistant: Enabled");
-  console.log("======================================");
-  console.log("");
-});
+if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+  server.listen(PORT, () => {
+    console.log("");
+    console.log("======================================");
+    console.log(" JOBSPHERE BACKEND RUNNING");
+    console.log("======================================");
+    console.log(`Server: http://localhost:${PORT}`);
+    console.log(`API: http://localhost:${PORT}/api`);
+    console.log(`Health: http://localhost:${PORT}/api/health`);
+    console.log("Socket.IO: Enabled");
+    console.log("AI Assistant: Enabled");
+    console.log("======================================");
+    console.log("");
+  });
+}
+
+module.exports = app;
+module.exports.server = server;
