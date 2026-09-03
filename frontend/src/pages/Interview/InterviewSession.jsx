@@ -56,8 +56,18 @@ const InterviewSession = () => {
           return;
         }
 
+        // Normalise questions — offline sessions nest question inside questionId
+        const normalizedQuestions = data.questions.map((q) => {
+          if (q.questionId && typeof q.questionId === "object") {
+            return { ...q.questionId, _id: q.questionId._id || q._id };
+          }
+          return q;
+        });
+
+        const normalizedSession = { ...data, questions: normalizedQuestions };
+
         if (isMounted) {
-          setSession(data);
+          setSession(normalizedSession);
 
           // Populate answersMap
           const initialMap = {};
@@ -83,7 +93,7 @@ const InterviewSession = () => {
           }
 
           // Set active question answer
-          const firstQ = data.questions[0];
+          const firstQ = normalizedQuestions[0];
           if (firstQ) {
             const firstQId = firstQ._id || firstQ.id;
             setCurrentText(initialMap[firstQId]?.answer || "");

@@ -61,20 +61,29 @@ api.interceptors.response.use(
 
     const isAuthRequest =
       requestUrl.includes("/auth/login") ||
-      requestUrl.includes("/auth/register");
+      requestUrl.includes("/auth/register") ||
+      requestUrl.includes("/auth/me");
 
+    // Only clear session and redirect on 401 if this is NOT an auth request
+    // and the user does NOT have a valid cached session (demo users are always kept)
     if (status === 401 && !isAuthRequest) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      localStorage.removeItem("refreshToken");
+      const cachedUser = localStorage.getItem("user");
+      const token = localStorage.getItem("token");
 
-      if (typeof window !== "undefined") {
-        const isGitHubPages =
-          window.location.pathname.startsWith("/jobsphere/");
+      // Only redirect if there's truly no cached session
+      if (!cachedUser || !token) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("refreshToken");
 
-        window.location.href = isGitHubPages
-          ? "/jobsphere/login"
-          : "/login";
+        if (typeof window !== "undefined") {
+          const isGitHubPages =
+            window.location.pathname.startsWith("/jobsphere/");
+
+          window.location.href = isGitHubPages
+            ? "/jobsphere/login"
+            : "/login";
+        }
       }
     }
 

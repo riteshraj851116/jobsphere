@@ -30,6 +30,19 @@ const InterviewResult = () => {
     const fetchResult = async () => {
       try {
         setLoading(true);
+
+        // Check offline storage first
+        if (sessionId?.startsWith("offline-")) {
+          const cached =
+            localStorage.getItem(`interview_result_${sessionId}`) ||
+            sessionStorage.getItem(`interview_session_${sessionId}`);
+          if (cached && isMounted) {
+            setSession(JSON.parse(cached));
+            setLoading(false);
+            return;
+          }
+        }
+
         const res = await getInterviewSession(sessionId);
         const data = res?.data || res?.session || res;
 
@@ -38,7 +51,13 @@ const InterviewResult = () => {
         }
       } catch (err) {
         console.error("Failed to fetch interview result:", err);
-        if (isMounted) {
+        // Last resort: check session storage
+        const fallback =
+          localStorage.getItem(`interview_result_${sessionId}`) ||
+          sessionStorage.getItem(`interview_session_${sessionId}`);
+        if (fallback && isMounted) {
+          setSession(JSON.parse(fallback));
+        } else if (isMounted) {
           setError(err?.message || "Failed to load interview results.");
         }
       } finally {
