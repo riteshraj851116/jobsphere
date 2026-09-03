@@ -18,6 +18,7 @@ import {
   Sparkles,
   GraduationCap,
   FileSearch,
+  Map,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { getNotifications } from "../../services/notificationService";
@@ -117,6 +118,9 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/resume-analyzer" className={navLinkClass}>
             <span>Resume Analyzer</span>
+          </NavLink>
+          <NavLink to="/career-roadmap" className={navLinkClass}>
+            <span>Career Roadmap</span>
           </NavLink>
         </nav>
 
@@ -268,6 +272,14 @@ const Navbar = () => {
                           >
                             <FileSearch size={16} />
                             <span>Resume Analyzer</span>
+                          </Link>
+                          <Link
+                            to="/career-roadmap"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Map size={16} />
+                            <span>Career Roadmap</span>
                           </Link>
                         </>
                       )}
@@ -427,6 +439,14 @@ const Navbar = () => {
                     >
                       <FileSearch size={17} />
                       <span>Resume Analyzer</span>
+                    </Link>
+                    <Link
+                      to="/career-roadmap"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Map size={17} />
+                      <span>Career Roadmap</span>
                     </Link>
                   </>
                 )}

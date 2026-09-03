@@ -1,0 +1,78 @@
+const express = require("express");
+const {
+  getRecommendedJobs,
+  getJobMatchScore,
+  getCareerRoadmap,
+  toggleRoadmapSkill,
+  getSkillGap,
+  getDashboardAnalytics,
+  getBookmarks,
+  toggleBookmark,
+  getInterviewAnalytics,
+  getJobAlerts,
+  createJobAlert,
+  toggleJobAlert,
+  deleteJobAlert,
+  getSavedSearches,
+  createSavedSearch,
+  deleteSavedSearch,
+  toggleFollowCompany,
+  getFollowedCompanies,
+  compareJobs,
+  updateApplicationStage,
+  addApplicationNote,
+  addApplicationReminder,
+  toggleApplicationReminder,
+  exportUserData
+} = require("../controllers/careerController");
+const { protect } = require("../middleware/authMiddleware");
+
+const router = express.Router();
+
+// 1. Recommendations & Match Scores
+router.get("/recommendations", protect, getRecommendedJobs);
+router.get("/match-score/:jobId", protect, getJobMatchScore);
+
+// 2. Career Roadmap
+router.get("/roadmap", protect, getCareerRoadmap);
+router.put("/roadmap/toggle-skill", protect, toggleRoadmapSkill);
+
+// 3. Skill Gap Analyzer
+router.get("/skill-gap", protect, getSkillGap);
+
+// 4. Unified Dashboard Analytics
+router.get("/dashboard-analytics", protect, getDashboardAnalytics);
+
+// 5. Bookmarks & Interview Analytics
+router.get("/interview/bookmarks", protect, getBookmarks);
+router.post("/interview/bookmarks", protect, toggleBookmark);
+router.get("/interview/analytics", protect, getInterviewAnalytics);
+
+// 6. Job Alerts
+router.get("/alerts", protect, getJobAlerts);
+router.post("/alerts", protect, createJobAlert);
+router.patch("/alerts/:id/toggle", protect, toggleJobAlert);
+router.delete("/alerts/:id", protect, deleteJobAlert);
+
+// 7. Saved Searches
+router.get("/saved-searches", protect, getSavedSearches);
+router.post("/saved-searches", protect, createSavedSearch);
+router.delete("/saved-searches/:id", protect, deleteSavedSearch);
+
+// 8. Company Follows
+router.post("/companies/:companyId/follow", protect, toggleFollowCompany);
+router.get("/companies/followed", protect, getFollowedCompanies);
+
+// 9. Job Comparison
+router.post("/jobs/compare", protect, compareJobs);
+
+// 10. Application Tracker Actions
+router.patch("/applications/:id/stage", protect, updateApplicationStage);
+router.post("/applications/:id/notes", protect, addApplicationNote);
+router.post("/applications/:id/reminders", protect, addApplicationReminder);
+router.patch("/applications/:id/reminders/:reminderId", protect, toggleApplicationReminder);
+
+// 11. Export Data
+router.get("/export", protect, exportUserData);
+
+module.exports = router;

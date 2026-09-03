@@ -209,6 +209,47 @@ const userSchema = new mongoose.Schema(
         type: mongoose.Schema.Types.ObjectId,
         ref: "Job"
       }
+    ],
+
+    followedCompanies: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Company"
+      }
+    ],
+
+    categorizedSkills: [
+      {
+        name: { type: String, trim: true },
+        category: {
+          type: String,
+          enum: [
+            "Frontend",
+            "Backend",
+            "Database",
+            "DevOps",
+            "Programming Language",
+            "Tools",
+            "Soft Skills"
+          ],
+          default: "Frontend"
+        },
+        level: {
+          type: String,
+          enum: ["Beginner", "Intermediate", "Advanced"],
+          default: "Intermediate"
+        }
+      }
+    ],
+
+    projects: [
+      {
+        title: { type: String, trim: true },
+        description: { type: String, trim: true },
+        technologies: [{ type: String, trim: true }],
+        link: { type: String, trim: true },
+        github: { type: String, trim: true }
+      }
     ]
   },
   {

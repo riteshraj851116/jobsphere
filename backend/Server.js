@@ -24,6 +24,7 @@ const connectionRoutes = require("./routes/connectionRoutes");
 const aiRoutes = require("./routes/aiRoutes");
 const interviewRoutes = require("./routes/interviewRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
+const careerRoutes = require("./routes/careerRoutes");
 
 // ==============================
 // APP & SERVER
@@ -138,6 +139,7 @@ app.use("/api/connections", connectionRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/interview", interviewRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/career", careerRoutes);
 
 // ==============================
 // SOCKET.IO

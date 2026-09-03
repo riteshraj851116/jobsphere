@@ -36,6 +36,13 @@ import ResumeAnalyzer from "./pages/Resume/ResumeAnalyzer.jsx";
 import ResumeAnalysisResult from "./pages/Resume/ResumeAnalysisResult.jsx";
 import ResumeAnalysisHistory from "./pages/Resume/ResumeAnalysisHistory.jsx";
 
+import CareerRoadmap from "./pages/Career/CareerRoadmap.jsx";
+import SkillGapAnalyzer from "./pages/Career/SkillGapAnalyzer.jsx";
+import JobComparison from "./pages/Career/JobComparison.jsx";
+import JobAlerts from "./pages/Career/JobAlerts.jsx";
+import InterviewBookmarks from "./pages/Interview/InterviewBookmarks.jsx";
+import InterviewAnalytics from "./pages/Interview/InterviewAnalytics.jsx";
+
 const NotFound = () => {
   return (
     <div
@@ -86,11 +93,19 @@ const App = () => {
             <Route path="/interview-practice/session/:sessionId" element={<InterviewSession />} />
             <Route path="/interview-practice/result/:sessionId" element={<InterviewResult />} />
             <Route path="/interview-practice/history" element={<InterviewHistory />} />
+            <Route path="/interview-practice/bookmarks" element={<InterviewBookmarks />} />
+            <Route path="/interview-practice/analytics" element={<InterviewAnalytics />} />
             
             {/* RESUME ANALYZER ROUTES */}
             <Route path="/resume-analyzer" element={<ResumeAnalyzer />} />
             <Route path="/resume-analyzer/result/:analysisId" element={<ResumeAnalysisResult />} />
             <Route path="/resume-analyzer/history" element={<ResumeAnalysisHistory />} />
+
+            {/* CAREER PLATFORM ROUTES */}
+            <Route path="/career-roadmap" element={<CareerRoadmap />} />
+            <Route path="/skill-gap" element={<SkillGapAnalyzer />} />
+            <Route path="/jobs/compare" element={<JobComparison />} />
+            <Route path="/job-alerts" element={<JobAlerts />} />
             
             {/* RECRUITER ROUTES */}
             <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />

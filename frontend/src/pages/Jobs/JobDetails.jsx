@@ -22,6 +22,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { getJobById } from "../../services/jobService";
 import { saveJob } from "../../services/userService";
 import { applyForJob, getMyApplications } from "../../services/applicationService";
+import { getJobMatchScore } from "../../services/careerService";
 import Loader from "../../components/common/Loader";
 
 import CareerGraph from "../../components/three/CareerGraph";
@@ -35,6 +36,7 @@ const JobDetails = () => {
   const { user, isAuthenticated } = useAuth();
 
   const [job, setJob] = useState(null);
+  const [matchData, setMatchData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -79,6 +81,14 @@ const JobDetails = () => {
             (app) => String(app?.job?._id || app?.job) === String(id)
           );
           setHasApplied(applied);
+
+          // Fetch job match score
+          try {
+            const matchRes = await getJobMatchScore(id);
+            setMatchData(matchRes);
+          } catch (mErr) {
+            console.warn("Could not calculate match score:", mErr);
+          }
         } catch (err) {
           console.warn("Could not check application status:", err);
         }
@@ -336,6 +346,70 @@ const JobDetails = () => {
       <section className="job-details-content">
         <div className="container details-layout">
           <article className="job-description">
+            {/* JOB MATCH SCORECARD WIDGET */}
+            {matchData && (
+              <div
+                style={{
+                  background: "linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)",
+                  border: "1px solid #bfdbfe",
+                  borderRadius: "16px",
+                  padding: "1.5rem",
+                  marginBottom: "2rem"
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "12px", marginBottom: "1rem" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                    <div
+                      style={{
+                        width: "52px",
+                        height: "52px",
+                        borderRadius: "50%",
+                        background: "#2563eb",
+                        color: "#ffffff",
+                        fontWeight: "800",
+                        fontSize: "1.125rem",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        boxShadow: "0 4px 10px rgba(37, 99, 235, 0.3)"
+                      }}
+                    >
+                      {matchData.matchScore}%
+                    </div>
+                    <div>
+                      <div style={{ fontSize: "1.0625rem", fontWeight: "800", color: "#0f172a" }}>
+                        Your Profile Match
+                      </div>
+                      <p style={{ margin: 0, fontSize: "0.8125rem", color: "#64748b" }}>
+                        {matchData.explanation}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    className="btn-session primary"
+                    onClick={() => navigate(`/resume-analyzer?jobId=${job._id}`)}
+                    style={{ padding: "6px 14px", fontSize: "0.8125rem" }}
+                  >
+                    <Sparkles size={14} />
+                    <span>Improve My Match</span>
+                  </button>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: "12px", fontSize: "0.8125rem" }}>
+                  <div>
+                    <span style={{ fontWeight: "700", color: "#16a34a" }}>✓ Matched Skills: </span>
+                    <span style={{ color: "#334155" }}>{matchData.matchedSkills?.join(", ") || "None"}</span>
+                  </div>
+                  <div>
+                    <span style={{ fontWeight: "700", color: "#dc2626" }}>✗ Missing Skills: </span>
+                    <span style={{ color: "#64748b" }}>{matchData.missingSkills?.join(", ") || "None"}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div className="detail-block">
               <span className="block-number">01</span>
               <div>

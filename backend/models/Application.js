@@ -51,6 +51,44 @@ const applicationSchema = new mongoose.Schema(
       default: "Applied"
     },
 
+    stage: {
+      type: String,
+      enum: [
+        "Saved",
+        "Applied",
+        "Under Review",
+        "Interview",
+        "Technical Round",
+        "Offer",
+        "Rejected"
+      ],
+      default: "Applied"
+    },
+
+    candidateNotes: [
+      {
+        text: { type: String, trim: true, required: true },
+        createdAt: { type: Date, default: Date.now }
+      }
+    ],
+
+    reminders: [
+      {
+        title: { type: String, trim: true, required: true },
+        dueDate: { type: Date, required: true },
+        isCompleted: { type: Boolean, default: false },
+        createdAt: { type: Date, default: Date.now }
+      }
+    ],
+
+    timeline: [
+      {
+        status: { type: String, required: true },
+        note: { type: String, default: "" },
+        date: { type: Date, default: Date.now }
+      }
+    ],
+
     recruiterNote: {
       type: String,
       trim: true,
