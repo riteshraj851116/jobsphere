@@ -7,10 +7,17 @@ import { SocketProvider } from "./context/SocketContext.jsx";
 import "./index.css";
 import "./styles/global.css";
 
+// Dynamically determine basename: only use "/jobsphere" when hosted on GitHub Pages
+const getBasename = () => {
+  if (typeof window !== "undefined" && window.location.hostname.includes("github.io")) {
+    return "/jobsphere";
+  }
+  return "";
+};
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    {/* FIX: Added proper provider hierarchy and App component */}
-    <BrowserRouter basename={import.meta.env.BASE_URL}>
+    <BrowserRouter basename={getBasename()}>
       <AuthProvider>
         <SocketProvider>
           <App />
