@@ -70,11 +70,23 @@ export const AuthProvider = ({ children }) => {
           );
         }
       } catch (error) {
-        console.error(
-          "Authentication restore failed:",
-          error?.response?.data?.message ||
-            error?.message
+        console.warn(
+          "Authentication restore check:",
+          error?.response?.data?.message || error?.message
         );
+
+        const cachedUserStr = localStorage.getItem("user");
+        if (cachedUserStr) {
+          try {
+            const cachedUser = normalizeUser(JSON.parse(cachedUserStr));
+            if (cachedUser && mounted) {
+              setUserState(cachedUser);
+              return;
+            }
+          } catch (e) {
+            // ignore JSON error
+          }
+        }
 
         localStorage.removeItem("token");
         localStorage.removeItem("user");
