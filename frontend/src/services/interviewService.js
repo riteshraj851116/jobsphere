@@ -142,7 +142,11 @@ const getOfflineQuestions = (role, difficulty, count) => {
 
 export const startInterview = async (role, difficulty, questionCount) => {
   try {
-    const res = await api.post("/interview/start", { role, difficulty, questionCount });
+    const res = await api.post(
+      "/interview/start",
+      { role, difficulty, questionCount },
+      { timeout: 3500 }
+    );
     return res.data;
   } catch (err) {
     console.warn("Backend interview start failed, creating offline session:", err.message);
@@ -160,12 +164,21 @@ export const startInterview = async (role, difficulty, questionCount) => {
       difficulty,
       status: "active",
       startedAt: new Date().toISOString(),
-      questions: questions.map(q => ({ ...q, questionId: q })),
+      questions: questions.map((q) => ({
+        ...q,
+        _id: q._id || q.id,
+        question: q.question || q.text,
+        text: q.question || q.text,
+        expectedAnswer: q.expectedAnswer || q.sampleAnswer,
+        sampleAnswer: q.sampleAnswer || q.expectedAnswer,
+        questionId: q
+      })),
       answers: [],
       offline: true
     };
 
     sessionStorage.setItem(`interview_session_${sessionId}`, JSON.stringify(session));
+    localStorage.setItem(`interview_session_${sessionId}`, JSON.stringify(session));
     return { session };
   }
 };

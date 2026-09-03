@@ -298,7 +298,7 @@ const InterviewResult = () => {
                 </div>
               </div>
 
-              <h3 className="review-q-title">{q.question}</h3>
+              <h3 className="review-q-title">{q.question || q.text || q.title}</h3>
 
               {/* User Answer */}
               <div style={{ marginBottom: "0.4rem", fontSize: "0.8125rem", fontWeight: "700", color: "#52525b" }}>
@@ -309,10 +309,10 @@ const InterviewResult = () => {
               </div>
 
               {/* Expected Model Answer */}
-              {q.expectedAnswer && (
+              {(q.expectedAnswer || q.sampleAnswer) && (
                 <div className="review-expected-box">
                   <div className="review-expected-header">Model Answer / Key Concepts</div>
-                  <div className="review-expected-text">{q.expectedAnswer}</div>
+                  <div className="review-expected-text">{q.expectedAnswer || q.sampleAnswer}</div>
 
                   {q.explanation && (
                     <div className="review-explanation">

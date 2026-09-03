@@ -301,6 +301,25 @@ const ResumeAnalyzer = () => {
                   <div className="dropzone-sub">
                     Supports PDF, DOCX, and DOC (Max 10MB)
                   </div>
+
+                  <div style={{ marginTop: "12px" }}>
+                    <button
+                      type="button"
+                      className="btn-session secondary"
+                      style={{ fontSize: "0.8125rem", padding: "6px 14px" }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        const sampleBlob = new Blob([
+                          "Alex Rivera\nSenior Full Stack Developer\nalex@example.com\nReact, Node.js, Express, MongoDB, TypeScript, JavaScript, REST APIs, Git, Docker\nExperience: 4+ years developing responsive React and scalable Node.js microservices.\nEducation: BS in Computer Science."
+                        ], { type: "application/pdf" });
+                        const sampleFile = new File([sampleBlob], "Alex_Rivera_FullStack_Resume.pdf", { type: "application/pdf" });
+                        setFile(sampleFile);
+                        setError("");
+                      }}
+                    >
+                      ✨ Or click to load Sample Resume (Alex Rivera)
+                    </button>
+                  </div>
                 </div>
               ) : (
                 <div className="uploaded-file-card">

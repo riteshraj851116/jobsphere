@@ -56,12 +56,23 @@ const InterviewSession = () => {
           return;
         }
 
-        // Normalise questions — offline sessions nest question inside questionId
-        const normalizedQuestions = data.questions.map((q) => {
-          if (q.questionId && typeof q.questionId === "object") {
-            return { ...q.questionId, _id: q.questionId._id || q._id };
-          }
-          return q;
+        // Normalise questions — offline and backend sessions
+        const normalizedQuestions = (data.questions || []).map((q, idx) => {
+          const raw = q.questionId && typeof q.questionId === "object" ? q.questionId : q;
+          const questionText = raw.question || raw.text || raw.title || `Interview Question ${idx + 1}`;
+          const answerText = raw.expectedAnswer || raw.sampleAnswer || raw.explanation || "";
+          return {
+            ...raw,
+            _id: raw._id || raw.id || `q-${idx}`,
+            id: raw.id || raw._id || `q-${idx}`,
+            question: questionText,
+            text: questionText,
+            category: raw.category || data.role || "Technical",
+            difficulty: raw.difficulty || data.difficulty || "medium",
+            role: raw.role || data.role || "Developer",
+            expectedAnswer: answerText,
+            sampleAnswer: answerText
+          };
         });
 
         const normalizedSession = { ...data, questions: normalizedQuestions };
@@ -353,7 +364,7 @@ const InterviewSession = () => {
               </div>
             </div>
 
-            <h2 className="question-text">{currentQuestion.question}</h2>
+            <h2 className="question-text">{currentQuestion.question || currentQuestion.text || currentQuestion.title}</h2>
 
             <div className="answer-section">
               <div className="answer-label">
