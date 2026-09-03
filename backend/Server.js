@@ -37,7 +37,9 @@ const server = http.createServer(app);
 // DATABASE
 // ==============================
 
-connectDB();
+if (!process.env.VERCEL) {
+  connectDB();
+}
 
 // ==============================
 // ALLOWED ORIGINS
@@ -208,7 +210,7 @@ app.use((error, req, res, next) => {
 
 const PORT = process.env.PORT || 5002;
 
-if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+if (!process.env.VERCEL) {
   server.listen(PORT, () => {
     console.log("");
     console.log("======================================");
