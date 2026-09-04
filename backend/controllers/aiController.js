@@ -128,7 +128,7 @@ Use this information only when relevant. If no suitable job exists in the availa
 `;
 
     const ai = new GoogleGenAI({ apiKey });
-    const model = process.env.GEMINI_MODEL || "gemini-2.5-flash";
+    const model = process.env.GEMINI_MODEL || "gemini-3.6-flash";
 
     // ✅ Contents ab sirf valid User aur Model history carry karega
     const contents = [
@@ -163,6 +163,10 @@ Use this information only when relevant. If no suitable job exists in the availa
     console.error("======================================");
 
     const rawMessage = String(error?.message || "").toLowerCase();
+
+    if (rawMessage.includes("leaked")) {
+      return res.status(403).json({ success: false, message: "Gemini API key was reported as leaked to Google. Please provide a fresh GEMINI_API_KEY in your environment configuration." });
+    }
 
     if (rawMessage.includes("api key") || rawMessage.includes("unauthenticated")) {
       return res.status(401).json({ success: false, message: "Invalid Gemini API key." });

@@ -1,13 +1,26 @@
 import axios from "axios";
 
-const API_BASE_URL =
-  import.meta.env.VITE_API_URL ||
-  (typeof window !== "undefined" &&
-  window.location.hostname !== "localhost" &&
-  window.location.hostname !== "127.0.0.1" &&
-  !window.location.hostname.includes("github.io")
-    ? "/api"
-    : "http://localhost:5005/api");
+const getApiBaseUrl = () => {
+  const envUrl = import.meta.env.VITE_API_URL;
+
+  // In production / deployed domain (e.g. Vercel, custom domain)
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host !== "localhost" && host !== "127.0.0.1") {
+      // If an external production URL is explicitly provided (and not localhost), use it
+      if (envUrl && /^https:\/\//i.test(envUrl) && !envUrl.includes("localhost")) {
+        return envUrl;
+      }
+      // Otherwise use the same-origin serverless API endpoint
+      return "/api";
+    }
+  }
+
+  // Localhost development
+  return envUrl || "http://localhost:5005/api";
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -16,6 +29,7 @@ const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
 
 api.interceptors.request.use(
   (config) => {

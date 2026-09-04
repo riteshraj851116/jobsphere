@@ -34,6 +34,12 @@ router.post(
 // CONVERSATIONS
 
 router.get(
+  "/",
+  protect,
+  getConversations
+);
+
+router.get(
   "/conversations",
   protect,
   getConversations

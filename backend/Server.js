@@ -1,12 +1,16 @@
 const express = require("express");
 const http = require("http");
 const cors = require("cors");
+const path = require("path");
 const { Server } = require("socket.io");
 const dotenv = require("dotenv");
 
+// Load backend .env explicitly first, then fallback to root .env
+dotenv.config({ path: path.join(__dirname, ".env") });
 dotenv.config();
 
 const connectDB = require("./config/db");
+
 
 // ==============================
 // ROUTES
@@ -156,35 +160,42 @@ app.use("/api/career", careerRoutes);
 // SOCKET.IO
 // ==============================
 
-const io = new Server(server, {
-  cors: {
-    origin: allowedOrigins,
-    methods: ["GET", "POST"],
-    credentials: true,
-  },
-});
+let io = null;
 
-app.set("io", io);
+if (!process.env.VERCEL) {
+  try {
+    io = new Server(server, {
+      cors: {
+        origin: allowedOrigins,
+        methods: ["GET", "POST"],
+        credentials: true,
+      },
+    });
 
-io.on("connection", (socket) => {
-  console.log(`Socket connected: ${socket.id}`);
+    app.set("io", io);
+    global.io = io;
 
-  socket.on("join", (userId) => {
-    if (!userId) {
-      return;
-    }
+    io.on("connection", (socket) => {
+      console.log(`Socket connected: ${socket.id}`);
 
-    socket.join(userId);
+      socket.on("join", (userId) => {
+        if (!userId) {
+          return;
+        }
 
-    console.log(
-      `User ${userId} joined personal socket room`
-    );
-  });
+        socket.join(userId);
 
-  socket.on("disconnect", () => {
-    console.log(`Socket disconnected: ${socket.id}`);
-  });
-});
+        console.log(`User ${userId} joined personal socket room`);
+      });
+
+      socket.on("disconnect", () => {
+        console.log(`Socket disconnected: ${socket.id}`);
+      });
+    });
+  } catch (socketErr) {
+    console.warn("Socket.io initialization skipped or warning:", socketErr.message);
+  }
+}
 
 // ==============================
 // 404 HANDLER
@@ -218,7 +229,7 @@ app.use((error, req, res, next) => {
 // START SERVER
 // ==============================
 
-const PORT = process.env.PORT || 5002;
+const PORT = process.env.PORT || 5005;
 
 if (require.main === module && !process.env.VERCEL) {
   server.listen(PORT, () => {
@@ -237,4 +248,5 @@ if (require.main === module && !process.env.VERCEL) {
 }
 
 module.exports = app;
+
 module.exports.server = server;

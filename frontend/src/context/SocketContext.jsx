@@ -10,7 +10,21 @@ import { useAuth } from "../hooks/useAuth";
 
 const SocketContext = createContext(null);
 
-const SOCKET_URL = import.meta.env.VITE_SOCKET_URL || "http://localhost:5005";
+const getSocketUrl = () => {
+  const envSocket = import.meta.env.VITE_SOCKET_URL;
+  if (envSocket && /^https?:\/\//i.test(envSocket) && !envSocket.includes("localhost")) {
+    return envSocket;
+  }
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host !== "localhost" && host !== "127.0.0.1") {
+      return null;
+    }
+  }
+  return envSocket || "http://localhost:5005";
+};
+
+const SOCKET_URL = getSocketUrl();
 
 export const SocketProvider = ({ children }) => {
   const { user, isAuthenticated } = useAuth();
@@ -20,7 +34,7 @@ export const SocketProvider = ({ children }) => {
 
   // Connect to socket when authenticated
   useEffect(() => {
-    if (!isAuthenticated || !user?._id) {
+    if (!isAuthenticated || !user?._id || !SOCKET_URL) {
       if (socket) {
         socket.disconnect();
         setSocket(null);
@@ -28,6 +42,7 @@ export const SocketProvider = ({ children }) => {
       }
       return;
     }
+
 
     const newSocket = io(SOCKET_URL, {
       transports: ["websocket", "polling"],

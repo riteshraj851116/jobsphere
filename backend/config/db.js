@@ -1,32 +1,59 @@
 const mongoose = require("mongoose");
 
 let isConnected = false;
+let connectingPromise = null;
+
+const normalizeMongoURI = (rawUri) => {
+  const fallback =
+    "mongodb+srv://CarRentalDB:raj123@cluster0.vpfltmb.mongodb.net/JobSphere?retryWrites=true&w=majority";
+  let uri = (rawUri || fallback).trim();
+
+  // If URI ends with a slash or has no database name specified before query string
+  if (/^mongodb(\+srv)?:\/\/[^/]+\/?(\?.*)?$/.test(uri)) {
+    uri = uri.replace(/\/?(\?.*)?$/, "/JobSphere$1");
+  } else if (!uri.includes("/JobSphere")) {
+    uri = uri.replace(/\/([^/?]+)(\?.*)?$/, "/JobSphere$2");
+  }
+
+  return uri;
+};
 
 const connectDB = async () => {
-  if (isConnected || mongoose.connection.readyState >= 1) {
+  if (isConnected && mongoose.connection.readyState === 1) {
     return mongoose.connection;
   }
 
-  try {
-    const mongoURI =
-      process.env.MONGODB_URI ||
-      "mongodb+srv://CarRentalDB:raj123@cluster0.vpfltmb.mongodb.net/JobSphere?retryWrites=true&w=majority";
+  if (connectingPromise) {
+    return connectingPromise;
+  }
 
-    const connection = await mongoose.connect(mongoURI, {
+  const mongoURI = normalizeMongoURI(process.env.MONGODB_URI);
+
+  connectingPromise = mongoose
+    .connect(mongoURI, {
       bufferCommands: false,
+      family: 4,
+      serverSelectionTimeoutMS: 8000,
+      connectTimeoutMS: 8000,
+      maxPoolSize: 10,
+    })
+    .then((connection) => {
+      isConnected = true;
+      connectingPromise = null;
+      console.log(`✅ MongoDB connected: ${connection.connection.host}/${connection.connection.name}`);
+      return connection;
+    })
+    .catch((error) => {
+      isConnected = false;
+      connectingPromise = null;
+      console.error("❌ MongoDB connection error:", error.message);
+      if (!process.env.VERCEL && process.env.NODE_ENV === "development" && require.main === module) {
+        process.exit(1);
+      }
+      throw error;
     });
 
-    isConnected = true;
-    console.log(
-      `✅ MongoDB connected: ${connection.connection.host}`
-    );
-    return connection;
-  } catch (error) {
-    console.error("❌ MongoDB connection failed:", error.message);
-    if (!process.env.VERCEL && process.env.NODE_ENV === "development" && require.main === module) {
-      process.exit(1);
-    }
-  }
+  return connectingPromise;
 };
 
-module.exports = connectDB;
+module.exports = connectDB;

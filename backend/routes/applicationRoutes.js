@@ -40,6 +40,12 @@ router.get(
   getMyApplications
 );
 
+router.get(
+  "/my",
+  protect,
+  getMyApplications
+);
+
 // Get single application
 router.get(
   "/:id",

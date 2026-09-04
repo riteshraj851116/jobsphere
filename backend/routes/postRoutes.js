@@ -50,6 +50,12 @@ router.post(
   likePost
 );
 
+router.put(
+  "/:id/like",
+  protect,
+  likePost
+);
+
 // Add comment
 router.post(
   "/:id/comment",
