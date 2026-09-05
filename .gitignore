@@ -6,3 +6,5 @@ dist/
 *.log
 jobsphere-complete.txt
 .DS_Store
+.vercel
+.env*
