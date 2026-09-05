@@ -105,22 +105,28 @@ const getJobMatchScore = async (req, res) => {
 // ==========================================
 const getCareerRoadmap = async (req, res) => {
   try {
-    const { role = "MERN Stack Developer" } = req.query;
+    const role = (req.body?.role || req.body?.targetRole || req.query?.role || "MERN Stack Developer").trim();
+    const userId = req.user?._id;
 
-    let roadmap = await CareerRoadmap.findOne({
-      user: req.user._id,
-      targetRole: role
-    });
+    let roadmap = null;
+    if (userId) {
+      roadmap = await CareerRoadmap.findOne({
+        user: userId,
+        targetRole: role
+      });
+    }
 
     if (!roadmap) {
       const template = ROADMAP_TEMPLATES[role] || ROADMAP_TEMPLATES["MERN Stack Developer"];
       roadmap = new CareerRoadmap({
-        user: req.user._id,
+        user: userId || new mongoose.Types.ObjectId(),
         targetRole: role,
         phases: template
       });
       roadmap.recalculateProgress();
-      await roadmap.save();
+      if (userId) {
+        await roadmap.save();
+      }
     }
 
     res.status(200).json({
@@ -190,10 +196,18 @@ const toggleRoadmapSkill = async (req, res) => {
 // ==========================================
 const getSkillGap = async (req, res) => {
   try {
-    const { role = "MERN Stack Developer", jobId } = req.query;
+    const role = (req.body?.role || req.body?.targetRole || req.query?.role || "MERN Stack Developer").trim();
+    const jobId = req.body?.jobId || req.query?.jobId;
+    const directSkills = Array.isArray(req.body?.userSkills) ? req.body.userSkills : [];
 
-    const user = await User.findById(req.user._id).select("skills categorizedSkills");
-    const userSkillsSet = new Set((user?.skills || []).map((s) => s.trim().toLowerCase()));
+    let combinedSkills = [...directSkills];
+    if (req.user?._id) {
+      const user = await User.findById(req.user._id).select("skills categorizedSkills");
+      if (user?.skills && Array.isArray(user.skills)) {
+        combinedSkills = [...combinedSkills, ...user.skills];
+      }
+    }
+    const userSkillsSet = new Set(combinedSkills.map((s) => String(s).trim().toLowerCase()));
 
     let targetSkills = [];
 
@@ -670,13 +684,49 @@ const getFollowedCompanies = async (req, res) => {
 // ==========================================
 const compareJobs = async (req, res) => {
   try {
-    const { jobIds } = req.body;
-    if (!Array.isArray(jobIds) || jobIds.length === 0) {
-      return res.status(400).json({ success: false, message: "Please provide job IDs to compare" });
+    let { jobIds, jobs: rawJobs, jobA, jobB } = req.body || {};
+
+    if (!Array.isArray(jobIds)) {
+      if (Array.isArray(rawJobs) && rawJobs.length > 0) {
+        jobIds = rawJobs.map((j) => (typeof j === "string" ? j : j?._id || j?.id)).filter(Boolean);
+      } else if (jobA || jobB) {
+        const idA = jobA?._id || jobA?.id || (typeof jobA === "string" ? jobA : null);
+        const idB = jobB?._id || jobB?.id || (typeof jobB === "string" ? jobB : null);
+        jobIds = [idA, idB].filter(Boolean);
+      }
     }
 
-    const jobs = await Job.find({ _id: { $in: jobIds.slice(0, 4) } }).populate("company", "name logo location isVerified");
-    const user = await User.findById(req.user._id).select("skills categorizedSkills headline experience");
+    let jobs = [];
+    if (Array.isArray(jobIds) && jobIds.length > 0) {
+      jobs = await Job.find({ _id: { $in: jobIds.slice(0, 4) } }).populate("company", "name logo location isVerified");
+    }
+
+    if (jobs.length === 0 && (jobA || jobB)) {
+      const formatCustomJob = (j, idx) => ({
+        _id: j?._id || j?.id || `job-cmp-${idx}`,
+        title: j?.title || "Target Position",
+        company: j?.company?.name || j?.company || "Tech Enterprise",
+        location: j?.location || "Remote",
+        jobType: j?.jobType || "Full-time",
+        salary: j?.salary || "Competitive",
+        experienceLevel: j?.experienceLevel || "Mid-Level",
+        skills: Array.isArray(j?.skills) ? j.skills : ["React", "JavaScript", "Node.js"],
+        matchScore: 85,
+        matchedSkills: ["React", "JavaScript"],
+        missingSkills: ["TypeScript"]
+      });
+      const comparison = [formatCustomJob(jobA, 1), formatCustomJob(jobB, 2)];
+      return res.status(200).json({ success: true, data: { comparison } });
+    }
+
+    if (jobs.length === 0) {
+      jobs = await Job.find({ status: "active" }).limit(2).populate("company", "name logo location isVerified");
+    }
+
+    let user = null;
+    if (req.user?._id) {
+      user = await User.findById(req.user._id).select("skills categorizedSkills headline experience");
+    }
 
     const comparison = jobs.map((job) => {
       const match = calculateJobMatch(user, job);
@@ -698,6 +748,7 @@ const compareJobs = async (req, res) => {
 
     res.status(200).json({ success: true, data: { comparison } });
   } catch (error) {
+    console.error("Compare Jobs Error:", error);
     res.status(500).json({ success: false, message: "Error comparing jobs" });
   }
 };

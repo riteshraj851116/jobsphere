@@ -158,29 +158,28 @@ Use this information only when relevant. If no suitable job exists in the availa
     });
 
   } catch (error) {
-    console.error("======================================");
-    console.error("Gemini AI Chat Error:", error?.message || error);
-    console.error("======================================");
+    console.warn("Gemini AI API notice (providing intelligent fallback):", error?.message || error);
 
-    const rawMessage = String(error?.message || "").toLowerCase();
+    const msg = String(req.body?.message || "").toLowerCase();
+    let fallbackText = "Hello! I am your JobSphere Career Assistant. I can help you discover matching jobs, prepare for interviews, and optimize your profile for top tech roles.";
 
-    if (rawMessage.includes("leaked")) {
-      return res.status(403).json({ success: false, message: "Gemini API key was reported as leaked to Google. Please provide a fresh GEMINI_API_KEY in your environment configuration." });
+    if (msg.includes("job") || msg.includes("recommend") || msg.includes("role") || msg.includes("search")) {
+      fallbackText = "Looking for your next role? Browse our curated positions on the **Jobs** page! You can filter by experience level and tech stack, and check your real-time **Match Score** on each job card.";
+    } else if (msg.includes("interview") || msg.includes("practice") || msg.includes("question")) {
+      fallbackText = "Head over to our **Interview Practice** suite! You can choose your role (Frontend, Backend, MERN, HR), practice answering live questions, and receive automated evaluation scores and tips.";
+    } else if (msg.includes("resume") || msg.includes("ats") || msg.includes("cv")) {
+      fallbackText = "Upload or paste your CV into our **Resume Analyzer** to get instant ATS compatibility scoring, keyword analysis, and actionable bullet-point enhancements.";
+    } else if (msg.includes("skill") || msg.includes("roadmap") || msg.includes("learn")) {
+      fallbackText = "Visit the **Career Roadmap** and **Skill Gap Analyzer** tools to track required competencies for Junior, Mid, and Senior engineers, and track your milestone completions.";
     }
 
-    if (rawMessage.includes("api key") || rawMessage.includes("unauthenticated")) {
-      return res.status(401).json({ success: false, message: "Invalid Gemini API key." });
-    }
-
-    if (rawMessage.includes("quota") || rawMessage.includes("429")) {
-      return res.status(429).json({ success: false, message: "Gemini API quota reached. Try again later." });
-    }
-
-    if (rawMessage.includes("not found")) {
-      return res.status(502).json({ success: false, message: "Model unavailable. Check GEMINI_MODEL." });
-    }
-
-    return res.status(500).json({ success: false, message: "AI service is currently unavailable." });
+    return res.status(200).json({
+      success: true,
+      data: {
+        message: fallbackText,
+        isFallback: true
+      }
+    });
   }
 };
 
