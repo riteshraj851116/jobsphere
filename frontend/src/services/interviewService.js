@@ -86,6 +86,36 @@ const OFFLINE_QUESTIONS = {
       { _id: "be-h2", text: "How would you design a caching strategy for a high-traffic API?", category: "Backend", difficulty: "hard", role: "Backend Developer", sampleAnswer: "Use Redis for server-side caching, CDN for static assets, HTTP Cache-Control headers, and cache invalidation strategies." }
     ]
   },
+  "Node.js Developer": {
+    easy: [
+      { _id: "node-e1", text: "What is Node.js and how does it work?", category: "Node.js", difficulty: "easy", role: "Node.js Developer", sampleAnswer: "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JS outside a web browser using Google's V8 engine." },
+      { _id: "node-e2", text: "What is the difference between synchronous and asynchronous functions in Node.js?", category: "Node.js", difficulty: "easy", role: "Node.js Developer", sampleAnswer: "Synchronous functions block execution until complete; asynchronous functions execute in the background and use callbacks/promises/async-await." }
+    ],
+    medium: [
+      { _id: "node-m1", text: "Explain the Node.js Event Loop phases.", category: "Node.js", difficulty: "medium", role: "Node.js Developer", sampleAnswer: "Phases include timers, pending callbacks, idle/prepare, poll (I/O), check (setImmediate), and close callbacks." },
+      { _id: "node-m2", text: "What are Streams in Node.js and when should you use them?", category: "Node.js", difficulty: "medium", role: "Node.js Developer", sampleAnswer: "Streams handle streaming data chunk-by-chunk (Readable, Writable, Duplex, Transform), ideal for large files and low memory overhead." },
+      { _id: "node-m3", text: "What is the purpose of Buffer class in Node.js?", category: "Node.js", difficulty: "medium", role: "Node.js Developer", sampleAnswer: "Buffers handle raw binary data directly in memory outside the V8 heap." }
+    ],
+    hard: [
+      { _id: "node-h1", text: "How do you handle memory leaks and profile performance in Node.js?", category: "Node.js", difficulty: "hard", role: "Node.js Developer", sampleAnswer: "Use Chrome DevTools heap snapshots, clinic.js, process.memoryUsage(), and eliminate unclosed event listeners and detached closures." },
+      { _id: "node-h2", text: "Explain Worker Threads vs Clustering in Node.js.", category: "Node.js", difficulty: "hard", role: "Node.js Developer", sampleAnswer: "Cluster forks multiple Node processes sharing server ports for multi-core scaling; Worker Threads run in separate threads sharing memory for CPU-heavy tasks." }
+    ]
+  },
+  "Full Stack Developer": {
+    easy: [
+      { _id: "fs-e1", text: "What is full-stack web development?", category: "Full Stack", difficulty: "easy", role: "Full Stack Developer", sampleAnswer: "Full stack involves developing both client-side UI and server-side business logic, APIs, and databases." },
+      { _id: "fs-e2", text: "How does the client communicate with the server?", category: "Full Stack", difficulty: "easy", role: "Full Stack Developer", sampleAnswer: "Clients send HTTP/HTTPS requests (GET, POST, PUT, DELETE) with headers and payloads, and the server returns status codes and responses." }
+    ],
+    medium: [
+      { _id: "fs-m1", text: "How do you manage state between frontend and backend in modern apps?", category: "Full Stack", difficulty: "medium", role: "Full Stack Developer", sampleAnswer: "Use client cache libraries like React Query/RTK Query or global stores, synchronized with REST/GraphQL endpoints and optimistic updates." },
+      { _id: "fs-m2", text: "Explain CORS and how to configure it securely.", category: "Full Stack", difficulty: "medium", role: "Full Stack Developer", sampleAnswer: "CORS is a browser security mechanism restricting cross-origin requests. Configure allowed origins, headers, and credentials on the backend." },
+      { _id: "fs-m3", text: "What is JWT and how should it be stored securely?", category: "Full Stack", difficulty: "medium", role: "Full Stack Developer", sampleAnswer: "JSON Web Tokens sign payloads. Store access tokens in memory or secure HttpOnly SameSite cookies to protect against XSS." }
+    ],
+    hard: [
+      { _id: "fs-h1", text: "How do you design an end-to-end CI/CD pipeline for a full-stack project?", category: "Full Stack", difficulty: "hard", role: "Full Stack Developer", sampleAnswer: "Use GitHub Actions for automated linting, unit tests, integration tests, containerization with Docker, and zero-downtime deployment." },
+      { _id: "fs-h2", text: "Describe your strategy for database migrations and zero-downtime releases.", category: "Full Stack", difficulty: "hard", role: "Full Stack Developer", sampleAnswer: "Use expand-and-contract patterns for schema changes, blue-green deployments, and backward-compatible API versioning." }
+    ]
+  },
   "JavaScript Developer": {
     easy: [
       { _id: "js-e1", text: "What is hoisting in JavaScript?", category: "JavaScript", difficulty: "easy", role: "JavaScript Developer", sampleAnswer: "Hoisting moves variable and function declarations to the top of their scope before execution." },
