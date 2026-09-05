@@ -77,6 +77,29 @@ const InterviewPractice = () => {
     } catch (err) {
       console.warn("API interview start notice, launching fallback session:", err);
       const fallbackId = `offline-${Date.now()}`;
+      const defaultQuestions = [
+        { _id: "q-fb1", text: `Explain the fundamental architecture and core principles of ${selectedRole}.`, category: selectedRole, difficulty: selectedDifficulty, role: selectedRole, sampleAnswer: "Focus on component architecture, state management, and separation of concerns." },
+        { _id: "q-fb2", text: `How do you identify and resolve performance bottlenecks in ${selectedRole}?`, category: selectedRole, difficulty: selectedDifficulty, role: selectedRole, sampleAnswer: "Profile execution, identify expensive re-renders or queries, implement caching and lazy loading." },
+        { _id: "q-fb3", text: `Describe your approach to writing testable, maintainable code in ${selectedRole}.`, category: selectedRole, difficulty: selectedDifficulty, role: selectedRole, sampleAnswer: "Write modular units, use automated unit/integration tests, and adhere to clean code principles." }
+      ];
+      const fallbackSession = {
+        _id: fallbackId,
+        id: fallbackId,
+        role: selectedRole,
+        difficulty: selectedDifficulty,
+        totalQuestions: defaultQuestions.length,
+        questions: defaultQuestions,
+        answers: [],
+        startedAt: new Date().toISOString(),
+        status: "active",
+        offline: true
+      };
+      try {
+        sessionStorage.setItem(`interview_session_${fallbackId}`, JSON.stringify(fallbackSession));
+        localStorage.setItem(`interview_session_${fallbackId}`, JSON.stringify(fallbackSession));
+      } catch (storageErr) {
+        // Storage notice
+      }
       navigate(`/interview-practice/session/${fallbackId}`);
     } finally {
       setLoading(false);
