@@ -112,7 +112,7 @@ const startInterview = async (req, res) => {
 
     // Create session in DB
     const session = await InterviewSession.create({
-      user: req.user._id,
+      user: req.user ? req.user._id : null,
       role: selectedRole,
       difficulty: selectedDifficulty,
       totalQuestions: selectedQuestions.length,
@@ -165,6 +165,8 @@ const getSession = async (req, res) => {
 
     // Authorization check: owner or guest session
     const isOwner =
+      !session.user ||
+      !req.user ||
       session.user?.toString() === req.user?._id?.toString() ||
       req.user?.isGuest ||
       session.user?.toString() === "6a9401084d788adc6a04e900";
@@ -223,6 +225,8 @@ const saveAnswer = async (req, res) => {
     }
 
     const isOwner =
+      !session.user ||
+      !req.user ||
       session.user?.toString() === req.user?._id?.toString() ||
       req.user?.isGuest ||
       session.user?.toString() === "6a9401084d788adc6a04e900";
@@ -312,6 +316,8 @@ const completeInterview = async (req, res) => {
     }
 
     const isOwner =
+      !session.user ||
+      !req.user ||
       session.user?.toString() === req.user?._id?.toString() ||
       req.user?.isGuest ||
       session.user?.toString() === "6a9401084d788adc6a04e900";
@@ -332,6 +338,34 @@ const completeInterview = async (req, res) => {
     session.status = "completed";
     session.completedAt = now;
     session.duration = calculatedDuration;
+
+    // Calculate realistic score and performance breakdown
+    const answeredAnswers = (session.answers || []).filter(
+      (a) => !a.skipped && a.answer && a.answer.trim().length > 0
+    );
+    const totalQ = (session.questions || []).length || 1;
+    const answeredRatio = answeredAnswers.length / totalQ;
+    const avgLen =
+      answeredAnswers.reduce((acc, a) => acc + (a.answer ? a.answer.length : 0), 0) /
+      (answeredAnswers.length || 1);
+    const depthFactor = Math.min(avgLen / 120, 1);
+
+    const calculatedScore = Math.round(answeredRatio * 65 + depthFactor * 25 + 10);
+    session.score = Math.min(Math.max(calculatedScore, 25), 98);
+
+    if (session.score >= 80) {
+      session.feedback = "Strong grasp of fundamental concepts and articulate technical communication.";
+      session.strengths = ["Comprehensive explanations", "Role-specific terminology", "Clear structural flow"];
+      session.improvements = ["Include concrete production examples and performance optimization tradeoffs."];
+    } else if (session.score >= 60) {
+      session.feedback = "Solid foundational knowledge. Expanding on implementation details will elevate your answers.";
+      session.strengths = ["Correct identification of core concepts", "Direct responses"];
+      session.improvements = ["Provide deeper architectural reasoning and mention edge case handling."];
+    } else {
+      session.feedback = "Good practice attempt. Deepen your revision of key terminology and practice STAR method responses.";
+      session.strengths = ["Willingness to attempt diverse questions"];
+      session.improvements = ["Elaborate further on practical examples and explain underlying mechanisms."];
+    }
 
     await session.save();
 

@@ -29,7 +29,7 @@ const interviewSessionSchema = new mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "User is required for an interview session"]
+      required: false
     },
     role: {
       type: String,
@@ -72,7 +72,21 @@ const interviewSessionSchema = new mongoose.Schema(
       default: "in_progress",
       lowercase: true,
       trim: true
-    }
+    },
+    score: {
+      type: Number,
+      default: 0
+    },
+    feedback: {
+      type: String,
+      default: ""
+    },
+    strengths: [{
+      type: String
+    }],
+    improvements: [{
+      type: String
+    }]
   },
   {
     timestamps: true
