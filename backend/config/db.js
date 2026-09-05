@@ -31,7 +31,7 @@ const connectDB = async () => {
 
   connectingPromise = mongoose
     .connect(mongoURI, {
-      bufferCommands: false,
+      bufferCommands: true,
       family: 4,
       serverSelectionTimeoutMS: 8000,
       connectTimeoutMS: 8000,

@@ -54,9 +54,17 @@ module.exports = async (req, res) => {
     }
   }
 
+  // Recover original URL path if rewritten by Vercel
+  const matchedPath = req.headers["x-matched-path"] || "";
+  if (matchedPath) {
+    req.url = matchedPath;
+  } else if (req.url === "/api/index.js" || req.url.startsWith("/api/index.js")) {
+    req.url = req.url.replace(/^\/api\/index\.js\/?/, "/api/");
+  }
+
   // Diagnostic health endpoint
   const url = req.url || "";
-  if (url === "/api/health" || url === "/health" || url === "/api" || url === "/") {
+  if (url === "/api/health" || url === "/health" || url === "/api" || url === "/" || url.endsWith("/health")) {
     return sendJson(res, 200, {
       success: true,
       message: "JobSphere Vercel Serverless API is running",
@@ -86,7 +94,17 @@ module.exports = async (req, res) => {
     if (req.url && !req.url.startsWith("/api")) {
       req.url = "/api" + (req.url.startsWith("/") ? req.url : "/" + req.url);
     }
-    return app(req, res);
+
+    try {
+      return app(req, res);
+    } catch (invokeErr) {
+      console.error("Vercel app invocation error:", invokeErr);
+      return sendJson(res, 500, {
+        success: false,
+        message: "Internal server error in serverless request",
+        error: invokeErr?.message || String(invokeErr)
+      });
+    }
   }
 
   return sendJson(res, 500, {
