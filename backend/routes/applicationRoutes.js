@@ -22,7 +22,14 @@ const router = express.Router();
 router.post(
   "/apply",
   protect,
-  authorizeRoles("user"),
+  authorizeRoles("user", "candidate"),
+  applyForJob
+);
+
+router.post(
+  "/",
+  protect,
+  authorizeRoles("user", "candidate"),
   applyForJob
 );
 
@@ -34,6 +41,12 @@ router.get(
 );
 
 // Get my applications
+router.get(
+  "/me",
+  protect,
+  getMyApplications
+);
+
 router.get(
   "/my-applications",
   protect,

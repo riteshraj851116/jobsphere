@@ -8,6 +8,7 @@ const {
   deleteJob,
   getMyJobs
 } = require("../controllers/jobController");
+const { saveJob } = require("../controllers/userController");
 
 const { protect } = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
@@ -58,9 +59,8 @@ router.delete(
   deleteJob
 );
 
-// ===============================
-// Get single job
-// ===============================
+// Save / unsave job
+router.post("/:jobId/save", protect, saveJob);
 
 router.get("/:id", getJobById);
 

@@ -244,6 +244,13 @@ const getMyApplications = async (req, res) => {
 
 const getApplicationById = async (req, res) => {
   try {
+    if (!isValidObjectId(req.params.id)) {
+      return res.status(404).json({
+        success: false,
+        message: "Application not found"
+      });
+    }
+
     const application =
       await Application.findById(req.params.id)
         .populate(

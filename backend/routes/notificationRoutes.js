@@ -24,6 +24,12 @@ router.put(
 );
 
 router.put(
+  "/mark-all-read",
+  protect,
+  markAllAsRead
+);
+
+router.put(
   "/:id/read",
   protect,
   markNotificationAsRead

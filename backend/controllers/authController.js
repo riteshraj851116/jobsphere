@@ -79,8 +79,19 @@ const register = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Registration successful",
+      token,
+      user: {
+        _id: user._id,
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        profilePicture: user.profilePicture
+      },
       data: {
         user: {
+          _id: user._id,
           id: user._id,
           name: user.name,
           username: user.username,
@@ -147,8 +158,19 @@ const login = async (req, res) => {
     res.status(200).json({
       success: true,
       message: "Login successful",
+      token,
+      user: {
+        _id: user._id,
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        profilePicture: user.profilePicture
+      },
       data: {
         user: {
+          _id: user._id,
           id: user._id,
           name: user.name,
           username: user.username,

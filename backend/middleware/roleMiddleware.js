@@ -7,7 +7,13 @@ const authorizeRoles = (...allowedRoles) => {
       });
     }
 
-    if (!allowedRoles.includes(req.user.role)) {
+    const userRole = req.user.role;
+    const isAllowed =
+      allowedRoles.includes(userRole) ||
+      (allowedRoles.includes("user") && userRole === "candidate") ||
+      (allowedRoles.includes("candidate") && userRole === "user");
+
+    if (!isAllowed) {
       return res.status(403).json({
         success: false,
         message: "You do not have permission to perform this action"

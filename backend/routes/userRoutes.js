@@ -17,22 +17,23 @@ const { protect } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
-/* ==================================
-   PUBLIC ROUTES
-================================== */
+// Base users list / search
+router.get("/", searchUsers);
 router.get("/search", searchUsers);
 router.get("/profile/:username", getUserProfile);
 
 /* ==================================
-   CURRENT LOGGED-IN USER (/me)
+   CURRENT LOGGED-IN USER (/me & /profile)
 ================================== */
 // Profile retrieval (with backward compatibility)
 router.get("/me", protect, getMyProfile);
 router.get("/me/profile", protect, getMyProfile);
+router.get("/profile", protect, getMyProfile);
 
 // Profile updates (with backward compatibility)
 router.put("/me", protect, updateProfile);
 router.put("/me/profile", protect, updateProfile);
+router.put("/profile", protect, updateProfile);
 
 // Skills
 router.put("/me/skills", protect, updateSkills);

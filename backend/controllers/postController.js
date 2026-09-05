@@ -39,6 +39,7 @@ const createPost = async (req, res) => {
     res.status(201).json({
       success: true,
       message: "Post created successfully",
+      post: populatedPost,
       data: {
         post: populatedPost
       }
@@ -168,6 +169,7 @@ const getFeed = async (req, res) => {
 
     res.status(200).json({
       success: true,
+      posts: formattedPosts,
       data: {
         posts: formattedPosts,
         pagination: {
