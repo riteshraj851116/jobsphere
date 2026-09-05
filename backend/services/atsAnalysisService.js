@@ -1,5 +1,5 @@
-const pdfParse = require("pdf-parse");
-const mammoth = require("mammoth");
+// Lazy loaded inside extractTextFromBuffer to avoid serverless module load crashes
+
 
 // Comprehensive skills dictionary
 const SKILL_DICTIONARY = [
@@ -67,6 +67,7 @@ const extractTextFromBuffer = async (buffer, mimetype, originalname = "") => {
 
   if (isPdf) {
     try {
+      const pdfParse = require("pdf-parse");
       if (typeof pdfParse === "function") {
         const data = await pdfParse(buffer);
         if (data && data.text && data.text.trim().length > 0) {
@@ -86,6 +87,7 @@ const extractTextFromBuffer = async (buffer, mimetype, originalname = "") => {
     return buffer.toString("utf-8");
   } else if (isDocx) {
     try {
+      const mammoth = require("mammoth");
       const result = await mammoth.extractRawText({ buffer });
       if (result && result.value && result.value.trim().length > 0) {
         return result.value;
