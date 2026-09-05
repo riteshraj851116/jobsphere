@@ -142,6 +142,102 @@ const ROADMAP_TEMPLATES = {
         { name: "Docker & Kubernetes Basics", description: "Container orchestration, microservice networks", priority: "medium" }
       ]
     }
+  ],
+  "Full Stack Developer": [
+    {
+      phaseNumber: 1,
+      title: "Phase 1: End-to-End Web Architecture",
+      description: "Full stack protocols, modern responsive UI, and state management.",
+      skills: [
+        { name: "React 19 & Next.js", description: "SSR, SSG, component lifecycles, hooks", priority: "high" },
+        { name: "TypeScript & Modular JS", description: "Type safety, generics, interfaces across client and server", priority: "high" },
+        { name: "RESTful & GraphQL APIs", description: "API design principles, status codes, query resolvers", priority: "high" }
+      ]
+    },
+    {
+      phaseNumber: 2,
+      title: "Phase 2: Scalable Backend Services",
+      description: "Node.js, Express, middleware, caching, and databases.",
+      skills: [
+        { name: "Node.js & Express.js", description: "Event loop, streams, routing, rate limiting", priority: "high" },
+        { name: "PostgreSQL & MongoDB", description: "ACID transactions, document models, indexing", priority: "high" },
+        { name: "Redis Caching", description: "Key-value cache, session storage, performance tuning", priority: "medium" }
+      ]
+    },
+    {
+      phaseNumber: 3,
+      title: "Phase 3: Deployment & Cloud Infrastructure",
+      description: "Docker, CI/CD, cloud deployment, and system security.",
+      skills: [
+        { name: "Docker & Containerization", description: "Dockerfiles, compose, multi-stage builds", priority: "high" },
+        { name: "CI/CD & Cloud Hosting", description: "GitHub Actions, AWS/Vercel production setups", priority: "high" },
+        { name: "Web Security & JWT", description: "CORS, CSRF, sanitized inputs, token auth", priority: "high" }
+      ]
+    }
+  ],
+  "Cloud & DevOps": [
+    {
+      phaseNumber: 1,
+      title: "Phase 1: Linux, Networking & Scripting",
+      description: "Core operating system fundamentals, shell scripting, and network topologies.",
+      skills: [
+        { name: "Linux Administration & Bash", description: "Permissions, shell scripting, systemd, process management", priority: "high" },
+        { name: "Networking & DNS", description: "TCP/IP, HTTP/HTTPS, SSL/TLS certificates, load balancing", priority: "high" },
+        { name: "Git & Version Control", description: "Branching strategies, git rebase, tag management", priority: "high" }
+      ]
+    },
+    {
+      phaseNumber: 2,
+      title: "Phase 2: Cloud & Containers",
+      description: "AWS/GCP infrastructure, Docker containers, and Kubernetes orchestration.",
+      skills: [
+        { name: "Docker Containers", description: "Container image optimization, networks, volumes", priority: "high" },
+        { name: "Kubernetes Orchestration", description: "Pods, Deployments, Services, Ingress, Helm charts", priority: "high" },
+        { name: "AWS Cloud Services", description: "EC2, S3, IAM, VPC, RDS, Lambda functions", priority: "high" }
+      ]
+    },
+    {
+      phaseNumber: 3,
+      title: "Phase 3: Infrastructure as Code & CI/CD",
+      description: "Automated pipelines, Terraform provisioning, and observability.",
+      skills: [
+        { name: "Terraform IaC", description: "HCL syntax, state management, module design", priority: "high" },
+        { name: "CI/CD Pipelines", description: "GitHub Actions, automated tests, blue-green deployments", priority: "high" },
+        { name: "Monitoring & Logging", description: "Prometheus, Grafana, CloudWatch, structured logs", priority: "medium" }
+      ]
+    }
+  ],
+  "AI & ML Engineer": [
+    {
+      phaseNumber: 1,
+      title: "Phase 1: Python, Math & Data Pipelines",
+      description: "Vector mathematics, NumPy, Pandas, and exploratory data analysis.",
+      skills: [
+        { name: "Python for AI/ML", description: "Data structures, generators, OOP, async python", priority: "high" },
+        { name: "NumPy & Pandas", description: "Array operations, matrix manipulation, data wrangling", priority: "high" },
+        { name: "Linear Algebra & Statistics", description: "Probability, matrix decomposition, loss functions", priority: "medium" }
+      ]
+    },
+    {
+      phaseNumber: 2,
+      title: "Phase 2: Machine Learning & Deep Learning",
+      description: "Classical algorithms, PyTorch, model training, and evaluation.",
+      skills: [
+        { name: "Scikit-Learn Algorithms", description: "Regression, classification, clustering, cross-validation", priority: "high" },
+        { name: "PyTorch & Neural Networks", description: "Tensors, autograd, CNNs, Transformers", priority: "high" },
+        { name: "Model Evaluation & Metrics", description: "Precision, recall, F1, ROC-AUC, overfitting control", priority: "high" }
+      ]
+    },
+    {
+      phaseNumber: 3,
+      title: "Phase 3: LLMs, RAG & AI Engineering",
+      description: "Prompt engineering, Vector DBs, LangChain, and API deployment.",
+      skills: [
+        { name: "LLM APIs & Prompt Engineering", description: "Gemini API, OpenAI, structured outputs, token limits", priority: "high" },
+        { name: "RAG & Vector Databases", description: "Embeddings, Pinecone, Chroma, retrieval augmented generation", priority: "high" },
+        { name: "AI Model Serving & FastAPI", description: "Model deployment, async endpoints, caching", priority: "high" }
+      ]
+    }
   ]
 };
 

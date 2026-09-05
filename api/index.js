@@ -36,7 +36,7 @@ const sendJson = (res, statusCode, data) => {
   }
 };
 
-module.exports = (req, res) => {
+module.exports = async (req, res) => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     if (typeof res.status === "function" && typeof res.send === "function") {
@@ -76,6 +76,13 @@ module.exports = (req, res) => {
   }
 
   if (app) {
+    try {
+      const connectDB = require("../backend/config/db");
+      await connectDB();
+    } catch (dbErr) {
+      console.warn("Vercel DB connection non-fatal warning:", dbErr?.message);
+    }
+
     if (req.url && !req.url.startsWith("/api")) {
       req.url = "/api" + (req.url.startsWith("/") ? req.url : "/" + req.url);
     }

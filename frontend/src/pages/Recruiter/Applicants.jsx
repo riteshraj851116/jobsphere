@@ -7,10 +7,10 @@ import { Users, FileText, ArrowLeft, Mail, Calendar } from 'lucide-react';
 import './Applicants.css';
 
 const STATUS_OPTIONS = [
-  { value: 'Reviewing', label: 'Review' },
+  { value: 'Under Review', label: 'Under Review', className: 'btn-review' },
   { value: 'Shortlisted', label: 'Shortlist', className: 'btn-shortlist' },
   { value: 'Interview', label: 'Interview', className: 'btn-interview' },
-  { value: 'Hired', label: 'Hire', className: 'btn-hire' },
+  { value: 'Selected', label: 'Select Candidate', className: 'btn-hire' },
   { value: 'Rejected', label: 'Reject', className: 'btn-reject' }
 ];
 
@@ -42,12 +42,12 @@ const Applicants = () => {
     fetchApplicants();
   }, [fetchApplicants]);
 
-  const handleUpdateStatus = async (id, status) => {
+  const handleUpdateStatus = async (id, status, recruiterNote = "") => {
     try {
       setUpdatingId(id);
-      await updateApplicationStatus(id, status);
+      await updateApplicationStatus(id, status, recruiterNote);
       setApplicants(prev =>
-        prev.map(app => app._id === id ? { ...app, status } : app)
+        prev.map(app => app._id === id ? { ...app, status, recruiterNote } : app)
       );
     } catch (err) {
       alert(err.response?.data?.message || 'Failed to update status.');
@@ -58,12 +58,14 @@ const Applicants = () => {
 
   const getStatusBadge = (status) => {
     const map = {
-      'Applied':     'status-applied',
-      'Reviewing':   'status-reviewing',
-      'Shortlisted': 'status-shortlisted',
-      'Interview':   'status-interview',
-      'Hired':       'status-hired',
-      'Rejected':    'status-rejected'
+      'Applied':      'status-applied',
+      'Under Review': 'status-reviewing',
+      'Reviewing':    'status-reviewing',
+      'Shortlisted':  'status-shortlisted',
+      'Interview':    'status-interview',
+      'Selected':     'status-hired',
+      'Hired':        'status-hired',
+      'Rejected':     'status-rejected'
     };
     return (
       <span className={`app-status-badge ${map[status] || 'status-applied'}`}>

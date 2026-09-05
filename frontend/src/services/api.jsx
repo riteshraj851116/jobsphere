@@ -54,6 +54,10 @@ api.interceptors.response.use(
   (response) => {
     // Graceful JSend envelope unwrapper that maintains backwards compatibility
     if (response?.data && response.data.success && response.data.data !== undefined) {
+      if (Array.isArray(response.data.data)) {
+        // Keep array structure intact so array methods and mappings work reliably
+        return response;
+      }
       const unwrapped = {
         success: response.data.success,
         ...response.data.data,

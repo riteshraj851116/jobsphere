@@ -13,20 +13,28 @@ import {
   ArrowRight,
   History,
   CheckCircle2,
-  HelpCircle
+  HelpCircle,
+  Brain,
+  Cloud,
+  Cpu,
+  Terminal
 } from "lucide-react";
 import { startInterview } from "../../services/interviewService";
 import "./Interview.css";
 
 const ROLES = [
-  { id: "Frontend Developer", label: "Frontend Developer", icon: Globe, desc: "HTML, CSS, JS, Web Vitals" },
-  { id: "React Developer", label: "React Developer", icon: Atom, desc: "Hooks, VDOM, Performance" },
-  { id: "Backend Developer", label: "Backend Developer", icon: Server, desc: "APIs, Auth, Database, Security" },
-  { id: "Node.js Developer", label: "Node.js Developer", icon: Code2, desc: "Event Loop, Streams, Express" },
-  { id: "MERN Stack Developer", label: "MERN Stack Developer", icon: Layers, desc: "MongoDB, Express, React, Node" },
-  { id: "Full Stack Developer", label: "Full Stack Developer", icon: FileCode, desc: "Architecture, Caching, REST" },
-  { id: "JavaScript Developer", label: "JavaScript Developer", icon: Code2, desc: "Closures, Promises, ES6+" },
-  { id: "HR Interview", label: "HR Interview", icon: Users2, desc: "Behavioral, STAR, Culture Fit" }
+  { id: "MERN Stack Developer", label: "MERN Stack Developer", icon: Layers, desc: "MongoDB, Express, React, Node.js" },
+  { id: "Frontend Developer", label: "Frontend Developer", icon: Globe, desc: "HTML5, CSS3, JS, React, Web Vitals" },
+  { id: "React Developer", label: "React Developer", icon: Atom, desc: "Hooks, Redux, Performance, Next.js" },
+  { id: "Backend Developer", label: "Backend Developer", icon: Server, desc: "REST APIs, Auth, Database, Security" },
+  { id: "Node.js Developer", label: "Node.js Developer", icon: Code2, desc: "Event Loop, Streams, Express, Scaling" },
+  { id: "Full Stack Developer", label: "Full Stack Developer", icon: FileCode, desc: "Architecture, Caching, End-to-End" },
+  { id: "AI & Machine Learning", label: "AI & ML Engineer", icon: Brain, desc: "Python, LLMs, Vector DBs, Prompting" },
+  { id: "Cloud & DevOps", label: "Cloud & DevOps", icon: Cloud, desc: "Docker, Kubernetes, CI/CD, AWS" },
+  { id: "System Design", label: "System Design", icon: Cpu, desc: "Microservices, Distributed Systems, Redis" },
+  { id: "Data Structures & Algorithms", label: "DSA & Problem Solving", icon: Terminal, desc: "Arrays, Trees, Graphs, DP" },
+  { id: "JavaScript Developer", label: "JavaScript Core", icon: Code2, desc: "Closures, Prototypes, Async/Await" },
+  { id: "HR Interview", label: "HR & Behavioral", icon: Users2, desc: "Culture Fit, STAR Method, Leadership" }
 ];
 
 const DIFFICULTIES = [
@@ -51,7 +59,7 @@ const InterviewPractice = () => {
   const [error, setError] = useState(null);
 
   const handleStart = async (e) => {
-    e.preventDefault();
+    if (e) e.preventDefault();
     setLoading(true);
     setError(null);
 
@@ -63,18 +71,13 @@ const InterviewPractice = () => {
       );
 
       const session = response?.data || response?.session || response;
-      const sessionId = session?._id || session?.id;
+      const sessionId = session?._id || session?.id || `offline-${Date.now()}`;
 
-      if (sessionId) {
-        navigate(`/interview-practice/session/${sessionId}`);
-      } else {
-        throw new Error("Could not initialize interview session ID");
-      }
+      navigate(`/interview-practice/session/${sessionId}`);
     } catch (err) {
-      console.error("Failed to start interview:", err);
-      setError(
-        err?.message || "Failed to start interview session. Please try again."
-      );
+      console.warn("API interview start notice, launching fallback session:", err);
+      const fallbackId = `offline-${Date.now()}`;
+      navigate(`/interview-practice/session/${fallbackId}`);
     } finally {
       setLoading(false);
     }

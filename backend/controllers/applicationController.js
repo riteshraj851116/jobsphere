@@ -85,7 +85,15 @@ const applyForJob = async (req, res) => {
         : req.user.resume || "",
       coverLetter: coverLetter
         ? coverLetter.trim()
-        : ""
+        : "",
+      status: "Applied",
+      timeline: [
+        {
+          status: "Applied",
+          note: "Application submitted by candidate",
+          date: new Date()
+        }
+      ]
     });
 
     const populatedApplication =
@@ -168,7 +176,8 @@ const getMyApplications = async (req, res) => {
 
     const [
       applications,
-      totalApplications
+      totalApplications,
+      allUserApps
     ] = await Promise.all([
       Application.find(filter)
         .populate(
@@ -187,13 +196,26 @@ const getMyApplications = async (req, res) => {
         .skip(skip)
         .limit(itemsPerPage),
 
-      Application.countDocuments(filter)
+      Application.countDocuments(filter),
+
+      Application.find({ applicant: req.user._id }).select("status")
     ]);
+
+    const statusCounts = {
+      total: allUserApps.length,
+      applied: allUserApps.filter((a) => a.status === "Applied").length,
+      reviewing: allUserApps.filter((a) => a.status === "Reviewing" || a.status === "Under Review").length,
+      shortlisted: allUserApps.filter((a) => a.status === "Shortlisted").length,
+      interview: allUserApps.filter((a) => a.status === "Interview").length,
+      selected: allUserApps.filter((a) => a.status === "Selected" || a.status === "Hired").length,
+      rejected: allUserApps.filter((a) => a.status === "Rejected").length,
+    };
 
     res.status(200).json({
       success: true,
       data: {
         applications,
+        statusCounts,
         pagination: {
           currentPage,
           totalPages: Math.ceil(
@@ -398,9 +420,11 @@ const updateApplicationStatus = async (
 
     const allowedStatuses = [
       "Applied",
+      "Under Review",
       "Reviewing",
       "Shortlisted",
       "Interview",
+      "Selected",
       "Hired",
       "Rejected"
     ];
@@ -442,6 +466,16 @@ const updateApplicationStatus = async (
 
     application.status = status;
 
+    if (!Array.isArray(application.timeline)) {
+      application.timeline = [];
+    }
+
+    application.timeline.push({
+      status,
+      note: recruiterNote ? recruiterNote.trim() : `Status updated to ${status}`,
+      date: new Date()
+    });
+
     if (recruiterNote !== undefined) {
       application.recruiterNote =
         recruiterNote.trim();
@@ -465,6 +499,21 @@ const updateApplicationStatus = async (
           "applicant",
           "name username email profilePicture headline"
         );
+
+    // Socket.IO real-time event notification
+    if (global.io) {
+      try {
+        global.io.to(application.applicant.toString()).emit("application_status", {
+          applicationId: application._id,
+          status,
+          jobTitle: updatedApplication.job?.title,
+          companyName: updatedApplication.company?.name,
+          updatedAt: new Date()
+        });
+      } catch (sErr) {
+        console.warn("Socket broadcast warning in updateApplicationStatus:", sErr.message);
+      }
+    }
 
     await createNotification({
       recipient: application.applicant,

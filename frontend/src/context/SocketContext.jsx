@@ -56,7 +56,9 @@ export const SocketProvider = ({ children }) => {
 
       // Join user room
       if (user?._id) {
-        newSocket.emit("join-user", user._id.toString());
+        const uid = user._id.toString();
+        newSocket.emit("join", uid);
+        newSocket.emit("join-user", uid);
       }
     });
 
@@ -160,6 +162,30 @@ export const SocketProvider = ({ children }) => {
     [socket]
   );
 
+  // Listen for real-time notifications
+  const onNotification = useCallback(
+    (callback) => {
+      if (!socket) return;
+      socket.on("new-notification", callback);
+      return () => {
+        socket.off("new-notification", callback);
+      };
+    },
+    [socket]
+  );
+
+  // Listen for application status updates
+  const onApplicationStatus = useCallback(
+    (callback) => {
+      if (!socket) return;
+      socket.on("application_status", callback);
+      return () => {
+        socket.off("application_status", callback);
+      };
+    },
+    [socket]
+  );
+
   const value = {
     socket,
     isConnected,
@@ -171,6 +197,8 @@ export const SocketProvider = ({ children }) => {
     onNewMessage,
     onConversationMessage,
     onTyping,
+    onNotification,
+    onApplicationStatus,
   };
 
   return (

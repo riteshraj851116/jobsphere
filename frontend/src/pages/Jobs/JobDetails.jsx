@@ -23,6 +23,7 @@ import { getJobById } from "../../services/jobService";
 import { saveJob } from "../../services/userService";
 import { applyForJob, getMyApplications } from "../../services/applicationService";
 import { getJobMatchScore } from "../../services/careerService";
+import { calculateJobMatch } from "../../utils/jobMatch";
 import Loader from "../../components/common/Loader";
 
 import CareerGraph from "../../components/three/CareerGraph";
@@ -85,9 +86,26 @@ const JobDetails = () => {
           // Fetch job match score
           try {
             const matchRes = await getJobMatchScore(id);
-            setMatchData(matchRes);
+            if (matchRes?.matchScore !== undefined) {
+              setMatchData(matchRes);
+            } else {
+              const fallbackMatch = calculateJobMatch(user, resJob);
+              setMatchData({
+                matchScore: fallbackMatch.score,
+                matchedSkills: fallbackMatch.matchedSkills,
+                missingSkills: fallbackMatch.missingSkills,
+                explanation: fallbackMatch.explanation
+              });
+            }
           } catch (mErr) {
-            console.warn("Could not calculate match score:", mErr);
+            console.warn("Could not calculate match score via API, using local algorithm:", mErr);
+            const fallbackMatch = calculateJobMatch(user, resJob);
+            setMatchData({
+              matchScore: fallbackMatch.score,
+              matchedSkills: fallbackMatch.matchedSkills,
+              missingSkills: fallbackMatch.missingSkills,
+              explanation: fallbackMatch.explanation
+            });
           }
         } catch (err) {
           console.warn("Could not check application status:", err);

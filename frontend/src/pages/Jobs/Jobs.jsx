@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState, useCallback } from "react";
+import React, { useEffect, useMemo, useState, useCallback, useContext } from "react";
 import {
   Search,
   MapPin,
@@ -8,21 +8,27 @@ import {
   Clock3,
   Building2,
   X,
+  Sparkles,
+  Check
 } from "lucide-react";
 import { Link, useSearchParams } from "react-router-dom";
 import JobsHeaderVisual from "../../components/three/JobsHeaderVisual";
 import JobField from "../../components/three/JobField";
 import { getJobs } from "../../services/jobService";
 import { useDebounce } from "../../hooks/useDebounce";
+import { AuthContext } from "../../context/AuthContext";
+import { calculateJobMatch } from "../../utils/jobMatch";
 import "./Jobs.css";
 
 const FILTERS = {
   type: ["Full Time", "Part Time", "Contract", "Internship", "Freelance"],
   mode: ["Remote", "Hybrid", "On-site"],
   experience: ["Entry Level", "Mid Level", "Senior Level", "Lead"],
+  salary: ["$50k+", "$100k+", "$150k+"],
 };
 
 const Jobs = () => {
+  const { user } = useContext(AuthContext) || {};
   const [searchParams, setSearchParams] = useSearchParams();
 
   const initialSearch = searchParams.get("search") || "";
@@ -35,10 +41,13 @@ const Jobs = () => {
     type: [],
     mode: [],
     experience: [],
+    salary: [],
   });
 
   const [sort, setSort] = useState("recent");
   const [mobileFilters, setMobileFilters] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 8;
 
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -82,6 +91,12 @@ const Jobs = () => {
 
         if (selectedFilters.experience.length > 0) {
           params.experienceLevel = selectedFilters.experience[0];
+        }
+
+        if (selectedFilters.salary?.length > 0) {
+          if (selectedFilters.salary.includes("$150k+")) params.minSalary = 150000;
+          else if (selectedFilters.salary.includes("$100k+")) params.minSalary = 100000;
+          else if (selectedFilters.salary.includes("$50k+")) params.minSalary = 50000;
         }
 
         if (sort === "title") {
@@ -411,91 +426,126 @@ const Jobs = () => {
 
             <div className="job-list">
               {loading ? (
-                <div className="loading-state">
-                  <p>Loading jobs...</p>
+                <div className="skeleton-container" aria-busy="true">
+                  {[1, 2, 3, 4].map((n) => (
+                    <div className="job-skeleton-card" key={n}>
+                      <div className="skeleton-icon" />
+                      <div className="skeleton-lines">
+                        <div className="skeleton-line title" />
+                        <div className="skeleton-line subtitle" />
+                        <div className="skeleton-line meta" />
+                      </div>
+                    </div>
+                  ))}
                 </div>
               ) : jobs.length > 0 ? (
-                jobs.map((job) => (
-                  <article
-                    className="job-card"
-                    key={job._id}
-                  >
-                    <div className="job-company-icon">
-                      {job.company?.logo ? (
-                        <img
-                          src={job.company.logo}
-                          alt={job.company.name}
-                          onError={(e) => {
-                            e.target.style.display = 'none';
-                            e.target.nextSibling.style.display = 'flex';
-                          }}
-                        />
-                      ) : null}
-                      <Building2 size={24} style={{ display: job.company?.logo ? 'none' : 'flex' }} />
-                    </div>
+                jobs.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((job) => {
+                  const match = calculateJobMatch(user, job);
+                  return (
+                    <article
+                      className="job-card"
+                      key={job._id}
+                    >
+                      <div className="job-company-icon">
+                        {job.company?.logo ? (
+                          <img
+                            src={job.company.logo}
+                            alt={job.company.name}
+                            onError={(e) => {
+                              e.target.style.display = 'none';
+                              if (e.target.nextSibling) e.target.nextSibling.style.display = 'flex';
+                            }}
+                          />
+                        ) : null}
+                        <Building2 size={24} style={{ display: job.company?.logo ? 'none' : 'flex' }} />
+                      </div>
 
-                    <div className="job-main">
-                      <div className="job-card-top">
-                        <div>
+                      <div className="job-main">
+                        <div className="job-card-top">
+                          <div>
+                            <Link
+                              to={`/jobs/${job._id}`}
+                              className="job-title"
+                            >
+                              {job.title}
+                            </Link>
+
+                            <div className="job-company">
+                              {job.company?.name || "Unknown Company"}
+                            </div>
+
+                            {match.score > 0 && (
+                              <div
+                                className={`smart-match-badge ${match.score >= 80 ? "high" : match.score >= 60 ? "medium" : "low"}`}
+                                title={match.explanation}
+                              >
+                                <Sparkles size={12} />
+                                <span>{match.score}% Match &bull; {match.rating}</span>
+                              </div>
+                            )}
+                          </div>
+
                           <Link
                             to={`/jobs/${job._id}`}
-                            className="job-title"
+                            className="job-arrow"
+                            aria-label={`View ${job.title}`}
                           >
-                            {job.title}
+                            <ArrowUpRight size={20} />
                           </Link>
-
-                          <div className="job-company">
-                            {job.company?.name || "Unknown Company"}
-                          </div>
                         </div>
 
-                        <Link
-                          to={`/jobs/${job._id}`}
-                          className="job-arrow"
-                          aria-label={`View ${job.title}`}
-                        >
-                          <ArrowUpRight size={20} />
-                        </Link>
-                      </div>
-
-                      <div className="job-meta">
-                        <span>
-                          <MapPin size={14} />
-                          {job.location}
-                        </span>
-
-                        <span>
-                          <Briefcase size={14} />
-                          {job.jobType}
-                        </span>
-
-                        <span>
-                          <Clock3 size={14} />
-                          {getTimeAgo(job.createdAt)}
-                        </span>
-                      </div>
-
-                      <div className="job-tags">
-                        <span className="job-mode">
-                          {job.isRemote ? "Remote" : "On-site"}
-                        </span>
-
-                        <span>{job.experienceLevel}</span>
-
-                        {job.skills?.slice(0, 2).map((skill) => (
-                          <span key={skill}>
-                            {skill}
+                        <div className="job-meta">
+                          <span>
+                            <MapPin size={14} />
+                            {job.location}
                           </span>
-                        ))}
-                      </div>
-                    </div>
 
-                    <div className="job-salary">
-                      <strong>{formatSalary(job)}</strong>
-                      <span>per year</span>
-                    </div>
-                  </article>
-                ))
+                          <span>
+                            <Briefcase size={14} />
+                            {job.jobType}
+                          </span>
+
+                          <span>
+                            <Clock3 size={14} />
+                            {getTimeAgo(job.createdAt)}
+                          </span>
+                        </div>
+
+                        <div className="job-tags">
+                          <span className="job-mode">
+                            {job.isRemote ? "Remote" : "On-site"}
+                          </span>
+
+                          <span>{job.experienceLevel}</span>
+
+                          {match.matchedSkills?.slice(0, 3).map((skill) => (
+                            <span key={skill} className="skill-tag-match" title="Matching skill from your profile">
+                              <Check size={12} />
+                              {skill}
+                            </span>
+                          ))}
+
+                          {match.missingSkills?.slice(0, 2).map((skill) => (
+                            <span key={skill} className="skill-tag-missing" title="Skill to learn for this role">
+                              + {skill}
+                            </span>
+                          ))}
+
+                          {!match.matchedSkills?.length && job.skills?.slice(0, 3).map((skill) => (
+                            <span key={skill}>
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="job-salary">
+                        <strong>{formatSalary(job)}</strong>
+                        <span>per year</span>
+                      </div>
+                    </article>
+                  );
+                })
               ) : (
                 <div className="empty-jobs">
                   <div>
@@ -523,6 +573,51 @@ const Jobs = () => {
                 </div>
               )}
             </div>
+
+            {/* Pagination Controls */}
+            {!loading && jobs.length > itemsPerPage && (
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginTop: "2.5rem",
+                  paddingTop: "1.5rem",
+                  borderTop: "1px solid #e2e8f0"
+                }}
+              >
+                <button
+                  type="button"
+                  className="btn-session secondary"
+                  onClick={() => {
+                    setCurrentPage((p) => Math.max(p - 1, 1));
+                    window.scrollTo({ top: 400, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === 1}
+                  style={{ padding: "6px 14px", fontSize: "0.875rem" }}
+                >
+                  Previous
+                </button>
+
+                <span style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600" }}>
+                  Page {currentPage} of {Math.ceil(jobs.length / itemsPerPage)}
+                </span>
+
+                <button
+                  type="button"
+                  className="btn-session secondary"
+                  onClick={() => {
+                    setCurrentPage((p) => Math.min(p + 1, Math.ceil(jobs.length / itemsPerPage)));
+                    window.scrollTo({ top: 400, behavior: "smooth" });
+                  }}
+                  disabled={currentPage === Math.ceil(jobs.length / itemsPerPage)}
+                  style={{ padding: "6px 14px", fontSize: "0.875rem" }}
+                >
+                  Next
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </section>

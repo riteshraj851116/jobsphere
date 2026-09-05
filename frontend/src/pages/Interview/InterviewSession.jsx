@@ -1,5 +1,3 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import {
   Clock,
   ChevronLeft,
@@ -10,12 +8,22 @@ import {
   Send,
   Loader2,
   Sparkles,
-  Layers
+  Layers,
+  Mic,
+  MicOff,
+  Volume2,
+  VolumeX,
+  Bot,
+  Eye,
+  EyeOff,
+  ThumbsUp,
+  AlertCircle
 } from "lucide-react";
 import {
   getInterviewSession,
   saveInterviewAnswer,
-  completeInterviewSession
+  completeInterviewSession,
+  evaluateInterviewAnswer
 } from "../../services/interviewService";
 import "./Interview.css";
 
@@ -34,8 +42,16 @@ const InterviewSession = () => {
   const [showEndModal, setShowEndModal] = useState(false);
   const [error, setError] = useState(null);
 
+  // Advanced Interactive State
+  const [isListening, setIsListening] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [evaluating, setEvaluating] = useState(false);
+  const [evaluationMap, setEvaluationMap] = useState({});
+  const [showModelAnswer, setShowModelAnswer] = useState(false);
+
   const debounceTimerRef = useRef(null);
   const timerIntervalRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   // Load Session
   useEffect(() => {
@@ -200,6 +216,16 @@ const InterviewSession = () => {
   const navigateToQuestion = async (newIndex) => {
     if (newIndex < 0 || newIndex >= totalQuestions) return;
 
+    if (isSpeaking && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    }
+    setShowModelAnswer(false);
+
     // Immediately flush pending autosave for current question
     if (currentQuestionId) {
       if (debounceTimerRef.current) {
@@ -212,6 +238,111 @@ const InterviewSession = () => {
     const nextQId = nextQ?._id || nextQ?.id;
     setCurrentIndex(newIndex);
     setCurrentText(answersMap[nextQId]?.answer || "");
+  };
+
+  // Speech Recognition (Voice Input)
+  const toggleSpeechRecognition = () => {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Speech recognition is not supported in this browser. Please use Chrome, Edge, or Safari.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.lang = "en-US";
+      recognition.continuous = true;
+      recognition.interimResults = true;
+
+      recognition.onstart = () => setIsListening(true);
+      recognition.onend = () => setIsListening(false);
+      recognition.onerror = () => setIsListening(false);
+
+      recognition.onresult = (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; ++i) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript) {
+          setCurrentText((prev) => {
+            const separator = prev && !prev.endsWith(" ") ? " " : "";
+            const updated = prev + separator + transcript;
+            if (currentQuestionId) {
+              setAnswersMap((map) => ({
+                ...map,
+                [currentQuestionId]: { answer: updated, skipped: false }
+              }));
+              persistAnswer(currentQuestionId, updated, false);
+            }
+            return updated;
+          });
+        }
+      };
+
+      recognitionRef.current = recognition;
+      recognition.start();
+    } catch (e) {
+      console.warn("Speech recognition error:", e);
+      setIsListening(false);
+    }
+  };
+
+  // Text to Speech (Listen to Question)
+  const toggleTextToSpeech = () => {
+    if (!window.speechSynthesis) return;
+
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    const questionText = currentQuestion?.question || currentQuestion?.text || "";
+    if (!questionText) return;
+
+    const utterance = new SpeechSynthesisUtterance(questionText);
+    utterance.rate = 0.95;
+    utterance.pitch = 1;
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Instant AI Answer Evaluation
+  const handleEvaluateCurrentAnswer = async () => {
+    if (!currentText || currentText.trim().length < 5) {
+      alert("Please provide at least a few words in your answer to evaluate.");
+      return;
+    }
+
+    try {
+      setEvaluating(true);
+      const res = await evaluateInterviewAnswer({
+        question: currentQuestion.question || currentQuestion.text,
+        expectedAnswer: currentQuestion.expectedAnswer || currentQuestion.sampleAnswer,
+        answer: currentText,
+        role: session?.role || "Developer",
+        difficulty: session?.difficulty || "medium"
+      });
+
+      const evalData = res?.data || res;
+      setEvaluationMap((prev) => ({
+        ...prev,
+        [currentQuestionId]: evalData
+      }));
+    } catch (err) {
+      console.warn("Evaluation error:", err);
+    } finally {
+      setEvaluating(false);
+    }
   };
 
   // Handle Skip
@@ -242,6 +373,12 @@ const InterviewSession = () => {
   const handleEndInterview = async () => {
     try {
       setSubmitting(true);
+      if (isSpeaking && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+      if (isListening) {
+        recognitionRef.current?.stop();
+      }
       // Flush current answer
       if (currentQuestionId) {
         await persistAnswer(currentQuestionId, currentText, false);
@@ -296,6 +433,8 @@ const InterviewSession = () => {
     ((currentIndex + 1) / totalQuestions) * 100
   );
 
+  const currentEval = evaluationMap[currentQuestionId];
+
   return (
     <div className="interview-page">
       <div className="session-container">
@@ -318,6 +457,35 @@ const InterviewSession = () => {
             <Clock size={15} />
             <span>{formatTime(duration)}</span>
           </div>
+        </div>
+
+        {/* Question Matrix Navigator */}
+        <div className="question-matrix-palette" title="Click any question number to jump directly">
+          {session.questions.map((q, idx) => {
+            const qId = q._id || q.id;
+            const ansObj = answersMap[qId];
+            const isAnswered = ansObj && !ansObj.skipped && ansObj.answer && ansObj.answer.trim().length > 0;
+            const isSkipped = ansObj?.skipped;
+            const isCurrent = idx === currentIndex;
+            const isEval = !!evaluationMap[qId];
+
+            let statusClass = "pending";
+            if (isAnswered) statusClass = "answered";
+            if (isSkipped) statusClass = "skipped";
+            if (isCurrent) statusClass += " active";
+
+            return (
+              <button
+                type="button"
+                key={qId || idx}
+                className={`palette-pill ${statusClass}`}
+                onClick={() => navigateToQuestion(idx)}
+              >
+                <span>{idx + 1}</span>
+                {isEval && <span className="palette-eval-dot" />}
+              </button>
+            );
+          })}
         </div>
 
         {/* Progress Tracker */}
@@ -344,7 +512,7 @@ const InterviewSession = () => {
             <div className="question-header">
               <span className="category-tag">
                 <Sparkles size={13} />
-                <span>{currentQuestion.category || "General"}</span>
+                <span>{currentQuestion.category || "Technical Interview"}</span>
               </span>
 
               <div className={`save-status-pill ${saveStatus}`}>
@@ -366,23 +534,133 @@ const InterviewSession = () => {
 
             <h2 className="question-text">{currentQuestion.question || currentQuestion.text || currentQuestion.title}</h2>
 
+            {/* Audio & Tool Action Bar */}
+            <div className="question-tools-bar">
+              <div className="tools-group">
+                <button
+                  type="button"
+                  className="tool-action-btn"
+                  onClick={toggleTextToSpeech}
+                  title="Listen to question"
+                >
+                  {isSpeaking ? <VolumeX size={15} color="#ef4444" /> : <Volume2 size={15} color="#2563eb" />}
+                  <span>{isSpeaking ? "Stop Audio" : "Listen to Question"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  className={`tool-action-btn ${isListening ? "listening" : ""}`}
+                  onClick={toggleSpeechRecognition}
+                  title="Speak your answer"
+                >
+                  {isListening ? <MicOff size={15} /> : <Mic size={15} color="#16a34a" />}
+                  <span>{isListening ? "Listening (Click to Stop)" : "Voice Input (Speak)"}</span>
+                </button>
+              </div>
+
+              <div className="tools-group">
+                <button
+                  type="button"
+                  className="tool-action-btn ai-eval"
+                  onClick={handleEvaluateCurrentAnswer}
+                  disabled={evaluating || !currentText.trim()}
+                  title="Evaluate current answer with AI"
+                >
+                  {evaluating ? (
+                    <>
+                      <Loader2 size={14} style={{ animation: "spin 1s linear infinite" }} />
+                      <span>Evaluating...</span>
+                    </>
+                  ) : (
+                    <>
+                      <Bot size={15} />
+                      <span>AI Answer Feedback</span>
+                    </>
+                  )}
+                </button>
+
+                {(currentQuestion.expectedAnswer || currentQuestion.sampleAnswer) && (
+                  <button
+                    type="button"
+                    className="tool-action-btn"
+                    onClick={() => setShowModelAnswer(!showModelAnswer)}
+                    title="View model sample answer"
+                  >
+                    {showModelAnswer ? <EyeOff size={14} /> : <Eye size={14} />}
+                    <span>{showModelAnswer ? "Hide Sample Answer" : "Sample Answer"}</span>
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Model Answer Preview Drawer */}
+            {showModelAnswer && (
+              <div className="eval-sample-box" style={{ marginBottom: "1.25rem", background: "#f8fafc", border: "1px dashed #94a3b8" }}>
+                <div style={{ fontWeight: 700, color: "#475569", marginBottom: "0.25rem", fontSize: "0.8125rem", textTransform: "uppercase" }}>
+                  Ideal Model Concept / Answer:
+                </div>
+                <div>{currentQuestion.expectedAnswer || currentQuestion.sampleAnswer}</div>
+              </div>
+            )}
+
+            {/* Answer Text Area */}
             <div className="answer-section">
               <div className="answer-label">
                 <span>Your Answer:</span>
                 <span style={{ fontSize: "0.8125rem", color: "#71717a" }}>
-                  {currentText.length} characters
+                  {currentText.length} characters &bull; {currentText.split(/\s+/).filter(Boolean).length} words
                 </span>
               </div>
 
               <textarea
                 className="answer-textarea"
-                placeholder="Type your explanation or technical answer here in your own words..."
+                placeholder="Type your technical explanation here, or use 'Voice Input' to speak your answer naturally..."
                 value={currentText}
                 onChange={handleTextChange}
                 rows={7}
-                autoFocus
               />
             </div>
+
+            {/* Inline AI Evaluation Feedback Card */}
+            {currentEval && (
+              <div className="inline-ai-eval-card">
+                <div className="ai-eval-header">
+                  <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                    <Bot size={18} color="#4f46e5" />
+                    <span style={{ fontWeight: 700, fontSize: "0.9375rem" }}>Instant AI Evaluation</span>
+                  </div>
+                  <span className={`ai-score-badge ${currentEval.score >= 80 ? "high" : currentEval.score >= 65 ? "medium" : "low"}`}>
+                    Score: {currentEval.score}% &bull; {currentEval.rating}
+                  </span>
+                </div>
+
+                <p style={{ margin: "0 0 0.75rem", fontSize: "0.875rem", color: "#334155" }}>
+                  {currentEval.feedback}
+                </p>
+
+                {currentEval.strengths && currentEval.strengths.length > 0 && (
+                  <div>
+                    <div className="eval-section-title">Key Strengths:</div>
+                    <ul className="eval-bullet-list">
+                      {currentEval.strengths.map((s, sIdx) => (
+                        <li key={sIdx}>{s}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+
+                {currentEval.improvements && currentEval.improvements.length > 0 && (
+                  <div>
+                    <div className="eval-section-title">Suggested Improvements & Missing Concepts:</div>
+                    <ul className="eval-bullet-list">
+                      {currentEval.improvements.map((imp, impIdx) => (
+                        <li key={impIdx}>{imp}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         )}
 

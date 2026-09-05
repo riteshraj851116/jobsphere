@@ -7,7 +7,7 @@ const {
   getAnalysisById,
   deleteAnalysis
 } = require("../controllers/resumeController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, optionalAuth } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
@@ -40,19 +40,16 @@ const upload = multer({
   fileFilter
 });
 
-// All resume routes require authentication
-router.use(protect);
-
-// Upload and analyze resume
-router.post("/analyze", upload.single("resume"), analyzeResume);
+// Upload and analyze resume (Public / Optional Auth)
+router.post("/analyze", optionalAuth, upload.single("resume"), analyzeResume);
 
 // Get user's previous analyses
-router.get("/analyses", getAnalyses);
+router.get("/analyses", optionalAuth, getAnalyses);
 
 // Get specific analysis by ID
-router.get("/analysis/:id", getAnalysisById);
+router.get("/analysis/:id", optionalAuth, getAnalysisById);
 
 // Delete analysis
-router.delete("/analysis/:id", deleteAnalysis);
+router.delete("/analysis/:id", protect, deleteAnalysis);
 
 module.exports = router;

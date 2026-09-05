@@ -42,9 +42,11 @@ const applicationSchema = new mongoose.Schema(
       type: String,
       enum: [
         "Applied",
+        "Under Review",
         "Reviewing",
         "Shortlisted",
         "Interview",
+        "Selected",
         "Hired",
         "Rejected"
       ],

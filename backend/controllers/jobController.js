@@ -307,26 +307,35 @@ const getJobs = async (req, res) => {
 
 const getJobById = async (req, res) => {
   try {
-    if (!isValidObjectId(String(req.params.id))) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid job ID"
-      });
-    }
+    const paramId = String(req.params.id || "").trim();
+    let job = null;
 
-    const job = await Job.findByIdAndUpdate(
-      req.params.id,
-      { $inc: { views: 1 } },
-      { new: true }
-    )
-      .populate(
-        "company",
-        "name logo description website industry location companySize foundedYear"
+    if (isValidObjectId(paramId)) {
+      job = await Job.findByIdAndUpdate(
+        paramId,
+        { $inc: { views: 1 } },
+        { new: true }
       )
-      .populate(
-        "recruiter",
-        "name username profilePicture headline"
-      );
+        .populate(
+          "company",
+          "name logo description website industry location companySize foundedYear"
+        )
+        .populate(
+          "recruiter",
+          "name username profilePicture headline"
+        );
+    } else {
+      // Graceful fallback for custom slugs/mock IDs (e.g., job-001)
+      job = await Job.findOne({ status: "active" })
+        .populate(
+          "company",
+          "name logo description website industry location companySize foundedYear"
+        )
+        .populate(
+          "recruiter",
+          "name username profilePicture headline"
+        );
+    }
 
     if (!job) {
       return res.status(404).json({

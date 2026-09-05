@@ -17,7 +17,10 @@ import "./SkillGap.css";
 const ROLES = [
   "MERN Stack Developer",
   "Frontend Developer",
-  "Backend Developer"
+  "Backend Developer",
+  "Full Stack Developer",
+  "Cloud & DevOps",
+  "AI & ML Engineer"
 ];
 
 const SkillGapAnalyzer = () => {

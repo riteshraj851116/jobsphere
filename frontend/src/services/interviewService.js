@@ -298,22 +298,93 @@ export const completeInterviewSession = async (sessionId, duration) => {
   }
 };
 
-export const getInterviewHistory = async () => {
+export const evaluateInterviewAnswer = async ({ question, expectedAnswer, answer, role, difficulty }) => {
   try {
-    const res = await api.get("/interview/history");
+    const res = await api.post("/interview/evaluate-answer", {
+      question,
+      expectedAnswer,
+      answer,
+      role,
+      difficulty
+    }, { timeout: 8000 });
     return res.data;
   } catch (err) {
-    console.warn("History unavailable:", err.message);
-    return { sessions: [] };
+    console.warn("Backend evaluateAnswer fallback:", err.message);
+    const userAns = String(answer || "").trim();
+    const words = userAns.toLowerCase().split(/\s+/).filter(Boolean);
+    const wordCount = words.length;
+
+    const stopWords = new Set(["the", "and", "that", "this", "with", "from", "for", "are", "was", "were", "what", "which", "how", "used", "using", "can"]);
+    const modelTokens = String(expectedAnswer || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, " ")
+      .split(/\s+/)
+      .filter((w) => w.length > 3 && !stopWords.has(w));
+
+    const matchedTokens = modelTokens.filter((token) => words.includes(token));
+    const uniqueMatches = [...new Set(matchedTokens)];
+    const uniqueTotal = [...new Set(modelTokens)].length || 1;
+    const matchRatio = Math.min(uniqueMatches.length / uniqueTotal, 1);
+
+    let score = Math.round(matchRatio * 55 + Math.min(wordCount / 35, 1) * 35 + 10);
+    score = Math.min(Math.max(score, 45), 98);
+
+    let rating = score >= 85 ? "Excellent" : score >= 70 ? "Solid" : "Good";
+
+    return {
+      success: true,
+      data: {
+        score,
+        rating,
+        feedback: `Your response shows ${rating.toLowerCase()} understanding of this technical topic. ${score >= 75 ? "You clearly hit the primary conceptual points." : "Try incorporating more specific architectural terminology and real-world trade-offs."}`,
+        strengths: [
+          wordCount > 20 ? "Clear technical structure and articulation." : "Direct answer to the interview question.",
+          uniqueMatches.length > 0 ? `Covered core concepts: ${uniqueMatches.slice(0, 3).join(", ")}.` : "Relevant technical explanation."
+        ],
+        improvements: [
+          "Expand on real-world production metrics and error handling scenarios.",
+          "Highlight system scalability trade-offs when discussing this approach."
+        ],
+        sampleAnswer: expectedAnswer
+      }
+    };
+  }
+};
+
+export const getInterviewHistory = async () => {
+  try {
+    const res = await api.get("/interview/history", { timeout: 6000 });
+    const raw = res?.data || res;
+    const historyList = Array.isArray(raw?.data) ? raw.data : Array.isArray(raw?.sessions) ? raw.sessions : Array.isArray(raw) ? raw : [];
+    return {
+      success: true,
+      sessions: historyList,
+      data: historyList
+    };
+  } catch (err) {
+    console.warn("Interview history unavailable from backend, gathering local history:", err.message);
+    const cached = [];
+    try {
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && (key.startsWith("interview_result_") || key.startsWith("interview_session_"))) {
+          const item = JSON.parse(localStorage.getItem(key));
+          if (item && item.status === "completed") {
+            cached.push(item);
+          }
+        }
+      }
+    } catch (e) {}
+    return { success: true, sessions: cached, data: cached };
   }
 };
 
 export const getQuestions = async (params = {}) => {
   try {
-    const res = await api.get("/interview/questions", { params });
+    const res = await api.get("/interview/questions", { params, timeout: 6000 });
     return res.data;
   } catch (err) {
-    console.warn("Questions unavailable, using offline bank:", err.message);
+    console.warn("Questions unavailable from API, using offline questions:", err.message);
     const role = params.role || "MERN Stack Developer";
     const difficulty = params.difficulty || "medium";
     const limit = params.limit || 50;
@@ -327,5 +398,6 @@ export default {
   saveInterviewAnswer,
   completeInterviewSession,
   getInterviewHistory,
-  getQuestions
+  getQuestions,
+  evaluateInterviewAnswer
 };

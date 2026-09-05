@@ -28,10 +28,9 @@ const createNotification = async ({
     const io = global.io;
 
     if (io) {
-      io.to(`user:${recipient.toString()}`).emit(
-        "new-notification",
-        notification
-      );
+      const recId = recipient.toString();
+      io.to(recId).emit("new-notification", notification);
+      io.to(`user:${recId}`).emit("new-notification", notification);
     }
 
     return notification;

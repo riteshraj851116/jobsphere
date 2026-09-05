@@ -176,20 +176,36 @@ if (!process.env.VERCEL) {
     global.io = io;
 
     io.on("connection", (socket) => {
-      console.log(`Socket connected: ${socket.id}`);
+      const joinRooms = (userId) => {
+        if (!userId) return;
+        const uid = String(userId);
+        socket.join(uid);
+        socket.join(`user:${uid}`);
+      };
 
-      socket.on("join", (userId) => {
-        if (!userId) {
-          return;
+      socket.on("join", joinRooms);
+      socket.on("join-user", joinRooms);
+
+      socket.on("join-conversation", (conversationId) => {
+        if (conversationId) {
+          socket.join(String(conversationId));
         }
+      });
 
-        socket.join(userId);
+      socket.on("leave-conversation", (conversationId) => {
+        if (conversationId) {
+          socket.leave(String(conversationId));
+        }
+      });
 
-        console.log(`User ${userId} joined personal socket room`);
+      socket.on("typing", (data) => {
+        if (data?.conversationId) {
+          socket.to(String(data.conversationId)).emit("typing", data);
+        }
       });
 
       socket.on("disconnect", () => {
-        console.log(`Socket disconnected: ${socket.id}`);
+        // Disconnected
       });
     });
   } catch (socketErr) {

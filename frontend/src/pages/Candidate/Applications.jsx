@@ -54,6 +54,7 @@ const Applications = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   // Modals
+  const [activeTimelineApp, setActiveTimelineApp] = useState(null);
   const [activeNoteApp, setActiveNoteApp] = useState(null);
   const [newNoteText, setNewNoteText] = useState("");
 
@@ -350,8 +351,18 @@ const Applications = () => {
                           </select>
                         </div>
 
-                        {/* Actions: Notes & Reminders */}
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "8px", fontSize: "0.75rem" }}>
+                        {/* Actions: Notes, Reminders, Timeline */}
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "8px", fontSize: "0.75rem", flexWrap: "wrap", gap: "6px" }}>
+                          <button
+                            type="button"
+                            onClick={() => setActiveTimelineApp(app)}
+                            style={{ background: "transparent", border: "none", color: "#059669", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0, fontWeight: 600 }}
+                            title="View application lifecycle timeline"
+                          >
+                            <Clock size={13} />
+                            <span>Timeline</span>
+                          </button>
+
                           <button
                             type="button"
                             onClick={() => setActiveNoteApp(app)}
@@ -420,8 +431,18 @@ const Applications = () => {
                   </div>
                 </div>
 
-                <div className="app-card-footer" style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <div style={{ display: "flex", gap: "10px" }}>
+                <div className="app-card-footer" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "8px" }}>
+                  <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                    <button
+                      type="button"
+                      className="btn-session secondary"
+                      onClick={() => setActiveTimelineApp(app)}
+                      style={{ padding: "4px 10px", fontSize: "0.8125rem", color: "#059669", borderColor: "#a7f3d0" }}
+                    >
+                      <Clock size={14} />
+                      <span>Timeline History</span>
+                    </button>
+
                     <button
                       type="button"
                       className="btn-session secondary"
@@ -559,6 +580,165 @@ const Applications = () => {
                   <button type="submit" className="btn-session primary">Set Reminder</button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* MODAL: APPLICATION LIFECYCLE TIMELINE */}
+        {activeTimelineApp && (
+          <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "1rem" }}>
+            <div style={{ background: "#ffffff", borderRadius: "18px", padding: "2rem", width: "100%", maxWidth: "600px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.25rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "1rem" }}>
+                <div>
+                  <h3 style={{ margin: "0 0 4px", fontSize: "1.25rem", fontWeight: "800", color: "#0f172a" }}>
+                    Application Lifecycle Timeline
+                  </h3>
+                  <p style={{ margin: 0, fontSize: "0.875rem", color: "#64748b" }}>
+                    {activeTimelineApp.job?.title || "Role"} &bull; {activeTimelineApp.company?.name || "Company"}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setActiveTimelineApp(null)}
+                  style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "6px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  aria-label="Close modal"
+                >
+                  <X size={18} />
+                </button>
+              </div>
+
+              {/* Visual Progress Lifecycle Stepper */}
+              <div style={{ marginBottom: "2rem", padding: "1rem 0.5rem", background: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", marginBottom: "0.75rem", textAlign: "center" }}>
+                  Current Status: <span style={{ color: "#2563eb", textTransform: "none" }}>{activeTimelineApp.status || activeTimelineApp.stage || "Applied"}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
+                  {["Applied", "Under Review", "Interview", "Selected"].map((step, sIdx) => {
+                    const currentStatus = String(activeTimelineApp.status || activeTimelineApp.stage || "Applied").toLowerCase();
+                    const isRejected = currentStatus.includes("reject");
+                    const stepOrder = ["applied", "under review", "reviewing", "shortlisted", "interview", "technical round", "selected", "hired", "offer"];
+                    const currentIdx = stepOrder.indexOf(currentStatus);
+                    const thisStepIdx = stepOrder.indexOf(step.toLowerCase());
+                    const isPassed = !isRejected && currentIdx >= thisStepIdx;
+                    const isCurrent = currentStatus === step.toLowerCase() || (step === "Under Review" && currentStatus === "reviewing") || (step === "Selected" && (currentStatus === "hired" || currentStatus === "offer"));
+
+                    return (
+                      <div key={step} style={{ display: "flex", flexDirection: "column", alignItems: "center", flex: 1, zIndex: 2, position: "relative" }}>
+                        <div
+                          style={{
+                            width: "28px",
+                            height: "28px",
+                            borderRadius: "50%",
+                            background: isPassed ? "#16a34a" : isCurrent ? "#2563eb" : "#e2e8f0",
+                            color: isPassed || isCurrent ? "#ffffff" : "#64748b",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "0.75rem",
+                            fontWeight: 700,
+                            marginBottom: "6px",
+                            boxShadow: isCurrent ? "0 0 0 4px rgba(37, 99, 235, 0.2)" : "none"
+                          }}
+                        >
+                          {isPassed ? "✓" : sIdx + 1}
+                        </div>
+                        <span style={{ fontSize: "0.6875rem", fontWeight: isCurrent ? 700 : 500, color: isCurrent ? "#2563eb" : "#64748b", textAlign: "center" }}>
+                          {step}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              {/* Detailed Event Log */}
+              <div style={{ marginBottom: "1.5rem" }}>
+                <h4 style={{ margin: "0 0 1rem", fontSize: "0.9375rem", fontWeight: "700", color: "#334155" }}>
+                  Status History & Timestamps
+                </h4>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "2px solid #e2e8f0", marginLeft: "14px", paddingLeft: "16px" }}>
+                  {Array.isArray(activeTimelineApp.timeline) && activeTimelineApp.timeline.length > 0 ? (
+                    activeTimelineApp.timeline.map((entry, tIdx) => (
+                      <div key={tIdx} style={{ position: "relative" }}>
+                        <div
+                          style={{
+                            position: "absolute",
+                            left: "-23px",
+                            top: "2px",
+                            width: "12px",
+                            height: "12px",
+                            borderRadius: "50%",
+                            background: "#2563eb",
+                            border: "2px solid #ffffff"
+                          }}
+                        />
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                          <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#0f172a" }}>
+                            {entry.status}
+                          </span>
+                          <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                            {entry.date ? new Date(entry.date).toLocaleString() : "Date unavailable"}
+                          </span>
+                        </div>
+                        {entry.note && (
+                          <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#475569" }}>
+                            {entry.note}
+                          </p>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div style={{ position: "relative" }}>
+                      <div
+                        style={{
+                          position: "absolute",
+                          left: "-23px",
+                          top: "2px",
+                          width: "12px",
+                          height: "12px",
+                          borderRadius: "50%",
+                          background: "#2563eb",
+                          border: "2px solid #ffffff"
+                        }}
+                      />
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
+                        <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#0f172a" }}>
+                          {activeTimelineApp.status || "Applied"}
+                        </span>
+                        <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                          {new Date(activeTimelineApp.appliedAt || activeTimelineApp.createdAt).toLocaleString()}
+                        </span>
+                      </div>
+                      <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#475569" }}>
+                        Application submitted successfully.
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              {/* Recruiter Note if any */}
+              {activeTimelineApp.recruiterNote && (
+                <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", padding: "12px", borderRadius: "10px", marginBottom: "1.5rem" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1d4ed8", marginBottom: "4px", textTransform: "uppercase" }}>
+                    Recruiter Note
+                  </div>
+                  <p style={{ margin: 0, fontSize: "0.875rem", color: "#1e3a8a" }}>
+                    {activeTimelineApp.recruiterNote}
+                  </p>
+                </div>
+              )}
+
+              <div style={{ display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  type="button"
+                  className="btn-session primary"
+                  onClick={() => setActiveTimelineApp(null)}
+                >
+                  Done
+                </button>
+              </div>
             </div>
           </div>
         )}

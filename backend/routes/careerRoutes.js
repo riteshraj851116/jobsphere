@@ -25,28 +25,28 @@ const {
   toggleApplicationReminder,
   exportUserData
 } = require("../controllers/careerController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, optionalAuth } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // 1. Recommendations & Match Scores
-router.get("/recommendations", protect, getRecommendedJobs);
-router.get("/match-score/:jobId", protect, getJobMatchScore);
+router.get("/recommendations", optionalAuth, getRecommendedJobs);
+router.get("/match-score/:jobId", optionalAuth, getJobMatchScore);
 
 // 2. Career Roadmap
-router.get("/roadmap", protect, getCareerRoadmap);
-router.put("/roadmap/toggle-skill", protect, toggleRoadmapSkill);
+router.get("/roadmap", optionalAuth, getCareerRoadmap);
+router.put("/roadmap/toggle-skill", optionalAuth, toggleRoadmapSkill);
 
 // 3. Skill Gap Analyzer
-router.get("/skill-gap", protect, getSkillGap);
+router.get("/skill-gap", optionalAuth, getSkillGap);
 
 // 4. Unified Dashboard Analytics
-router.get("/dashboard-analytics", protect, getDashboardAnalytics);
+router.get("/dashboard-analytics", optionalAuth, getDashboardAnalytics);
 
 // 5. Bookmarks & Interview Analytics
-router.get("/interview/bookmarks", protect, getBookmarks);
-router.post("/interview/bookmarks", protect, toggleBookmark);
-router.get("/interview/analytics", protect, getInterviewAnalytics);
+router.get("/interview/bookmarks", optionalAuth, getBookmarks);
+router.post("/interview/bookmarks", optionalAuth, toggleBookmark);
+router.get("/interview/analytics", optionalAuth, getInterviewAnalytics);
 
 // 6. Job Alerts
 router.get("/alerts", protect, getJobAlerts);
