@@ -51,13 +51,22 @@ const startInterview = async (req, res) => {
     const { role, difficulty, questionCount } = req.body;
 
     const selectedRole = (role || "MERN Stack Developer").trim();
-    const selectedDifficulty = (difficulty || "medium").toLowerCase().trim();
+    const rawDiff = (difficulty || "").toLowerCase().trim();
+    let normalizedDifficulty = "medium";
+    if (rawDiff === "beginner" || rawDiff === "easy") {
+      normalizedDifficulty = "easy";
+    } else if (rawDiff === "hard" || rawDiff === "advanced" || rawDiff === "expert") {
+      normalizedDifficulty = "hard";
+    } else {
+      normalizedDifficulty = "medium";
+    }
+    const difficultyFilters = Array.from(new Set([normalizedDifficulty, rawDiff].filter(Boolean)));
     const count = Math.min(Math.max(Number(questionCount) || 5, 1), 30);
 
     // 1. Primary search: exact role and difficulty
     let matchingQuestions = await InterviewQuestion.find({
       role: new RegExp(`^${selectedRole}$`, "i"),
-      difficulty: selectedDifficulty
+      difficulty: { $in: difficultyFilters }
     });
 
     // 2. Secondary fallback: same role, any difficulty if needed
@@ -119,7 +128,7 @@ const startInterview = async (req, res) => {
           _id: new mongoose.Types.ObjectId(),
           role: selectedRole,
           category: "General",
-          difficulty: selectedDifficulty,
+          difficulty: normalizedDifficulty,
           type: "technical",
           question: `Can you describe your experience with ${selectedRole} and your core technical workflow?`,
           expectedAnswer: "A comprehensive walkthrough of core concepts, architecture, state management, and modern production best practices.",
@@ -129,7 +138,7 @@ const startInterview = async (req, res) => {
           _id: new mongoose.Types.ObjectId(),
           role: selectedRole,
           category: "Architecture",
-          difficulty: selectedDifficulty,
+          difficulty: normalizedDifficulty,
           type: "technical",
           question: "How do you handle asynchronous operations, error handling, and performance optimization in production?",
           expectedAnswer: "Using modern async/await, try/catch patterns, memoization, indexing, and connection caching.",
@@ -139,7 +148,7 @@ const startInterview = async (req, res) => {
           _id: new mongoose.Types.ObjectId(),
           role: selectedRole,
           category: "Security",
-          difficulty: selectedDifficulty,
+          difficulty: normalizedDifficulty,
           type: "technical",
           question: "What security measures do you implement when designing and consuming REST APIs?",
           expectedAnswer: "JWT verification, CORS policies, rate limiting, data sanitization, and parameterized queries.",
@@ -157,7 +166,7 @@ const startInterview = async (req, res) => {
     const session = await InterviewSession.create({
       user: req.user ? req.user._id : null,
       role: selectedRole,
-      difficulty: selectedDifficulty,
+      difficulty: normalizedDifficulty,
       totalQuestions: selectedQuestions.length,
       questions: selectedQuestions.map((q) => q._id),
       answers: [],
@@ -166,11 +175,15 @@ const startInterview = async (req, res) => {
     });
 
     const populatedSession = await InterviewSession.findById(session._id).populate("questions");
+    const responseSession = populatedSession ? populatedSession.toObject() : session.toObject();
+    if (!responseSession.questions || responseSession.questions.length === 0 || !responseSession.questions[0]?.question) {
+      responseSession.questions = selectedQuestions;
+    }
 
     return res.status(201).json({
       success: true,
       message: "Interview session started successfully",
-      data: populatedSession
+      data: responseSession
     });
   } catch (error) {
     console.error("Start Interview Error:", error);

@@ -20,7 +20,7 @@ const interviewQuestionSchema = new mongoose.Schema(
     difficulty: {
       type: String,
       required: [true, "Difficulty level is required"],
-      enum: ["easy", "medium", "hard"],
+      enum: ["easy", "medium", "hard", "beginner", "intermediate", "advanced"],
       lowercase: true,
       trim: true
     },
