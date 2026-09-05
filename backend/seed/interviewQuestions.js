@@ -730,4 +730,8 @@ const seedInterviewQuestions = async () => {
   }
 };
 
-seedInterviewQuestions();
+if (require.main === module) {
+  seedInterviewQuestions();
+}
+
+module.exports = { questionsData, seedInterviewQuestions };

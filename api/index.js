@@ -67,10 +67,24 @@ module.exports = async (req, res) => {
   }
 
   return new Promise((resolve) => {
-    app(req, res, () => {
+    try {
+      app(req, res, (err) => {
+        if (err && !res.headersSent) {
+          res.writeHead(500, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ success: false, message: err.message || "Internal server error" }));
+        }
+        resolve();
+      });
+    } catch (err) {
+      console.error("Serverless app invocation exception:", err);
+      if (!res.headersSent) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ success: false, message: err.message || "Unhandled server exception" }));
+      }
       resolve();
-    });
+    }
     res.on("finish", resolve);
     res.on("close", resolve);
+    res.on("error", resolve);
   });
 };

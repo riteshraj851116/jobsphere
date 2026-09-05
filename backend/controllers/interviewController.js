@@ -99,11 +99,54 @@ const startInterview = async (req, res) => {
       matchingQuestions = await InterviewQuestion.find({});
     }
 
+    // 5. Automatic seed if questions collection is empty in production
     if (matchingQuestions.length === 0) {
-      return res.status(404).json({
-        success: false,
-        message: "No interview questions found in the database. Please seed questions first."
-      });
+      try {
+        const { questionsData } = require("../seed/interviewQuestions");
+        if (Array.isArray(questionsData) && questionsData.length > 0) {
+          const inserted = await InterviewQuestion.insertMany(questionsData);
+          matchingQuestions = inserted;
+        }
+      } catch (seedErr) {
+        console.warn("Auto-seed questions warning:", seedErr.message);
+      }
+    }
+
+    // 6. Resilient inline fallback questions if database seeding was skipped
+    if (matchingQuestions.length === 0) {
+      const fallbackQuestions = [
+        {
+          _id: new mongoose.Types.ObjectId(),
+          role: selectedRole,
+          category: "General",
+          difficulty: selectedDifficulty,
+          type: "technical",
+          question: `Can you describe your experience with ${selectedRole} and your core technical workflow?`,
+          expectedAnswer: "A comprehensive walkthrough of core concepts, architecture, state management, and modern production best practices.",
+          explanation: "Core competency and conceptual understanding question."
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          role: selectedRole,
+          category: "Architecture",
+          difficulty: selectedDifficulty,
+          type: "technical",
+          question: "How do you handle asynchronous operations, error handling, and performance optimization in production?",
+          expectedAnswer: "Using modern async/await, try/catch patterns, memoization, indexing, and connection caching.",
+          explanation: "Production resilience and scalability question."
+        },
+        {
+          _id: new mongoose.Types.ObjectId(),
+          role: selectedRole,
+          category: "Security",
+          difficulty: selectedDifficulty,
+          type: "technical",
+          question: "What security measures do you implement when designing and consuming REST APIs?",
+          expectedAnswer: "JWT verification, CORS policies, rate limiting, data sanitization, and parameterized queries.",
+          explanation: "API security and defense-in-depth principles."
+        }
+      ];
+      matchingQuestions = fallbackQuestions;
     }
 
     // Shuffle questions and select up to requested count

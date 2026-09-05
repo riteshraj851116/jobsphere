@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: jobsphere-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: node backend/Server.js
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 5005
+      - key: CLIENT_URL
+        value: https://jobsphere-vercel.vercel.app
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: GEMINI_API_KEY
+        sync: false

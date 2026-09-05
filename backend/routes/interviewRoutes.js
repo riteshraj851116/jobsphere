@@ -27,7 +27,9 @@ router.get("/history", optionalAuth, getInterviewHistory);
 
 // Specific session routes
 router.get("/:sessionId", optionalAuth, getSession);
+router.get("/result/:sessionId", optionalAuth, getSession);
 router.put("/:sessionId/answer", optionalAuth, saveAnswer);
+router.post("/:sessionId/answer", optionalAuth, saveAnswer);
 router.post("/:sessionId/complete", optionalAuth, completeInterview);
 
 module.exports = router;
