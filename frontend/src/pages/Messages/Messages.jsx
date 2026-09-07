@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useLocation } from "react-router-dom";
 
 import {
@@ -49,9 +49,11 @@ const Messages = () => {
   const [sending, setSending] = useState(false);
 
   const [error, setError] = useState("");
+  const messagesEndRef = useRef(null);
 
-  // =========================================================
-  // IDEMPOTENT MESSAGE MERGE
+  const scrollToBottom = (behavior = "smooth") => {
+    messagesEndRef.current?.scrollIntoView({ behavior });
+  };
   // The same backend _id must never appear twice in state.
   // This protects against optimistic-append + socket echo +
   // refetch duplication, which was causing React duplicate-key
@@ -224,6 +226,7 @@ const Messages = () => {
 
       if (messageConversationId?.toString() === selectedConversation._id?.toString()) {
         appendMessage(message);
+        setTimeout(() => scrollToBottom(), 50);
       }
     });
 
@@ -234,6 +237,61 @@ const Messages = () => {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isConnected, selectedConversation?._id, onNewMessage]);
+
+  // =========================================================
+  // SERVERLESS REAL-TIME POLLING FALLBACK
+  // When WebSocket connection is unavailable (e.g., serverless Vercel),
+  // poll active conversation every 3.5 seconds so messages sync seamlessly.
+  // =========================================================
+  useEffect(() => {
+    if (!selectedConversation?._id) return;
+
+    const interval = setInterval(async () => {
+      if (document.hidden) return;
+
+      try {
+        const response = await getMessages(selectedConversation._id);
+        const list = response?.data?.messages || response?.messages || [];
+        if (Array.isArray(list) && list.length > 0) {
+          setMessages((prev) => {
+            const merged = dedupeById([...prev, ...list]);
+            if (merged.length !== prev.length) {
+              setTimeout(() => scrollToBottom(), 50);
+              return merged;
+            }
+            return prev;
+          });
+        }
+      } catch (pollErr) {
+        // silent background poll catch
+      }
+    }, 3500);
+
+    return () => clearInterval(interval);
+  }, [selectedConversation?._id]);
+
+  // Periodic sidebar conversations refresh to update unread counts and last message previews
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (document.hidden) return;
+      try {
+        const res = await getConversations();
+        const list = res?.data?.conversations || res?.conversations || [];
+        if (Array.isArray(list) && list.length > 0) {
+          setConversations(list);
+        }
+      } catch (e) {}
+    }, 8000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Auto-scroll on initial load of conversation
+  useEffect(() => {
+    if (messages.length > 0) {
+      scrollToBottom("auto");
+    }
+  }, [selectedConversation?._id]);
 
   // =========================================================
   // LOAD MESSAGES
@@ -439,6 +497,7 @@ const Messages = () => {
         );
       } else {
         appendMessage(newMessage);
+        setTimeout(() => scrollToBottom(), 50);
       }
 
       // -----------------------------------------------------
@@ -886,6 +945,7 @@ const Messages = () => {
                   )
                 )}
 
+                <div ref={messagesEndRef} />
               </div>
 
               {/* =============================================

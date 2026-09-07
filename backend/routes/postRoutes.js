@@ -10,7 +10,7 @@ const {
   deleteComment
 } = require("../controllers/postController");
 
-const { protect } = require("../middleware/authMiddleware");
+const { protect, optionalAuth } = require("../middleware/authMiddleware");
 const upload = require("../utils/upload");
 
 const router = express.Router();
@@ -26,13 +26,13 @@ router.post(
 // Get feed
 router.get(
   "/",
-  protect,
+  optionalAuth,
   getFeed
 );
 
 router.get(
   "/feed",
-  protect,
+  optionalAuth,
   getFeed
 );
 

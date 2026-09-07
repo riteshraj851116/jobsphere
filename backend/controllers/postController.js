@@ -85,8 +85,10 @@ const getFeed = async (req, res) => {
       (currentPage - 1) *
       itemsPerPage;
 
-    const connections =
-      await Connection.find({
+    let feedFilter = {};
+
+    if (req.user?._id) {
+      const connections = await Connection.find({
         $or: [
           {
             sender: req.user._id,
@@ -99,32 +101,35 @@ const getFeed = async (req, res) => {
         ]
       });
 
-    const connectionIds =
-      connections.map((connection) => {
+      const connectionIds = connections.map((connection) => {
         if (
           connection.sender.toString() ===
           req.user._id.toString()
         ) {
           return connection.receiver;
         }
-
         return connection.sender;
       });
 
-    const feedUserIds = [
-      req.user._id,
-      ...connectionIds
-    ];
+      const feedUserIds = [
+        req.user._id,
+        ...connectionIds
+      ];
+
+      const connectionPostsCount = await Post.countDocuments({
+        author: { $in: feedUserIds }
+      });
+
+      if (connectionPostsCount > 0) {
+        feedFilter = { author: { $in: feedUserIds } };
+      }
+    }
 
     const [
       posts,
       totalPosts
     ] = await Promise.all([
-      Post.find({
-        author: {
-          $in: feedUserIds
-        }
-      })
+      Post.find(feedFilter)
         .populate(
           "author",
           "name username profilePicture headline"
@@ -139,12 +144,10 @@ const getFeed = async (req, res) => {
         .skip(skip)
         .limit(itemsPerPage),
 
-      Post.countDocuments({
-        author: {
-          $in: feedUserIds
-        }
-      })
+      Post.countDocuments(feedFilter)
     ]);
+
+    const currentUserId = req.user?._id ? req.user._id.toString() : null;
 
     const formattedPosts =
       posts.map((post) => {
@@ -157,12 +160,12 @@ const getFeed = async (req, res) => {
         postObject.commentCount =
           post.comments.length;
 
-        postObject.isLiked =
-          post.likes.some(
-            (id) =>
-              id.toString() ===
-              req.user._id.toString()
-          );
+        postObject.isLiked = currentUserId
+          ? post.likes.some(
+              (id) =>
+                id.toString() === currentUserId
+            )
+          : false;
 
         return postObject;
       });

@@ -70,7 +70,7 @@ router.get(
 router.delete(
   "/:id/withdraw",
   protect,
-  authorizeRoles("user"),
+  authorizeRoles("user", "candidate"),
   withdrawApplication
 );
 

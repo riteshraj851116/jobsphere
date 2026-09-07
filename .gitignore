@@ -8,3 +8,4 @@ jobsphere-complete.txt
 .DS_Store
 .vercel
 .env*
+scratch/

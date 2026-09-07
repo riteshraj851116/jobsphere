@@ -61,6 +61,7 @@ router.post("/save-job/:jobId", protect, saveJob);
 /* ==================================
    DYNAMIC ROUTE (MUST STAY AT BOTTOM)
 ================================== */
+router.get("/id/:id", getUserById);
 router.get("/:id", getUserById);
 
 module.exports = router;
