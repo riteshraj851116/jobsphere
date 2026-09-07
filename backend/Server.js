@@ -188,13 +188,17 @@ if (!process.env.VERCEL) {
 
       socket.on("join-conversation", (conversationId) => {
         if (conversationId) {
-          socket.join(String(conversationId));
+          const cid = String(conversationId);
+          socket.join(cid);
+          socket.join(`conversation:${cid}`);
         }
       });
 
       socket.on("leave-conversation", (conversationId) => {
         if (conversationId) {
-          socket.leave(String(conversationId));
+          const cid = String(conversationId);
+          socket.leave(cid);
+          socket.leave(`conversation:${cid}`);
         }
       });
 

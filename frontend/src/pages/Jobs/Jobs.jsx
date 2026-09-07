@@ -9,15 +9,17 @@ import {
   Building2,
   X,
   Sparkles,
-  Check
+  Check,
+  MessageSquare
 } from "lucide-react";
-import { Link, useSearchParams } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import JobsHeaderVisual from "../../components/three/JobsHeaderVisual";
 import JobField from "../../components/three/JobField";
 import { getJobs } from "../../services/jobService";
 import { useDebounce } from "../../hooks/useDebounce";
 import { AuthContext } from "../../context/AuthContext";
 import { calculateJobMatch } from "../../utils/jobMatch";
+import { extractObjectId } from "../../utils/validation";
 import "./Jobs.css";
 
 const FILTERS = {
@@ -29,7 +31,43 @@ const FILTERS = {
 
 const Jobs = () => {
   const { user } = useContext(AuthContext) || {};
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  const handleMessageRecruiter = (job) => {
+    if (!user) {
+      navigate("/login", { state: { from: `/jobs/${job._id}` } });
+      return;
+    }
+
+    const recruiterId =
+      extractObjectId(job?.recruiter) ||
+      extractObjectId(job?.company?.recruiter) ||
+      extractObjectId(job?.recruiterId);
+
+    const currentUserId = (user?._id || user?.id || "").toString();
+    const finalRecruiterId = recruiterId ? recruiterId.toString() : "";
+
+    if (finalRecruiterId && currentUserId === finalRecruiterId) {
+      window.alert("You cannot message yourself.");
+      return;
+    }
+
+    if (!finalRecruiterId) {
+      window.alert("Recruiter information is not available for this job.");
+      return;
+    }
+
+    const query = new URLSearchParams({
+      userId: finalRecruiterId,
+      jobId: job._id,
+      jobTitle: job.title || "",
+      company: job.company?.name || "",
+      recruiterName: job.recruiter?.name || ""
+    });
+
+    navigate(`/messages?${query.toString()}`);
+  };
 
   const initialSearch = searchParams.get("search") || "";
   const initialLocation = searchParams.get("location") || "";
@@ -485,13 +523,29 @@ const Jobs = () => {
                             )}
                           </div>
 
-                          <Link
-                            to={`/jobs/${job._id}`}
-                            className="job-arrow"
-                            aria-label={`View ${job.title}`}
-                          >
-                            <ArrowUpRight size={20} />
-                          </Link>
+                          <div className="job-card-actions">
+                            <button
+                              type="button"
+                              className="job-card-msg-btn"
+                              title={`Message ${job.recruiter?.name || "Recruiter"}`}
+                              onClick={(e) => {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                handleMessageRecruiter(job);
+                              }}
+                            >
+                              <MessageSquare size={14} />
+                              <span>Message</span>
+                            </button>
+
+                            <Link
+                              to={`/jobs/${job._id}`}
+                              className="job-arrow"
+                              aria-label={`View ${job.title}`}
+                            >
+                              <ArrowUpRight size={20} />
+                            </Link>
+                          </div>
                         </div>
 
                         <div className="job-meta">

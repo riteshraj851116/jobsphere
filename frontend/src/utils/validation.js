@@ -46,8 +46,17 @@ export const extractObjectId = (value) => {
   
   if (typeof value === 'object') {
     const id = value._id || value.id || value.userId;
-    if (id && typeof id === 'string') {
-      return isValidObjectId(id) ? id : null;
+    if (id) {
+      const idStr = typeof id === 'string' ? id : (id.toString ? id.toString() : String(id));
+      if (isValidObjectId(idStr)) {
+        return idStr;
+      }
+    }
+    if (typeof value.toString === 'function') {
+      const selfStr = value.toString();
+      if (isValidObjectId(selfStr)) {
+        return selfStr;
+      }
     }
   }
   

@@ -178,6 +178,8 @@ const Messages = () => {
         // NEW CONVERSATION - FETCH REAL USER DATA
         // ---------------------------------------------------
 
+        const recruiterNameParam = params.get("recruiterName") || "";
+
         try {
           const userResponse = await getUserById(urlUserId);
           const userData = userResponse?.data?.user || userResponse?.user || userResponse?.data;
@@ -188,7 +190,7 @@ const Messages = () => {
             _id: null,
             participant: {
               _id: finalUserId,
-              name: userData?.name || userData?.username || "Recruiter",
+              name: userData?.name || userData?.username || recruiterNameParam || "Recruiter",
               username: userData?.username || "recruiter",
               profilePicture: userData?.profilePicture || "",
               headline: userData?.headline || "",
@@ -203,7 +205,7 @@ const Messages = () => {
               _id: null,
               participant: {
                 _id: urlUserId,
-                name: "Recruiter",
+                name: recruiterNameParam || "Recruiter",
                 username: "recruiter",
                 profilePicture: "",
                 headline: "",
@@ -416,6 +418,10 @@ const Messages = () => {
       joinConversation(conversation._id);
     }
 
+    if (location.search) {
+      navigate("/messages", { replace: true });
+    }
+
     await loadMessages(
       conversation._id
     );
@@ -615,6 +621,10 @@ const Messages = () => {
         setSelectedConversation(
           updatedConversation
         );
+
+        if (location.search) {
+          navigate("/messages", { replace: true });
+        }
 
         // Load actual messages so the
         // conversation is completely synced.

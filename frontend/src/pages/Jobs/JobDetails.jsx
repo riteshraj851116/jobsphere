@@ -127,14 +127,14 @@ const JobDetails = () => {
   }, [id, fetchJobAndStatus]);
 
   const getResolvedRecruiterId = () => {
+    if (!job) return null;
     const fromJob = extractObjectId(job?.recruiter);
     if (fromJob) return fromJob;
     const fromCompany = extractObjectId(job?.company?.recruiter);
     if (fromCompany) return fromCompany;
     const fromField = extractObjectId(job?.recruiterId);
     if (fromField) return fromField;
-    // Default fallback to platform recruiter if job recruiter is orphaned
-    return "6a8a805e3684c26a31029abe";
+    return null;
   };
 
   const recruiterId = getResolvedRecruiterId();
@@ -145,8 +145,14 @@ const JobDetails = () => {
       return;
     }
 
+    const finalRecruiterId = getResolvedRecruiterId();
+
+    if (!finalRecruiterId) {
+      window.alert("Recruiter information is not available for this job.");
+      return;
+    }
+
     const currentUserId = (user?._id || user?.id || "").toString();
-    const finalRecruiterId = recruiterId;
 
     if (currentUserId && currentUserId === finalRecruiterId) {
       window.alert("You cannot message yourself.");
@@ -157,7 +163,8 @@ const JobDetails = () => {
       userId: finalRecruiterId,
       jobId: job?._id || id,
       jobTitle: job?.title || "",
-      company: job?.company?.name || ""
+      company: job?.company?.name || "",
+      recruiterName: job?.recruiter?.name || ""
     });
 
     navigate(`/messages?${query.toString()}`);

@@ -85,7 +85,8 @@ const Register = () => {
       });
 
       const from =
-        location.state?.from?.pathname;
+        location.state?.from?.pathname ||
+        (typeof location.state?.from === "string" ? location.state.from : null);
 
       if (from && from !== "/register") {
         navigate(from, {

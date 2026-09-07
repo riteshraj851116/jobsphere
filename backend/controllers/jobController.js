@@ -268,11 +268,11 @@ const getJobs = async (req, res) => {
       Job.find(filter)
         .populate(
           "company",
-          "name logo industry location website"
+          "name logo industry location website recruiter"
         )
         .populate(
           "recruiter",
-          "name username profilePicture"
+          "name username profilePicture headline"
         )
         .sort(sortOption)
         .skip(skip)
