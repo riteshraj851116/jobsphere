@@ -90,6 +90,19 @@ const Messages = () => {
     return "";
   };
 
+  // Pre-fill contextual recruiter message if navigating from Job Details
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const jobTitle = params.get("jobTitle");
+    const company = params.get("company");
+    if (jobTitle) {
+      const defaultText = company
+        ? `Hi, I noticed the ${jobTitle} position at ${company} and would love to learn more about the role.`
+        : `Hi, I noticed the ${jobTitle} position and would love to learn more about the role.`;
+      setText((prev) => (prev ? prev : defaultText));
+    }
+  }, [location.search]);
+
   // =========================================================
   // LOAD CONVERSATIONS
   // =========================================================

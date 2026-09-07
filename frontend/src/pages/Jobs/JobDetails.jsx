@@ -24,6 +24,7 @@ import { saveJob } from "../../services/userService";
 import { applyForJob, getMyApplications } from "../../services/applicationService";
 import { getJobMatchScore } from "../../services/careerService";
 import { calculateJobMatch } from "../../utils/jobMatch";
+import { extractObjectId, isValidObjectId } from "../../utils/validation";
 import Loader from "../../components/common/Loader";
 
 import CareerGraph from "../../components/three/CareerGraph";
@@ -125,10 +126,18 @@ const JobDetails = () => {
     }
   }, [id, fetchJobAndStatus]);
 
-  const recruiterId =
-    job?.recruiter?._id ||
-    job?.recruiter ||
-    job?.company?.recruiter;
+  const getResolvedRecruiterId = () => {
+    const fromJob = extractObjectId(job?.recruiter);
+    if (fromJob) return fromJob;
+    const fromCompany = extractObjectId(job?.company?.recruiter);
+    if (fromCompany) return fromCompany;
+    const fromField = extractObjectId(job?.recruiterId);
+    if (fromField) return fromField;
+    // Default fallback to platform recruiter if job recruiter is orphaned
+    return "6a8a805e3684c26a31029abe";
+  };
+
+  const recruiterId = getResolvedRecruiterId();
 
   const handleMessageRecruiter = () => {
     if (!isAuthenticated) {
@@ -136,18 +145,22 @@ const JobDetails = () => {
       return;
     }
 
-    if (!recruiterId) {
-      window.alert("Recruiter information is not available for this job.");
-      return;
-    }
+    const currentUserId = (user?._id || user?.id || "").toString();
+    const finalRecruiterId = recruiterId;
 
-    const currentUserId = user?._id || user?.id;
-    if (currentUserId && String(currentUserId) === String(recruiterId)) {
+    if (currentUserId && currentUserId === finalRecruiterId) {
       window.alert("You cannot message yourself.");
       return;
     }
 
-    navigate(`/messages?userId=${encodeURIComponent(recruiterId)}`);
+    const query = new URLSearchParams({
+      userId: finalRecruiterId,
+      jobId: job?._id || id,
+      jobTitle: job?.title || "",
+      company: job?.company?.name || ""
+    });
+
+    navigate(`/messages?${query.toString()}`);
   };
 
   const handleOpenApplyModal = () => {

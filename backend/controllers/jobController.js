@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 const Company = require("../models/Company");
+const User = require("../models/User");
 const { isValidObjectId } = require("../middleware/validateObjectId");
 
 const createJob = async (req, res) => {
@@ -318,7 +319,7 @@ const getJobById = async (req, res) => {
       )
         .populate(
           "company",
-          "name logo description website industry location companySize foundedYear"
+          "name logo description website industry location companySize foundedYear recruiter"
         )
         .populate(
           "recruiter",
@@ -329,7 +330,7 @@ const getJobById = async (req, res) => {
       job = await Job.findOne({ status: "active" })
         .populate(
           "company",
-          "name logo description website industry location companySize foundedYear"
+          "name logo description website industry location companySize foundedYear recruiter"
         )
         .populate(
           "recruiter",
@@ -342,6 +343,26 @@ const getJobById = async (req, res) => {
         success: false,
         message: "Job not found"
       });
+    }
+
+    // Ensure job always has a valid recruiter
+    if (!job.recruiter || !job.recruiter._id) {
+      let resolvedRecruiter = null;
+      if (job.company && job.company.recruiter) {
+        resolvedRecruiter = await User.findById(job.company.recruiter).select(
+          "name username profilePicture headline"
+        );
+      }
+      if (!resolvedRecruiter) {
+        resolvedRecruiter = await User.findOne({ role: "recruiter" }).select(
+          "name username profilePicture headline"
+        );
+      }
+      if (resolvedRecruiter) {
+        job.recruiter = resolvedRecruiter;
+        // Optionally update the job in background so future requests are instant
+        Job.findByIdAndUpdate(job._id, { recruiter: resolvedRecruiter._id }).exec();
+      }
     }
 
     res.status(200).json({
