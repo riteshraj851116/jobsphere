@@ -217,15 +217,23 @@ const respondToRequest = async (req, res) => {
 
     await connection.save();
 
-    // Notification only when accepted
+    // Update User models and Notification only when accepted
     if (status === "accepted") {
-      await createNotification({
-        recipient: connection.sender,
-        sender: req.user._id,
-        type: "connection_accepted",
-        message: `${req.user.name} accepted your connection request`,
-        relatedId: connection._id
-      });
+      await Promise.all([
+        User.findByIdAndUpdate(connection.sender, {
+          $addToSet: { connections: req.user._id }
+        }),
+        User.findByIdAndUpdate(req.user._id, {
+          $addToSet: { connections: connection.sender }
+        }),
+        createNotification({
+          recipient: connection.sender,
+          sender: req.user._id,
+          type: "connection_accepted",
+          message: `${req.user.name} accepted your connection request`,
+          relatedId: connection._id
+        })
+      ]);
     }
 
     const populatedConnection =
@@ -360,7 +368,15 @@ const removeConnection = async (req, res) => {
       });
     }
 
-    await connection.deleteOne();
+    await Promise.all([
+      connection.deleteOne(),
+      User.findByIdAndUpdate(connection.sender, {
+        $pull: { connections: connection.receiver }
+      }),
+      User.findByIdAndUpdate(connection.receiver, {
+        $pull: { connections: connection.sender }
+      })
+    ]);
 
     res.status(200).json({
       success: true,
