@@ -154,10 +154,16 @@ export const getUserProfile = async (username) => {
 
 export const getUserById = async (id) => {
   try {
-    const res = await api.get(`/users/id/${id}`);
+    const res = await api.get(`/users/${id}`);
     return res.data;
   } catch (error) {
-    return { success: true, data: DEMO_CANDIDATE, user: DEMO_CANDIDATE };
+    try {
+      const fallbackRes = await api.get(`/users/id/${id}`);
+      return fallbackRes.data;
+    } catch (e) {
+      console.warn("User lookup error:", error.message);
+      return null;
+    }
   }
 };
 

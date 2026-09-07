@@ -167,17 +167,33 @@ const Messages = () => {
 
         try {
           const userResponse = await getUserById(urlUserId);
-          const userData = userResponse?.data?.user || userResponse?.user;
+          const userData = userResponse?.data?.user || userResponse?.user || userResponse?.data;
 
-          if (userData) {
+          const finalUserId = (userData?._id && isValidObjectId(userData._id)) ? userData._id : urlUserId;
+
+          setSelectedConversation({
+            _id: null,
+            participant: {
+              _id: finalUserId,
+              name: userData?.name || userData?.username || "Recruiter",
+              username: userData?.username || "recruiter",
+              profilePicture: userData?.profilePicture || "",
+              headline: userData?.headline || "",
+            },
+            isNew: true,
+          });
+          setMessages([]);
+        } catch (fetchError) {
+          console.error("Failed to fetch user for new conversation:", fetchError);
+          if (isValidObjectId(urlUserId)) {
             setSelectedConversation({
               _id: null,
               participant: {
-                _id: userData._id,
-                name: userData.name || userData.username || "User",
-                username: userData.username || "User",
-                profilePicture: userData.profilePicture || "",
-                headline: userData.headline || "",
+                _id: urlUserId,
+                name: "Recruiter",
+                username: "recruiter",
+                profilePicture: "",
+                headline: "",
               },
               isNew: true,
             });
@@ -185,9 +201,6 @@ const Messages = () => {
           } else {
             setError("Unable to load user information. Please try again.");
           }
-        } catch (fetchError) {
-          console.error("Failed to fetch user for new conversation:", fetchError);
-          setError("Unable to load user information. Please try again.");
         }
       } catch (err) {
         if (mounted) {
@@ -428,8 +441,16 @@ const Messages = () => {
     // GET REAL RECEIVER ID
     // -------------------------------------------------------
 
-    const receiverId =
+    let receiverId =
       getUserId(participant);
+
+    if (!receiverId) {
+      const params = new URLSearchParams(location.search);
+      const urlId = params.get("userId");
+      if (urlId && isValidObjectId(urlId)) {
+        receiverId = urlId;
+      }
+    }
 
     // -------------------------------------------------------
     // VALIDATE RECEIVER
@@ -978,8 +999,8 @@ const Messages = () => {
                   disabled={
                     sending ||
                     !text.trim() ||
-                    !selectedConversation
-                      ?.participant?._id
+                    (!selectedConversation?.participant?._id &&
+                      !new URLSearchParams(location.search).get("userId"))
                   }
                 >
                   {sending
