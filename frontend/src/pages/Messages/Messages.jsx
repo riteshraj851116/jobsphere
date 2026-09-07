@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {
   getConversations,
@@ -34,6 +34,7 @@ const Messages = () => {
   const { user } = useAuth();
   const { joinConversation, leaveConversation, onNewMessage, isConnected } = useSocket();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] =
