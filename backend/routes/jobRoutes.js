@@ -9,6 +9,7 @@ const {
   getMyJobs
 } = require("../controllers/jobController");
 const { saveJob } = require("../controllers/userController");
+const { applyForJob } = require("../controllers/applicationController");
 
 const { protect } = require("../middleware/authMiddleware");
 const authorizeRoles = require("../middleware/roleMiddleware");
@@ -61,6 +62,9 @@ router.delete(
 
 // Save / unsave job
 router.post("/:jobId/save", protect, saveJob);
+
+// Apply for job
+router.post("/:jobId/apply", protect, applyForJob);
 
 router.get("/:id", getJobById);
 

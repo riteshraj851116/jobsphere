@@ -5,11 +5,8 @@ const { isValidObjectId } = require("../middleware/validateObjectId");
 
 const applyForJob = async (req, res) => {
   try {
-    const {
-      jobId,
-      coverLetter,
-      resume
-    } = req.body;
+    const jobId = req.body?.jobId || req.params?.jobId || req.params?.id;
+    const { coverLetter, resume } = req.body || {};
 
     if (!jobId) {
       return res.status(400).json({

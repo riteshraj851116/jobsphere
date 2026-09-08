@@ -7,11 +7,12 @@ const authorizeRoles = (...allowedRoles) => {
       });
     }
 
-    const userRole = req.user.role;
+    const userRole = req.user.role || "user";
+    const candidateRoles = ["user", "candidate", "jobseeker"];
+    const isCandidateAllowed = allowedRoles.some((r) => candidateRoles.includes(r));
     const isAllowed =
       allowedRoles.includes(userRole) ||
-      (allowedRoles.includes("user") && userRole === "candidate") ||
-      (allowedRoles.includes("candidate") && userRole === "user");
+      (isCandidateAllowed && candidateRoles.includes(userRole));
 
     if (!isAllowed) {
       return res.status(403).json({
