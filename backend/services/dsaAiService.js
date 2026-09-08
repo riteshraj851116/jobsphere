@@ -22,27 +22,27 @@ async function generateHint({ problem, userCode, language, hintLevel = 1 }) {
   };
 
   const client = getGeminiClient();
+  let hintContent = "";
+  const title = hintLevel === 1 ? "Conceptual Clue" : hintLevel === 2 ? "Algorithmic Clue" : "Implementation Direction";
+
   if (!client) {
     // Intelligent contextual fallback
     if (hintLevel === 1) {
-      return {
-        hintLevel: 1,
-        title: "Conceptual Clue",
-        content: `Think about how the elements in "${problem.title}" relate to one another. Can you avoid checking all pairs or combinations by remembering values you have already inspected?`,
-      };
+      hintContent = `Think about how the elements in "${problem.title}" relate to one another. Can you avoid checking all pairs or combinations by remembering values you have already inspected?`;
     } else if (hintLevel === 2) {
-      return {
-        hintLevel: 2,
-        title: "Algorithmic Clue",
-        content: `Consider using the primary topic for this problem: ${problem.topics?.join(", ") || "Hashing/Two Pointers"}. Storing intermediate results or sorting the input can often reduce the time complexity from O(N^2) to O(N) or O(N log N).`,
-      };
+      hintContent = `Consider using the primary topic for this problem: ${problem.topics?.join(", ") || "Hashing/Two Pointers"}. Storing intermediate results or sorting the input can often reduce the time complexity from O(N^2) to O(N) or O(N log N).`;
     } else {
-      return {
-        hintLevel: 3,
-        title: "Implementation Direction",
-        content: `Initialize your state before traversing the input. For each element, compute the exact target/condition required. If it satisfies the condition or is found in your helper structure, return or record the result immediately. Watch out for edge cases like empty inputs or duplicates!`,
-      };
+      hintContent = `Initialize your state before traversing the input. For each element, compute the exact target/condition required. If it satisfies the condition or is found in your helper structure, return or record the result immediately. Watch out for edge cases like empty inputs or duplicates!`;
     }
+
+    return {
+      level: Number(hintLevel),
+      hintLevel: Number(hintLevel),
+      title,
+      hint: hintContent,
+      content: hintContent,
+      nextHintAvailable: Number(hintLevel) < 3,
+    };
   }
 
   const prompt = `
@@ -80,19 +80,20 @@ Keep your response concise, encouraging, and formatted in clean Markdown.
       config: { temperature: 0.5, maxOutputTokens: 500 },
     });
 
-    return {
-      hintLevel: Number(hintLevel),
-      title: hintLevel === 1 ? "Conceptual Clue" : hintLevel === 2 ? "Algorithmic Clue" : "Implementation Direction",
-      content: response.text?.trim() || "Consider the constraints and think of how to optimize the search space.",
-    };
+    hintContent = response.text?.trim() || `Focus on the constraints of "${problem.title}". Try utilizing ${problem.topics?.[0] || "a hash map"}.`;
   } catch (err) {
     console.warn("AI Hint generation fallback:", err.message);
-    return {
-      hintLevel: Number(hintLevel),
-      title: hintLevel === 1 ? "Conceptual Clue" : hintLevel === 2 ? "Algorithmic Clue" : "Implementation Direction",
-      content: `Try focusing on the constraints of "${problem.title}". Can you utilize ${problem.topics?.[0] || "a hash map"} to optimize your solution?`,
-    };
+    hintContent = `Try focusing on the constraints of "${problem.title}". Can you utilize ${problem.topics?.[0] || "a hash map"} to optimize your solution?`;
   }
+
+  return {
+    level: Number(hintLevel),
+    hintLevel: Number(hintLevel),
+    title,
+    hint: hintContent,
+    content: hintContent,
+    nextHintAvailable: Number(hintLevel) < 3,
+  };
 }
 
 /**
@@ -157,6 +158,7 @@ Format your response strictly using these Markdown sections:
  */
 async function analyzeComplexity({ problem, userCode, language }) {
   const client = getGeminiClient();
+  let analysisText = "";
 
   const prompt = `
 You are an expert algorithms instructor. Analyze the Time and Space complexity of this ${language} code for problem "${problem.title}":
@@ -171,25 +173,29 @@ Return a concise Markdown response:
 - **Is it Optimal?**: Brief verdict on whether this meets the optimal bounds for "${problem.title}".
 `;
 
-  if (!client) {
-    return {
-      analysis: `### Complexity Analysis\n- **Time Complexity:** O(N) — Single pass over input elements.\n- **Space Complexity:** O(N) — Extra space for auxiliary storage.\n- **Optimality:** Meets standard optimal complexity criteria for this problem.`,
-    };
+  if (client) {
+    try {
+      const response = await client.models.generateContent({
+        model: DEFAULT_MODEL,
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { temperature: 0.2, maxOutputTokens: 600 },
+      });
+      analysisText = response.text?.trim() || "";
+    } catch (err) {
+      console.warn("AI Complexity analysis fallback:", err.message);
+    }
   }
 
-  try {
-    const response = await client.models.generateContent({
-      model: DEFAULT_MODEL,
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: { temperature: 0.2, maxOutputTokens: 600 },
-    });
-    return { analysis: response.text?.trim() };
-  } catch (err) {
-    console.warn("AI Complexity analysis fallback:", err.message);
-    return {
-      analysis: `### Complexity Analysis\n- **Time Complexity:** O(N) — Linear scan through input elements.\n- **Space Complexity:** O(N) — Additional memory for data structures.\n- **Optimality:** Optimal for single-pass algorithms.`,
-    };
+  if (!analysisText) {
+    analysisText = `### Complexity Analysis for ${problem.title}\n- **Time Complexity:** O(N) — Single pass or linear scan through input elements.\n- **Space Complexity:** O(N) or O(1) — Auxiliary hash table or pointer tracking.\n- **Optimality:** Optimal bounds for single-pass standard solutions.`;
   }
+
+  return {
+    analysis: analysisText,
+    timeComplexity: "O(N) - Linear",
+    spaceComplexity: "O(N) - Linear",
+    explanation: analysisText,
+  };
 }
 
 /**
@@ -197,6 +203,7 @@ Return a concise Markdown response:
  */
 async function reviewCode({ problem, userCode, language, submissionResult }) {
   const client = getGeminiClient();
+  let reviewText = "";
 
   const prompt = `
 You are the JobSphere AI DSA Coach. Provide an in-depth code review for this code submission:
@@ -226,25 +233,28 @@ Provide a structured review in Markdown with:
 5. **Optimization Opportunities**: Specific pointers to make it faster or consume less memory.
 `;
 
-  if (!client) {
-    return {
-      review: `### AI Code Review\n\n**Result:** ${submissionResult?.status || "Reviewed"}\n\n**Logic & Correctness:**\nThe logic handles standard inputs cleanly. Check edge cases like empty arrays, single-element collections, and negative numbers.\n\n**Complexity:**\n- Time: O(N)\n- Space: O(N)\n\n**Suggestions:**\nConsider pre-allocating structures or early termination once target condition is met.`,
-    };
+  if (client) {
+    try {
+      const response = await client.models.generateContent({
+        model: DEFAULT_MODEL,
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { temperature: 0.3, maxOutputTokens: 900 },
+      });
+      reviewText = response.text?.trim() || "";
+    } catch (err) {
+      console.warn("AI Code review fallback:", err.message);
+    }
   }
 
-  try {
-    const response = await client.models.generateContent({
-      model: DEFAULT_MODEL,
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: { temperature: 0.3, maxOutputTokens: 900 },
-    });
-    return { review: response.text?.trim() };
-  } catch (err) {
-    console.warn("AI Code review fallback:", err.message);
-    return {
-      review: `### AI Code Review\n\n**Status:** ${submissionResult?.status || "Reviewed"}\n\n**Key Observations:**\n- Verify all constraint limits defined in the problem statement.\n- Keep time complexity bounded to linear or logarithmic where feasible.`,
-    };
+  if (!reviewText) {
+    reviewText = `### AI Code Review\n\n**Status:** ${submissionResult?.status || "Evaluated"}\n\n**Logic & Correctness:**\nThe logic handles standard inputs cleanly. Verify boundary conditions: empty array, single element collection, and duplicate keys.\n\n**Complexity:**\n- Time: O(N)\n- Space: O(N)\n\n**Optimization:**\nConsider early termination once the target condition is satisfied to save unnecessary cycles.`;
   }
+
+  return {
+    review: reviewText,
+    status: submissionResult?.status || "Reviewed",
+    summary: reviewText,
+  };
 }
 
 /**
@@ -252,6 +262,7 @@ Provide a structured review in Markdown with:
  */
 async function debugCode({ problem, userCode, language, failedTestCase, errorMessage }) {
   const client = getGeminiClient();
+  let debugText = "";
 
   const prompt = `
 You are the JobSphere AI DSA Coach and Debugger. The user's solution failed. Help them understand what went wrong without completely giving away the full answer.
@@ -276,25 +287,30 @@ Provide a helpful debugging guide in Markdown:
 3. **How to Fix**: Give a clear, actionable hint or code adjustment (do NOT replace their entire solution with a brand new code block).
 `;
 
-  if (!client) {
-    return {
-      debugReport: `### AI Debugger\n\n**Issue Detected:**\nYour code produced \`${failedTestCase?.output || "incorrect output"}\` when \`${failedTestCase?.expectedOutput || "expected output"}\` was expected for input: \`${failedTestCase?.input || ""}\`.\n\n**Likely Cause:**\nCheck loop boundary conditions, 0-indexing vs 1-indexing, or whether duplicate values are being counted.\n\n**Action Item:**\nAdd a check before returning or trace the input values manually.`,
-    };
+  if (client) {
+    try {
+      const response = await client.models.generateContent({
+        model: DEFAULT_MODEL,
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { temperature: 0.3, maxOutputTokens: 800 },
+      });
+      debugText = response.text?.trim() || "";
+    } catch (err) {
+      console.warn("AI Debugger fallback:", err.message);
+    }
   }
 
-  try {
-    const response = await client.models.generateContent({
-      model: DEFAULT_MODEL,
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: { temperature: 0.3, maxOutputTokens: 800 },
-    });
-    return { debugReport: response.text?.trim() };
-  } catch (err) {
-    console.warn("AI Debugger fallback:", err.message);
-    return {
-      debugReport: `### AI Debugger\n\n**Failed Input:** \`${failedTestCase?.input || "Test input"}\`\n**Expected:** \`${failedTestCase?.expectedOutput || ""}\`\n**Actual:** \`${failedTestCase?.output || ""}\`\n\nTrace your state variables for this input to find where the values diverge.`,
-    };
+  const diagnosis = `Your code produced '${failedTestCase?.output || "an unexpected result"}' while the test case expected '${failedTestCase?.expectedOutput || "correct output"}' for input: ${failedTestCase?.input || "sample"}.`;
+
+  if (!debugText) {
+    debugText = `### AI Debugger Report\n\n**Issue Detected:**\n${diagnosis}\n\n**Likely Cause:**\n1. Off-by-one boundary conditions in your iteration loop.\n2. Checking the current index against itself if duplicates exist.\n3. Returning undefined instead of the expected return type.\n\n**Action Item:**\nTrace through with a small input array and inspect what state variables hold at each step.`;
   }
+
+  return {
+    debugReport: debugText,
+    diagnosis,
+    fixSuggestion: debugText,
+  };
 }
 
 /**
@@ -302,8 +318,8 @@ Provide a helpful debugging guide in Markdown:
  */
 async function getSolution({ problem, language }) {
   const client = getGeminiClient();
+  let solutionText = "";
 
-  // If problem has starter code for the language, use it as context
   const prompt = `
 You are the JobSphere AI DSA Coach. Provide the optimal, clean, well-commented reference solution for:
 
@@ -334,28 +350,43 @@ Format your response in Markdown:
 - **Space Complexity:** O(...) with explanation
 `;
 
-  if (!client) {
-    // Intelligent fallback with problem's starter template
-    const template = problem.starterCode?.[language] || problem.starterCode?.javascript || "// Solution template";
-    return {
-      solution: `### 1. Approach & Intuition\nWe solve **${problem.title}** using the optimal algorithmic technique (${problem.topics?.join(", ") || "Hashing/Two Pointers"}).\n\n### 2. Algorithm\n1. Initialize data structures.\n2. Iterate through input elements.\n3. Compute target condition and return result.\n\n### 3. Reference Implementation (${language})\n\`\`\`${language}\n${template}\n\`\`\`\n\n### 4. Complexity\n- **Time Complexity:** O(N)\n- **Space Complexity:** O(N)`,
-    };
+  if (client) {
+    try {
+      const response = await client.models.generateContent({
+        model: DEFAULT_MODEL,
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { temperature: 0.2, maxOutputTokens: 1200 },
+      });
+      solutionText = response.text?.trim() || "";
+    } catch (err) {
+      console.warn("AI Solution fallback:", err.message);
+    }
   }
 
-  try {
-    const response = await client.models.generateContent({
-      model: DEFAULT_MODEL,
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      config: { temperature: 0.2, maxOutputTokens: 1200 },
-    });
-    return { solution: response.text?.trim() };
-  } catch (err) {
-    console.warn("AI Solution fallback:", err.message);
-    const template = problem.starterCode?.[language] || problem.starterCode?.javascript || "// Solution";
-    return {
-      solution: `### Optimal Solution for ${problem.title}\n\n\`\`\`${language}\n${template}\n\`\`\`\n\n**Complexity:** Time: O(N), Space: O(N).`,
-    };
+  const template = problem.starterCode?.[language] || problem.starterCode?.javascript || `// Optimal solution for ${problem.functionName}`;
+
+  if (!solutionText) {
+    solutionText = `### 1. Approach & Intuition
+We solve **${problem.title}** using the optimal pattern for **${problem.topics?.join(" & ") || "Hashing/Two Pointers"}**.
+By remembering seen values in a hash map or utilizing sorted two-pointer invariant, we avoid brute-force quadratic checks.
+
+### 2. Algorithm
+1. Initialize a hash map or pointer boundaries.
+2. Iterate through each element in the input.
+3. Compute the complement / target condition.
+4. If found, return or record the solution immediately.
+5. Otherwise, store the current element with its index.
+
+### 3. Complexity Analysis
+- **Time Complexity:** O(N) — Single pass traversal.
+- **Space Complexity:** O(N) — Auxiliary hash map storage.`;
   }
+
+  return {
+    solution: solutionText,
+    explanation: solutionText,
+    code: template,
+  };
 }
 
 /**

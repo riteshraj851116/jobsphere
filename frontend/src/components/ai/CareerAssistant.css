@@ -12,37 +12,38 @@
   align-items: center;
   gap: 10px;
 
-  min-height: 52px;
-  padding: 0 18px;
+  min-height: 48px;
+  padding: 0 20px;
 
-  border: 1px solid #111;
-  background: #111;
+  border: 1px solid rgba(0, 0, 0, 0.85);
+  border-radius: 9999px;
+  background: #09090b;
   color: #fff;
 
   font-family: inherit;
   cursor: pointer;
 
   box-shadow:
-    0 12px 40px rgba(0, 0, 0, 0.16),
+    0 12px 36px rgba(0, 0, 0, 0.18),
     0 2px 8px rgba(0, 0, 0, 0.08);
 
   transition:
-    transform 0.25s ease,
-    background 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background 0.2s ease,
     box-shadow 0.25s ease;
 }
 
 .career-ai-trigger:hover {
-  background: #222;
-  transform: translateY(-3px);
+  background: #18181b;
+  transform: translateY(-2px) scale(1.02);
 
   box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.2),
-    0 4px 12px rgba(0, 0, 0, 0.1);
+    0 18px 48px rgba(0, 0, 0, 0.24),
+    0 4px 12px rgba(0, 0, 0, 0.12);
 }
 
 .career-ai-trigger:active {
-  transform: translateY(0);
+  transform: translateY(0) scale(0.98);
 }
 
 .career-ai-trigger-dot {
@@ -50,26 +51,27 @@
   height: 8px;
 
   border-radius: 50%;
-  background: #fff;
+  background: #10b981;
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
 
   animation: career-ai-pulse 2s infinite;
 }
 
 .career-ai-trigger-text {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 800;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
 }
 
 .career-ai-trigger-label {
   padding-left: 10px;
 
-  border-left: 1px solid rgba(255, 255, 255, 0.3);
+  border-left: 1px solid rgba(255, 255, 255, 0.25);
 
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.9);
 }
 
 /* =========================================================
@@ -79,29 +81,30 @@
 .career-ai-panel {
   position: fixed;
   right: 28px;
-  bottom: 92px;
+  bottom: 88px;
   z-index: 1200;
 
-  width: min(430px, calc(100vw - 32px));
-  height: min(680px, calc(100vh - 130px));
+  width: min(440px, calc(100vw - 32px));
+  height: min(680px, calc(100vh - 120px));
 
   display: flex;
   flex-direction: column;
 
   overflow: hidden;
 
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 20px;
 
   background:
     linear-gradient(
       180deg,
-      rgba(255, 255, 255, 0.98),
-      rgba(250, 250, 250, 0.98)
+      #ffffff 0%,
+      #fbfbfc 100%
     );
 
   box-shadow:
-    0 30px 100px rgba(0, 0, 0, 0.16),
-    0 8px 30px rgba(0, 0, 0, 0.08);
+    0 24px 60px -12px rgba(0, 0, 0, 0.18),
+    0 8px 24px -4px rgba(0, 0, 0, 0.08);
 
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -122,16 +125,12 @@
   justify-content: space-between;
   gap: 16px;
 
-  padding: 18px 20px;
+  padding: 16px 20px;
+  border-radius: 20px 20px 0 0;
 
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff,
-      #f4f4f4
-    );
+  background: #ffffff;
 }
 
 .career-ai-header::after {
@@ -322,34 +321,36 @@
 .career-ai-message-content {
   max-width: 88%;
 
-  padding: 13px 15px;
+  padding: 14px 16px;
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  border-radius: 16px 16px 16px 4px;
 
-  background: #fff;
+  background: #ffffff;
 
-  color: #171717;
+  color: #0f172a;
 
-  font-size: 0.82rem;
-  line-height: 1.65;
+  font-size: 0.84rem;
+  line-height: 1.6;
 
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 
   box-shadow:
-    0 4px 14px rgba(0, 0, 0, 0.035);
+    0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .career-ai-message-user .career-ai-message-content {
-  border-color: #111;
+  border-color: #09090b;
+  border-radius: 16px 16px 4px 16px;
 
-  background: #111;
-  color: #fff;
+  background: #09090b;
+  color: #ffffff;
 }
 
 .career-ai-message-error {
-  border-color: rgba(160, 0, 0, 0.25);
-  background: rgba(255, 245, 245, 0.95);
+  border-color: rgba(239, 68, 68, 0.3);
+  background: #fef2f2;
 }
 
 /* =========================================================
@@ -365,48 +366,48 @@
 .career-ai-job-list-title {
   margin-bottom: 8px;
 
-  color: rgba(0, 0, 0, 0.42);
+  color: #64748b;
 
-  font-size: 0.52rem;
+  font-size: 0.65rem;
   font-weight: 800;
 
-  letter-spacing: 0.13em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .career-ai-job-card {
   width: 100%;
 
-  margin-bottom: 8px;
+  margin-bottom: 10px;
   padding: 14px;
 
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
 
-  background: rgba(255, 255, 255, 0.94);
+  background: #ffffff;
 
-  color: #111;
+  color: #0f172a;
 
   text-align: left;
   font-family: inherit;
 
   cursor: pointer;
 
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
   transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
-    box-shadow 0.25s ease,
-    background 0.25s ease;
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .career-ai-job-card:hover {
   transform: translateY(-2px);
 
-  border-color: rgba(0, 0, 0, 0.35);
-
-  background: #fff;
+  border-color: #09090b;
 
   box-shadow:
-    0 10px 24px rgba(0, 0, 0, 0.08);
+    0 8px 20px rgba(0, 0, 0, 0.08);
 }
 
 .career-ai-job-top {
@@ -561,17 +562,18 @@
 
   min-height: 32px;
 
-  padding: 0 10px;
+  padding: 0 12px;
 
-  border: 1px solid rgba(0, 0, 0, 0.12);
+  border: 1px solid #e2e8f0;
+  border-radius: 9999px;
 
-  background: #fff;
+  background: #ffffff;
 
-  color: rgba(0, 0, 0, 0.68);
+  color: #475569;
 
   font-family: inherit;
-  font-size: 0.58rem;
-  font-weight: 700;
+  font-size: 0.72rem;
+  font-weight: 600;
 
   white-space: nowrap;
 
@@ -580,14 +582,16 @@
   transition:
     background 0.2s ease,
     color 0.2s ease,
-    border-color 0.2s ease;
+    border-color 0.2s ease,
+    transform 0.15s ease;
 }
 
 .career-ai-quick-prompts button:hover:not(:disabled) {
-  border-color: #111;
+  border-color: #09090b;
 
-  background: #111;
-  color: #fff;
+  background: #09090b;
+  color: #ffffff;
+  transform: translateY(-1px);
 }
 
 .career-ai-quick-prompts button:disabled {
@@ -604,34 +608,35 @@
   align-items: flex-end;
   gap: 10px;
 
-  padding: 14px;
+  padding: 14px 16px;
 
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.06);
 
-  background: #fff;
+  background: #ffffff;
 }
 
 .career-ai-input-area textarea {
   flex: 1;
 
-  min-height: 46px;
+  min-height: 44px;
   max-height: 110px;
 
-  padding: 13px 14px;
+  padding: 11px 14px;
 
   resize: none;
 
-  border: 1px solid rgba(0, 0, 0, 0.14);
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
 
   outline: none;
 
-  background: #fafafa;
+  background: #f8fafc;
 
-  color: #111;
+  color: #0f172a;
 
   font-family: inherit;
-  font-size: 0.75rem;
-  line-height: 1.4;
+  font-size: 0.82rem;
+  line-height: 1.45;
 
   transition:
     border-color 0.2s ease,
@@ -640,16 +645,16 @@
 }
 
 .career-ai-input-area textarea::placeholder {
-  color: rgba(0, 0, 0, 0.38);
+  color: #94a3b8;
 }
 
 .career-ai-input-area textarea:focus {
-  border-color: #111;
+  border-color: #09090b;
 
-  background: #fff;
+  background: #ffffff;
 
   box-shadow:
-    0 0 0 3px rgba(0, 0, 0, 0.04);
+    0 0 0 3px rgba(9, 9, 11, 0.05);
 }
 
 .career-ai-input-area textarea:disabled {
@@ -657,33 +662,36 @@
 }
 
 .career-ai-input-area button {
-  min-width: 64px;
-  min-height: 46px;
+  min-width: 68px;
+  min-height: 44px;
 
-  padding: 0 14px;
+  padding: 0 16px;
 
-  border: 1px solid #111;
+  border: 1px solid #09090b;
+  border-radius: 12px;
 
-  background: #111;
-  color: #fff;
+  background: #09090b;
+  color: #ffffff;
 
   font-family: inherit;
-  font-size: 0.62rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
 
-  letter-spacing: 0.06em;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
 
   cursor: pointer;
 
   transition:
     background 0.2s ease,
-    transform 0.2s ease;
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
 }
 
 .career-ai-input-area button:hover:not(:disabled) {
-  background: #333;
+  background: #1e293b;
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .career-ai-input-area button:disabled {

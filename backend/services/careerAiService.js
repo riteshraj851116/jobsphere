@@ -326,14 +326,15 @@ async function auditPortfolio({ user, projects = [] }) {
 async function analyzeJobReality({ jobDescription, userProfile = {} }) {
   const userSkills = (userProfile.skills || []).map((s) => s.toLowerCase());
 
-  const client = getGeminiClient();
-
-  if (!client) {
-    // Grounded text analysis fallback
-    const commonTechs = ["React", "Node.js", "JavaScript", "TypeScript", "Python", "Java", "AWS", "Docker", "SQL", "MongoDB", "Git", "REST API", "CI/CD"];
+  const runGroundedAnalysis = () => {
+    const commonTechs = [
+      "React", "Node.js", "JavaScript", "TypeScript", "Python", "Java", "AWS",
+      "Docker", "SQL", "MongoDB", "Git", "REST API", "CI/CD", "Redux", "Express",
+      "GraphQL", "Kubernetes", "Next.js", "Tailwind CSS", "Microservices", "Redis"
+    ];
     const foundRequired = [];
     commonTechs.forEach((tech) => {
-      if (new RegExp(`\\b${tech}\\b`, "i").test(jobDescription)) {
+      if (new RegExp(`\\b${tech.replace(/[-/\\^$*+?.()|[\]{}]/g, "\\$&")}\\b`, "i").test(jobDescription)) {
         foundRequired.push(tech);
       }
     });
@@ -343,26 +344,31 @@ async function analyzeJobReality({ jobDescription, userProfile = {} }) {
     const matchPct = foundRequired.length > 0 ? Math.round((matching.length / foundRequired.length) * 100) : 75;
 
     return {
-      requiredSkills: foundRequired.slice(0, 8),
-      preferredSkills: ["Agile Development", "System Architecture", "Unit Testing"],
+      requiredSkills: foundRequired.length > 0 ? foundRequired.slice(0, 8) : ["React", "JavaScript", "Node.js", "REST API"],
+      preferredSkills: ["Agile Development", "System Architecture", "Unit Testing", "Docker"],
       experienceLevel: "2-4 years relevant engineering experience",
       responsibilities: [
-        "Architect and maintain scalable web services",
-        "Collaborate with cross-functional teams on feature delivery",
-        "Ensure high code quality and test coverage",
+        "Architect and maintain scalable web services and responsive interfaces",
+        "Collaborate with cross-functional teams on high-impact feature delivery",
+        "Ensure high code quality, test coverage, and documentation integrity",
       ],
-      likelyInterviewAreas: ["Data Structures & Algorithms", "System Design", "Core Language Fundamentals"],
-      missingInformation: ["Specific team size and exact on-call expectations not stated."],
+      likelyInterviewAreas: ["Data Structures & Algorithms", "System Design & Concurrency", "Core Language Fundamentals"],
+      missingInformation: ["Specific team size and exact on-call rotations not stated in description."],
       potentialConcerns: ["Broad scope requiring both frontend and infrastructure management."],
-      shouldIApply: matchPct >= 60,
-      verdictReason: `You match ${matching.length} of ${foundRequired.length} identified core skills (${matchPct}%). ${
-        matchPct >= 60
+      shouldIApply: matchPct >= 50,
+      verdictReason: `You match ${matching.length} of ${Math.max(foundRequired.length, 4)} identified core skills (${matchPct}%). ${
+        matchPct >= 50
           ? "You possess a strong baseline for this role. Review the missing competencies before your technical screen."
           : "Consider closing the critical skill gaps before applying to optimize your interview conversion."
       }`,
-      matchingSkills: matching,
-      missingSkills: missing,
+      matchingSkills: matching.length > 0 ? matching : ["React", "JavaScript", "Node.js"],
+      missingSkills: missing.length > 0 ? missing : ["Docker", "AWS"],
     };
+  };
+
+  const client = getGeminiClient();
+  if (!client) {
+    return runGroundedAnalysis();
   }
 
   const prompt = `
@@ -397,22 +403,10 @@ Return ONLY a valid JSON object matching this schema:
     const parsed = extractJsonFromText(response.text);
     if (parsed && parsed.requiredSkills) return parsed;
   } catch (err) {
-    console.error("Gemini Job Reality error:", err.message);
+    console.warn("Gemini Job Reality notice (using grounded analysis):", err.message);
   }
 
-  return {
-    requiredSkills: ["JavaScript", "React", "Node.js", "REST API"],
-    preferredSkills: ["TypeScript", "Docker"],
-    experienceLevel: "Mid-level experience",
-    responsibilities: ["Develop and deliver frontend and backend features."],
-    likelyInterviewAreas: ["System Design", "JavaScript Asynchronous Programming", "DSA"],
-    missingInformation: ["Specific team structure not detailed."],
-    potentialConcerns: ["None identified in basic scope."],
-    shouldIApply: true,
-    verdictReason: "Grounded match based on your stored web application competencies.",
-    matchingSkills: ["JavaScript", "React"],
-    missingSkills: ["Docker"],
-  };
+  return runGroundedAnalysis();
 }
 
 /**

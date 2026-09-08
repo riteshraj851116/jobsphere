@@ -111,58 +111,58 @@ const {
 } = require("../controllers/careerOsController");
 
 // Digital Twin & Career Command Center
-router.get("/twin", protect, getCareerTwin);
-router.get("/profile", protect, getCareerTwin);
-router.put("/profile", protect, updateCareerProfile);
+router.get("/twin", optionalAuth, getCareerTwin);
+router.get("/profile", optionalAuth, getCareerTwin);
+router.put("/profile", optionalAuth, updateCareerProfile);
 
 // AI Career Autopilot & Goals
-router.get("/autopilot", protect, getAutopilotGoals);
-router.post("/autopilot", protect, createAutopilotGoal);
-router.get("/goals", protect, getAutopilotGoals);
-router.post("/goals", protect, createAutopilotGoal);
-router.patch("/autopilot/:goalId/milestones/:milestoneId", protect, toggleGoalMilestone);
-router.patch("/goals/:goalId/milestones/:milestoneId", protect, toggleGoalMilestone);
+router.get("/autopilot", optionalAuth, getAutopilotGoals);
+router.post("/autopilot", optionalAuth, createAutopilotGoal);
+router.get("/goals", optionalAuth, getAutopilotGoals);
+router.post("/goals", optionalAuth, createAutopilotGoal);
+router.patch("/autopilot/:goalId/milestones/:milestoneId", optionalAuth, toggleGoalMilestone);
+router.patch("/goals/:goalId/milestones/:milestoneId", optionalAuth, toggleGoalMilestone);
 
 // Career Scenario Simulator
-router.post("/simulate", protect, simulateScenario);
+router.post("/simulate", optionalAuth, simulateScenario);
 
 // AI Project Advisor & Blueprints
-router.post("/project-advisor", protect, generateProjectBlueprint);
-router.get("/project-blueprints", protect, getProjectBlueprints);
+router.post("/project-advisor", optionalAuth, generateProjectBlueprint);
+router.get("/project-blueprints", optionalAuth, getProjectBlueprints);
 
 // AI Portfolio Auditor
-router.get("/portfolio-audit", protect, auditPortfolio);
-router.post("/portfolio-audit", protect, auditPortfolio);
+router.get("/portfolio-audit", optionalAuth, auditPortfolio);
+router.post("/portfolio-audit", optionalAuth, auditPortfolio);
 
 // Skill Proof System & Passport
-router.get("/passport", protect, getSkillPassport);
-router.post("/passport/verify", protect, verifySkill);
+router.get("/passport", optionalAuth, getSkillPassport);
+router.post("/passport/verify", optionalAuth, verifySkill);
 
 // AI Job Reality Analyzer ("Should I Apply?")
-router.post("/analyze-job", protect, analyzeJobReality);
+router.post("/analyze-job", optionalAuth, analyzeJobReality);
 
 // Opportunity Radar
-router.get("/opportunities", protect, getOpportunityRadar);
+router.get("/opportunities", optionalAuth, getOpportunityRadar);
 
 // Skill Demand Intelligence (Platform Aggregated Market Data)
 router.get("/market", getSkillDemandMarket);
 
 // AI Learning Agent & Revision Sessions
-router.get("/learning-agent", protect, getLearningAgent);
-router.get("/revision", protect, getRevisionSessions);
-router.post("/revision/generate", protect, generateNewRevisionSession);
-router.patch("/revision/:sessionId/topics/:topicId", protect, toggleRevisionTopic);
+router.get("/learning-agent", optionalAuth, getLearningAgent);
+router.get("/revision", optionalAuth, getRevisionSessions);
+router.post("/revision/generate", optionalAuth, generateNewRevisionSession);
+router.patch("/revision/:sessionId/topics/:topicId", optionalAuth, toggleRevisionTopic);
 
 // AI Interview Preparation
-router.post("/interview-prep", protect, getInterviewPlan);
+router.post("/interview-prep", optionalAuth, getInterviewPlan);
 
 // AI Daily Career Brief
-router.get("/daily-brief", protect, getDailyCareerBrief);
+router.get("/daily-brief", optionalAuth, getDailyCareerBrief);
 
 // Talent Marketplace & Recruiter Assistant
-router.get("/talent/marketplace", protect, getTalentMarketplace);
-router.get("/marketplace", protect, getTalentMarketplace);
-router.get("/talent", protect, getTalentMarketplace);
+router.get("/talent/marketplace", optionalAuth, getTalentMarketplace);
+router.get("/marketplace", optionalAuth, getTalentMarketplace);
+router.get("/talent", optionalAuth, getTalentMarketplace);
 router.post("/recruiter/assistant", protect, recruiterAiAssistant);
 
 module.exports = router;

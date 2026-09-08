@@ -6,6 +6,7 @@ const {
 
 const {
   protect,
+  optionalAuth,
 } = require("../middleware/authMiddleware");
 
 const router = express.Router();
@@ -13,12 +14,13 @@ const router = express.Router();
 /*
  * POST /api/ai/chat
  *
- * Protected route:
- * Sirf logged-in user AI Career Assistant use kar sakta hai.
+ * Optional Auth route:
+ * Logged-in users get personalized profile-based career guidance.
+ * Guest users get full tech career assistance and platform job recommendations.
  */
 router.post(
   "/chat",
-  protect,
+  optionalAuth,
   chatWithAI
 );
 

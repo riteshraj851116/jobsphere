@@ -55,18 +55,21 @@ const AiCoachPanel = ({
           language,
           hintLevel,
         });
-        if (res.success) {
-          title = `Hint Level ${res.data.level}: ${res.data.title}`;
-          content = `${res.data.hint}\n\n*Pro-tip: ${res.data.nextHintAvailable ? "Click Hint again for the next level!" : "You've unlocked the highest hint level!"}*`;
+        if (res.success && res.data) {
+          const lvl = res.data.level || res.data.hintLevel || hintLevel;
+          const hintTitle = res.data.title || `Level ${lvl} Hint`;
+          const hintBody = res.data.hint || res.data.content || "Analyze the problem constraints and look for an optimal lookup pattern.";
+          title = `Hint Level ${lvl}: ${hintTitle}`;
+          content = `${hintBody}\n\n*Pro-tip: ${lvl < 3 ? "Click Hint again for the next level!" : "You've unlocked the highest hint level!"}*`;
           setHintLevel((prev) => (prev >= 3 ? 1 : prev + 1));
         }
       } else if (actionType === "explain") {
         res = await dsaService.askAiCoach("explain", {
           problemId: problem._id,
         });
-        if (res.success) {
+        if (res.success && res.data) {
           title = `Plain English Explanation: ${problem.title}`;
-          content = res.data.explanation;
+          content = res.data.explanation || res.data.content || "Here is the conceptual breakdown of the problem.";
         }
       } else if (actionType === "complexity") {
         res = await dsaService.askAiCoach("complexity", {
@@ -74,9 +77,13 @@ const AiCoachPanel = ({
           userCode,
           language,
         });
-        if (res.success) {
+        if (res.success && res.data) {
           title = "Complexity Analysis";
-          content = `**Time Complexity:** ${res.data.timeComplexity}\n**Space Complexity:** ${res.data.spaceComplexity}\n\n${res.data.explanation}`;
+          if (res.data.analysis) {
+            content = res.data.analysis;
+          } else {
+            content = `**Time Complexity:** ${res.data.timeComplexity || "O(N)"}\n**Space Complexity:** ${res.data.spaceComplexity || "O(N)"}\n\n${res.data.explanation || "Analyzed based on algorithm loops and state storage."}`;
+          }
         }
       } else if (actionType === "review") {
         res = await dsaService.askAiCoach("review", {
@@ -85,9 +92,9 @@ const AiCoachPanel = ({
           language,
           submissionResult: executionResult,
         });
-        if (res.success) {
+        if (res.success && res.data) {
           title = "Code Quality & Edge-Case Review";
-          content = res.data.review;
+          content = res.data.review || res.data.summary || "Your code logic is structured well. Review boundary cases.";
         }
       } else if (actionType === "debug") {
         res = await dsaService.askAiCoach("debug", {
@@ -97,18 +104,26 @@ const AiCoachPanel = ({
           failedTestCase: executionResult?.failedTestCase,
           errorMessage: executionResult?.errorMessage,
         });
-        if (res.success) {
+        if (res.success && res.data) {
           title = "Bug & Logic Diagnosis";
-          content = `**Diagnosis:** ${res.data.diagnosis}\n\n**Suggestion:**\n${res.data.fixSuggestion}`;
+          if (res.data.debugReport) {
+            content = res.data.debugReport;
+          } else {
+            content = `**Diagnosis:** ${res.data.diagnosis || "Output mismatch detected."}\n\n**Suggestion:**\n${res.data.fixSuggestion || "Trace loop boundaries."}`;
+          }
         }
       } else if (actionType === "solution") {
         res = await dsaService.askAiCoach("solution", {
           problemId: problem._id,
           language,
         });
-        if (res.success) {
+        if (res.success && res.data) {
           title = `Optimal Solution (${language})`;
-          content = `${res.data.explanation}\n\n\`\`\`${language}\n${res.data.code}\n\`\`\``;
+          if (res.data.solution) {
+            content = res.data.solution;
+          } else {
+            content = `${res.data.explanation || "Optimal solution:"}\n\n\`\`\`${language}\n${res.data.code || "// Solution"}\n\`\`\``;
+          }
         }
       }
 
