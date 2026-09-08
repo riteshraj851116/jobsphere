@@ -2,6 +2,7 @@ import React, { useRef, useState, useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
+import SceneShell from './SceneShell';
 
 const HUBS = [
   { city: 'Bangalore', role: 'Frontend & Fullstack', count: '2.8k+ jobs', pos: [0.8, 0.9, 1.4] },
