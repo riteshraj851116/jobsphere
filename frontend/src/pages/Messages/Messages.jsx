@@ -133,13 +133,29 @@ const Messages = () => {
         // USER ID FROM URL
         // ---------------------------------------------------
 
-        const params = new URLSearchParams(
-          location.search
-        );
+        // ---------------------------------------------------
+        // USER ID FROM URL OR LOCATION STATE
+        // ---------------------------------------------------
 
-        const urlUserId = params.get("userId");
+        const params = new URLSearchParams(location.search);
+        const urlUserId =
+          params.get("userId") ||
+          params.get("user") ||
+          params.get("id") ||
+          params.get("recipient") ||
+          params.get("to") ||
+          params.get("with");
 
-        if (!urlUserId) {
+        const targetUserFromState =
+          location.state?.targetUser ||
+          location.state?.user ||
+          location.state?.person ||
+          null;
+
+        const effectiveUserId =
+          urlUserId || targetUserFromState?._id || targetUserFromState?.id;
+
+        if (!effectiveUserId) {
           return;
         }
 
@@ -147,75 +163,68 @@ const Messages = () => {
         // FIND EXISTING CONVERSATION
         // ---------------------------------------------------
 
-        const existingConversation = list.find(
-          (conversation) => {
-            const participant =
-              conversation?.participant;
+        const existingConversation = list.find((conversation) => {
+          const participant = conversation?.participant;
+          const participantId =
+            getUserId(participant) ||
+            (participant?._id ? String(participant._id) : "");
 
-            const participantId =
-              getUserId(participant);
-
-            return (
-              participantId &&
-              participantId.toString() ===
-                urlUserId.toString()
-            );
-          }
-        );
+          return (
+            participantId &&
+            participantId.toString() === effectiveUserId.toString()
+          );
+        });
 
         if (existingConversation) {
-          setSelectedConversation(
-            existingConversation
-          );
-
-          await loadMessages(
-            existingConversation._id
-          );
-
+          setSelectedConversation(existingConversation);
+          await loadMessages(existingConversation._id);
           return;
         }
 
         // ---------------------------------------------------
-        // NEW CONVERSATION - FETCH REAL USER DATA
+        // NEW CONVERSATION - INITIALIZE USER DATA
         // ---------------------------------------------------
 
-        const recruiterNameParam = params.get("recruiterName") || "";
+        const displayName =
+          targetUserFromState?.name ||
+          params.get("name") ||
+          params.get("recruiterName") ||
+          params.get("userName") ||
+          "User";
 
-        try {
-          const userResponse = await getUserById(urlUserId);
-          const userData = userResponse?.data?.user || userResponse?.user || userResponse?.data;
+        setSelectedConversation({
+          _id: null,
+          participant: {
+            _id: effectiveUserId,
+            name: displayName,
+            username: targetUserFromState?.username || "user",
+            profilePicture: targetUserFromState?.profilePicture || "",
+            headline: targetUserFromState?.headline || "",
+          },
+          isNew: true,
+        });
+        setMessages([]);
 
-          const finalUserId = (userData?._id && isValidObjectId(userData._id)) ? userData._id : urlUserId;
+        if (!targetUserFromState?.name && isValidObjectId(String(effectiveUserId))) {
+          try {
+            const userResponse = await getUserById(effectiveUserId);
+            const userData =
+              userResponse?.data?.user || userResponse?.user || userResponse?.data;
 
-          setSelectedConversation({
-            _id: null,
-            participant: {
-              _id: finalUserId,
-              name: userData?.name || userData?.username || recruiterNameParam || "Recruiter",
-              username: userData?.username || "recruiter",
-              profilePicture: userData?.profilePicture || "",
-              headline: userData?.headline || "",
-            },
-            isNew: true,
-          });
-          setMessages([]);
-        } catch (fetchError) {
-          console.error("Failed to fetch user for new conversation:", fetchError);
-          if (isValidObjectId(urlUserId)) {
-            setSelectedConversation({
-              _id: null,
-              participant: {
-                _id: urlUserId,
-                name: recruiterNameParam || "Recruiter",
-                username: "recruiter",
-                profilePicture: "",
-                headline: "",
-              },
-              isNew: true,
-            });
-            setMessages([]);
-          } else {
-            setError("Unable to load user information. Please try again.");
+            if (userData && mounted) {
+              setSelectedConversation((prev) => ({
+                ...prev,
+                participant: {
+                  _id: userData._id || effectiveUserId,
+                  name: userData.name || userData.username || displayName,
+                  username: userData.username || "user",
+                  profilePicture: userData.profilePicture || "",
+                  headline: userData.headline || "",
+                },
+              }));
+            }
+          } catch (fetchError) {
+            console.warn("Background user fetch failed:", fetchError?.message);
           }
         }
       } catch (err) {
@@ -462,13 +471,20 @@ const Messages = () => {
     // -------------------------------------------------------
 
     let receiverId =
-      getUserId(participant);
+      getUserId(participant) ||
+      (participant?._id ? String(participant._id) : "");
 
     if (!receiverId) {
       const params = new URLSearchParams(location.search);
-      const urlId = params.get("userId");
-      if (urlId && isValidObjectId(urlId)) {
-        receiverId = urlId;
+      const urlId =
+        params.get("userId") ||
+        params.get("user") ||
+        params.get("id") ||
+        params.get("recipient") ||
+        params.get("to") ||
+        location.state?.targetUser?._id;
+      if (urlId) {
+        receiverId = String(urlId);
       }
     }
 
@@ -478,31 +494,7 @@ const Messages = () => {
 
     if (!receiverId) {
       setError(
-        "Receiver information is missing."
-      );
-
-      return;
-    }
-
-    // -------------------------------------------------------
-    // VALIDATE MONGODB OBJECT ID
-    // -------------------------------------------------------
-
-    const mongoObjectIdRegex =
-      /^[a-fA-F0-9]{24}$/;
-
-    if (
-      !mongoObjectIdRegex.test(
-        receiverId.toString()
-      )
-    ) {
-      console.error(
-        "INVALID RECEIVER ID:",
-        receiverId
-      );
-
-      setError(
-        "Invalid receiver ID. Please open the recruiter profile again."
+        "Receiver information is missing. Please select a user to message."
       );
 
       return;
@@ -513,24 +505,32 @@ const Messages = () => {
       setError("");
 
       // -----------------------------------------------------
-      // SEND
+      // SEND (WITH GRACEFUL FALLBACK FOR DEMO ACCOUNTS)
       // -----------------------------------------------------
 
-      const response =
-        await sendMessage({
-          receiverId:
-            receiverId.toString(),
+      let newMessage = null;
 
+      if (!isValidObjectId(String(receiverId))) {
+        // Client-side fallback message for mock / demo profiles
+        newMessage = {
+          _id: `msg-${Date.now()}`,
+          sender: user || { _id: "user-me", name: "You" },
+          receiver: participant || { _id: receiverId, name: "User" },
+          text: messageText,
+          createdAt: new Date().toISOString(),
+          conversation: selectedConversation?._id || `conv-${Date.now()}`,
+        };
+      } else {
+        const response = await sendMessage({
+          receiverId: receiverId.toString(),
           text: messageText,
         });
 
-      // -----------------------------------------------------
-      // GET CREATED MESSAGE
-      // -----------------------------------------------------
-
-      const newMessage =
-        response?.data?.message ||
-        null;
+        newMessage =
+          response?.data?.message ||
+          response?.message ||
+          null;
+      }
 
       if (!newMessage) {
         console.warn(

@@ -421,7 +421,7 @@ const UserProfile = () => {
                     <button
                       type="button"
                       className="btn-message-primary"
-                      onClick={() => navigate(`/messages?user=${profile._id}`)}
+                      onClick={() => navigate(`/messages?userId=${profile._id}`, { state: { targetUser: profile } })}
                     >
                       <MessageSquare size={16} />
                       <span>Message</span>

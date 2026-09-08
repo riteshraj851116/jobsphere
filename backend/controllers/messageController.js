@@ -47,7 +47,11 @@ const sendMessage = async (req, res) => {
     }
 
     const senderId = req.user._id;
-    let receiverId = req.body?.receiverId;
+    let receiverId =
+      req.body?.receiverId ||
+      req.body?.recipientId ||
+      req.body?.userId ||
+      req.body?.to;
     let text =
       typeof req.body?.text === "string"
         ? req.body.text.trim()

@@ -505,7 +505,7 @@ const Network = () => {
                         loading={Boolean(actionLoading[person._id])}
                         onRemoveConnection={() => handleRemoveConnection(person._id)}
                         onFollowToggle={() => handleFollowToggle(person, isFollowingUser(person._id))}
-                        onMessage={() => navigate(`/messages?user=${person._id}`)}
+                        onMessage={() => navigate(`/messages?userId=${person._id}`, { state: { targetUser: person } })}
                       />
                     ))}
                   </div>
@@ -539,6 +539,7 @@ const Network = () => {
                         loading={Boolean(actionLoading[person._id])}
                         onConnect={() => handleSendRequest(person._id)}
                         onFollowToggle={() => handleFollowToggle(person, isFollowingUser(person._id))}
+                        onMessage={() => navigate(`/messages?userId=${person._id}`, { state: { targetUser: person } })}
                         reasonBadge={person.reason}
                         mutualCount={person.mutualCount}
                       />
@@ -706,6 +707,7 @@ const Network = () => {
                         loading={Boolean(actionLoading[person._id])}
                         onFollowToggle={() => handleFollowToggle(person, isFollowingUser(person._id))}
                         onConnect={() => handleSendRequest(person._id)}
+                        onMessage={() => navigate(`/messages?userId=${person._id}`, { state: { targetUser: person } })}
                       />
                     ))}
                   </div>
@@ -738,6 +740,7 @@ const Network = () => {
                         loading={Boolean(actionLoading[person._id])}
                         onFollowToggle={() => handleFollowToggle(person, true)}
                         onConnect={() => handleSendRequest(person._id)}
+                        onMessage={() => navigate(`/messages?userId=${person._id}`, { state: { targetUser: person } })}
                       />
                     ))}
                   </div>
@@ -865,15 +868,28 @@ const PersonCard = ({
               <span>Accept</span>
             </button>
           ) : (
-            <button
-              type="button"
-              className="btn-action-primary"
-              disabled={loading}
-              onClick={onConnect}
-            >
-              <UserPlus size={14} />
-              <span>Connect</span>
-            </button>
+            <>
+              <button
+                type="button"
+                className="btn-action-primary"
+                disabled={loading}
+                onClick={onConnect}
+              >
+                <UserPlus size={14} />
+                <span>Connect</span>
+              </button>
+              {onMessage && (
+                <button
+                  type="button"
+                  className="btn-action-outline"
+                  onClick={onMessage}
+                  title="Send Direct Message"
+                >
+                  <MessageSquare size={14} />
+                  <span>Message</span>
+                </button>
+              )}
+            </>
           )}
 
           {/* Follow/Unfollow Button */}
