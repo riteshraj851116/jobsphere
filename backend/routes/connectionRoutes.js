@@ -19,6 +19,7 @@ const router = express.Router();
 
 // Send connection request
 router.post("/request", protect, sendConnectionRequest);
+router.post("/request/:id", protect, sendConnectionRequest);
 
 // Pending requests (received)
 router.get("/requests", protect, getPendingRequests);
@@ -41,6 +42,7 @@ router.get("/mutual/:userId", protect, getMutualConnections);
 
 // Accept / reject request
 router.put("/request/:id", protect, respondToRequest);
+router.put("/respond/:id", protect, respondToRequest);
 
 // My connections
 router.get("/", protect, getMyConnections);

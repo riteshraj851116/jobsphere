@@ -47,12 +47,15 @@ const sendMessage = async (req, res) => {
     }
 
     const senderId = req.user._id;
-
     let receiverId = req.body?.receiverId;
     let text =
       typeof req.body?.text === "string"
         ? req.body.text.trim()
-        : "";
+        : typeof req.body?.content === "string"
+          ? req.body.content.trim()
+          : typeof req.body?.message === "string"
+            ? req.body.message.trim()
+            : "";
 
     // -----------------------------------------------------
     // IMAGE

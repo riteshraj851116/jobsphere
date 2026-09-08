@@ -95,11 +95,26 @@ const createPost = async (req, res) => {
       }
     }
 
+    const allowedTypes = [
+      "text",
+      "image",
+      "project",
+      "career_update",
+      "achievement",
+      "job_related",
+      "learning",
+      "technical",
+      "general"
+    ];
+    const normalizedType = allowedTypes.includes(postType) ? postType : "text";
+    const allowedVisibility = ["public", "connections", "followers"];
+    const normalizedVisibility = allowedVisibility.includes(visibility) ? visibility : "public";
+
     const post = await Post.create({
       author: req.user._id,
       content: content.trim(),
-      postType: postType || "text",
-      visibility: visibility || "public",
+      postType: normalizedType,
+      visibility: normalizedVisibility,
       image: image,
       tags: allTags,
       mentions: mentionUserIds,

@@ -9,7 +9,7 @@ const { isValidObjectId } = require("../middleware/validateObjectId");
 
 const sendConnectionRequest = async (req, res) => {
   try {
-    const userId = req.body.userId || req.body.receiverId;
+    const userId = req.body?.userId || req.body?.receiverId || req.params?.userId || req.params?.id;
 
     if (!userId) {
       return res.status(400).json({

@@ -84,7 +84,8 @@ const postSchema = new mongoose.Schema(
         "achievement",
         "job_related",
         "learning",
-        "technical"
+        "technical",
+        "general"
       ],
       default: "text"
     },
