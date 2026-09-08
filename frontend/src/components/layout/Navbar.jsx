@@ -108,6 +108,12 @@ const Navbar = () => {
           <NavLink to="/" end className={navLinkClass}>
             <span>Home</span>
           </NavLink>
+          <NavLink to="/feed" className={navLinkClass}>
+            <span>Feed</span>
+          </NavLink>
+          <NavLink to="/network" className={navLinkClass}>
+            <span>Network</span>
+          </NavLink>
           <NavLink to="/jobs" className={navLinkClass}>
             <span>Jobs</span>
           </NavLink>
@@ -215,6 +221,24 @@ const Navbar = () => {
                       >
                         <LayoutDashboard size={16} />
                         <span>Dashboard</span>
+                      </Link>
+
+                      <Link
+                        to="/feed"
+                        className="js-dropdown-item"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Sparkles size={16} color="#818cf8" />
+                        <span>Social Feed</span>
+                      </Link>
+
+                      <Link
+                        to="/network"
+                        className="js-dropdown-item"
+                        onClick={() => setIsUserMenuOpen(false)}
+                      >
+                        <Users size={16} color="#34d399" />
+                        <span>My Network</span>
                       </Link>
 
                       {isRecruiter ? (
@@ -377,6 +401,22 @@ const Navbar = () => {
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 <span>Home</span>
+              </Link>
+              <Link
+                to="/feed"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Sparkles size={17} color="#818cf8" />
+                <span>Social Feed</span>
+              </Link>
+              <Link
+                to="/network"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Users size={17} color="#34d399" />
+                <span>Network</span>
               </Link>
               <Link
                 to="/jobs"

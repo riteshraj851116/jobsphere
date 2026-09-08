@@ -30,6 +30,7 @@ const interviewRoutes = require("./routes/interviewRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
 const careerRoutes = require("./routes/careerRoutes");
 const dsaRoutes = require("./routes/dsaRoutes");
+const reportRoutes = require("./routes/reportRoutes");
 
 // ==============================
 // APP & SERVER
@@ -158,6 +159,7 @@ app.use("/api/resume", resumeRoutes);
 app.use("/api/career", careerRoutes);
 app.use("/api/talent", careerRoutes);
 app.use("/api/dsa", dsaRoutes);
+app.use("/api/reports", reportRoutes);
 
 // ==============================
 // SOCKET.IO

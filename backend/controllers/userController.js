@@ -1,5 +1,7 @@
 const User = require("../models/User");
 const Job = require("../models/Job");
+const Connection = require("../models/Connection");
+const createNotification = require("../utils/createNotification");
 const { isValidObjectId } = require("../middleware/validateObjectId");
 
 /*
@@ -478,9 +480,11 @@ const getUserById = async (req, res) => {
       });
     }
 
-    const user = await User.findById(id).select(
-      "name username profilePicture headline location skills role"
-    );
+    const user = await User.findById(id)
+      .select("-password")
+      .populate("connections", "name username profilePicture headline")
+      .populate("followers", "name username profilePicture headline")
+      .populate("following", "name username profilePicture headline");
 
     if (!user) {
       return res.status(404).json({
@@ -489,10 +493,58 @@ const getUserById = async (req, res) => {
       });
     }
 
+    const userObj = user.toObject();
+    userObj.followerCount = user.followers?.length || 0;
+    userObj.followingCount = user.following?.length || 0;
+    userObj.connectionCount = user.connections?.length || 0;
+
+    // Check relationship if requester is authenticated
+    if (req.user?._id) {
+      const currentUserId = req.user._id.toString();
+      const targetUserId = user._id.toString();
+
+      if (currentUserId === targetUserId) {
+        userObj.relationship = {
+          isSelf: true,
+          connectionStatus: "self",
+          isFollowing: false,
+          isFollower: false,
+          isBlocked: false
+        };
+      } else {
+        const [conn, currentUser] = await Promise.all([
+          Connection.findOne({
+            $or: [
+              { sender: currentUserId, receiver: targetUserId },
+              { sender: targetUserId, receiver: currentUserId }
+            ]
+          }),
+          User.findById(currentUserId).select("following followers blockedUsers")
+        ]);
+
+        let connectionStatus = "none";
+        if (conn) {
+          if (conn.status === "accepted") connectionStatus = "connected";
+          else if (conn.status === "pending") {
+            connectionStatus = conn.sender.toString() === currentUserId ? "pending_sent" : "pending_received";
+          }
+        }
+
+        userObj.relationship = {
+          isSelf: false,
+          connectionStatus,
+          connectionId: conn?._id || null,
+          isFollowing: currentUser?.following?.some((f) => f.toString() === targetUserId) || false,
+          isFollower: currentUser?.followers?.some((f) => f.toString() === targetUserId) || false,
+          isBlocked: currentUser?.blockedUsers?.some((b) => b.toString() === targetUserId) || false
+        };
+      }
+    }
+
     res.status(200).json({
       success: true,
       data: {
-        user
+        user: userObj
       }
     });
   } catch (error) {
@@ -504,7 +556,6 @@ const getUserById = async (req, res) => {
     });
   }
 };
-
 
 /*
 =========================================================
@@ -519,18 +570,9 @@ const getUserProfile = async (req, res) => {
       username: username.toLowerCase()
     })
       .select("-password")
-      .populate(
-        "connections",
-        "name username profilePicture headline"
-      )
-      .populate(
-        "followers",
-        "name username profilePicture headline"
-      )
-      .populate(
-        "following",
-        "name username profilePicture headline"
-      );
+      .populate("connections", "name username profilePicture headline")
+      .populate("followers", "name username profilePicture headline")
+      .populate("following", "name username profilePicture headline");
 
     if (!user) {
       return res.status(404).json({
@@ -539,11 +581,59 @@ const getUserProfile = async (req, res) => {
       });
     }
 
+    const userObj = user.toObject();
+    userObj.followerCount = user.followers?.length || 0;
+    userObj.followingCount = user.following?.length || 0;
+    userObj.connectionCount = user.connections?.length || 0;
+
+    // Check relationship if requester is authenticated
+    if (req.user?._id) {
+      const currentUserId = req.user._id.toString();
+      const targetUserId = user._id.toString();
+
+      if (currentUserId === targetUserId) {
+        userObj.relationship = {
+          isSelf: true,
+          connectionStatus: "self",
+          isFollowing: false,
+          isFollower: false,
+          isBlocked: false
+        };
+      } else {
+        const [conn, currentUser] = await Promise.all([
+          Connection.findOne({
+            $or: [
+              { sender: currentUserId, receiver: targetUserId },
+              { sender: targetUserId, receiver: currentUserId }
+            ]
+          }),
+          User.findById(currentUserId).select("following followers blockedUsers")
+        ]);
+
+        let connectionStatus = "none";
+        if (conn) {
+          if (conn.status === "accepted") connectionStatus = "connected";
+          else if (conn.status === "pending") {
+            connectionStatus = conn.sender.toString() === currentUserId ? "pending_sent" : "pending_received";
+          }
+        }
+
+        userObj.relationship = {
+          isSelf: false,
+          connectionStatus,
+          connectionId: conn?._id || null,
+          isFollowing: currentUser?.following?.some((f) => f.toString() === targetUserId) || false,
+          isFollower: currentUser?.followers?.some((f) => f.toString() === targetUserId) || false,
+          isBlocked: currentUser?.blockedUsers?.some((b) => b.toString() === targetUserId) || false
+        };
+      }
+    }
+
     res.status(200).json({
       success: true,
       message: "User profile fetched successfully",
       data: {
-        user
+        user: userObj
       }
     });
   } catch (error) {
@@ -809,6 +899,357 @@ const getSavedJobs = async (req, res) => {
 
 /*
 =========================================================
+FOLLOW USER
+=========================================================
+*/
+const followUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    if (id.toString() === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot follow yourself"
+      });
+    }
+
+    const [currentUser, targetUser] = await Promise.all([
+      User.findById(req.user._id),
+      User.findById(id)
+    ]);
+
+    if (!targetUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    // Block check
+    if (
+      currentUser.blockedUsers?.some((b) => b.toString() === id.toString()) ||
+      targetUser.blockedUsers?.some((b) => b.toString() === req.user._id.toString())
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "Action not permitted"
+      });
+    }
+
+    const alreadyFollowing = (currentUser.following || []).some(
+      (f) => f.toString() === id.toString()
+    );
+
+    if (alreadyFollowing) {
+      return res.status(400).json({
+        success: false,
+        message: "You are already following this user"
+      });
+    }
+
+    await Promise.all([
+      User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { following: id }
+      }),
+      User.findByIdAndUpdate(id, {
+        $addToSet: { followers: req.user._id }
+      }),
+      createNotification({
+        recipient: id,
+        sender: req.user._id,
+        type: "new_follower",
+        message: `${req.user.name} started following you`,
+        relatedId: req.user._id
+      })
+    ]);
+
+    const updatedTarget = await User.findById(id).select("followers");
+
+    const io = global.io;
+    if (io) {
+      io.to(id.toString()).emit("new-follower", {
+        follower: {
+          _id: req.user._id,
+          name: req.user.name,
+          username: req.user.username,
+          profilePicture: req.user.profilePicture,
+          headline: req.user.headline
+        }
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `You are now following ${targetUser.name}`,
+      data: {
+        isFollowing: true,
+        followerCount: updatedTarget.followers.length
+      }
+    });
+  } catch (error) {
+    console.error("Follow User Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while following user"
+    });
+  }
+};
+
+/*
+=========================================================
+UNFOLLOW USER
+=========================================================
+*/
+const unfollowUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    const [currentUser, targetUser] = await Promise.all([
+      User.findById(req.user._id),
+      User.findById(id)
+    ]);
+
+    if (!targetUser) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    await Promise.all([
+      User.findByIdAndUpdate(req.user._id, {
+        $pull: { following: id }
+      }),
+      User.findByIdAndUpdate(id, {
+        $pull: { followers: req.user._id }
+      })
+    ]);
+
+    const updatedTarget = await User.findById(id).select("followers");
+
+    res.status(200).json({
+      success: true,
+      message: `You have unfollowed ${targetUser.name}`,
+      data: {
+        isFollowing: false,
+        followerCount: updatedTarget.followers.length
+      }
+    });
+  } catch (error) {
+    console.error("Unfollow User Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while unfollowing user"
+    });
+  }
+};
+
+/*
+=========================================================
+GET FOLLOWERS
+=========================================================
+*/
+const getFollowers = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    const user = await User.findById(id).populate(
+      "followers",
+      "name username profilePicture headline location skills role"
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        followers: user.followers || [],
+        total: (user.followers || []).length
+      }
+    });
+  } catch (error) {
+    console.error("Get Followers Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching followers"
+    });
+  }
+};
+
+/*
+=========================================================
+GET FOLLOWING
+=========================================================
+*/
+const getFollowing = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    const user = await User.findById(id).populate(
+      "following",
+      "name username profilePicture headline location skills role"
+    );
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: {
+        following: user.following || [],
+        total: (user.following || []).length
+      }
+    });
+  } catch (error) {
+    console.error("Get Following Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching following"
+    });
+  }
+};
+
+/*
+=========================================================
+BLOCK / UNBLOCK USER
+=========================================================
+*/
+const blockUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    if (id.toString() === req.user._id.toString()) {
+      return res.status(400).json({
+        success: false,
+        message: "You cannot block yourself"
+      });
+    }
+
+    await Promise.all([
+      User.findByIdAndUpdate(req.user._id, {
+        $addToSet: { blockedUsers: id },
+        $pull: { connections: id, following: id, followers: id }
+      }),
+      User.findByIdAndUpdate(id, {
+        $pull: { connections: req.user._id, following: req.user._id, followers: req.user._id }
+      }),
+      Connection.deleteMany({
+        $or: [
+          { sender: req.user._id, receiver: id },
+          { sender: id, receiver: req.user._id }
+        ]
+      })
+    ]);
+
+    res.status(200).json({
+      success: true,
+      message: "User blocked successfully"
+    });
+  } catch (error) {
+    console.error("Block User Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while blocking user"
+    });
+  }
+};
+
+const unblockUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!isValidObjectId(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID"
+      });
+    }
+
+    await User.findByIdAndUpdate(req.user._id, {
+      $pull: { blockedUsers: id }
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "User unblocked successfully"
+    });
+  } catch (error) {
+    console.error("Unblock User Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while unblocking user"
+    });
+  }
+};
+
+const getBlockedUsers = async (req, res) => {
+  try {
+    const user = await User.findById(req.user._id).populate(
+      "blockedUsers",
+      "name username profilePicture headline"
+    );
+
+    res.status(200).json({
+      success: true,
+      data: {
+        blockedUsers: user.blockedUsers || []
+      }
+    });
+  } catch (error) {
+    console.error("Get Blocked Users Error:", error);
+    res.status(500).json({
+      success: false,
+      message: "Server error while fetching blocked users"
+    });
+  }
+};
+
+/*
+=========================================================
 EXPORTS
 =========================================================
 */
@@ -824,5 +1265,12 @@ module.exports = {
   getUserById,
   searchUsers,
   saveJob,
-  getSavedJobs
-};
+  getSavedJobs,
+  followUser,
+  unfollowUser,
+  getFollowers,
+  getFollowing,
+  blockUser,
+  unblockUser,
+  getBlockedUsers
+};

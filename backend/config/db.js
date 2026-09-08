@@ -40,7 +40,9 @@ const connectDB = async () => {
     .then((connection) => {
       isConnected = true;
       connectingPromise = null;
-      console.log(`✅ MongoDB connected: ${connection.connection.host}/${connection.connection.name}`);
+      const host = connection?.connection?.host || connection?.host || mongoose.connection?.host || "MongoDB Atlas";
+      const dbName = connection?.connection?.name || connection?.name || mongoose.connection?.name || "JobSphere";
+      console.log(`✅ MongoDB connected: ${host}/${dbName}`);
       return connection;
     })
     .catch((error) => {

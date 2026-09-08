@@ -20,6 +20,9 @@ import SavedJobs from "./pages/Candidate/SavedJobs.jsx";
 import CandidateProfile from "./pages/Candidate/CandidateProfile.jsx";
 import Messages from "./pages/Messages/Messages.jsx";
 import Notifications from "./pages/Notifications/Notifications.jsx";
+import Feed from "./pages/Feed/Feed.jsx";
+import Network from "./pages/Network/Network.jsx";
+import UserProfile from "./pages/Profile/UserProfile.jsx";
 
 import RecruiterDashboard from "./pages/Recruiter/RecruiterDashboard.jsx";
 import CompanyProfile from "./pages/Recruiter/CompanyProfile.jsx";
@@ -95,10 +98,14 @@ const App = () => {
           <Route path="/jobs/:id" element={<JobDetails />} />
           <Route path="/companies" element={<Companies />} />
           <Route path="/companies/:id" element={<CompanyDetails />} />
+          <Route path="/profile/:username" element={<UserProfile />} />
+          <Route path="/users/:id" element={<UserProfile />} />
 
           {/* PROTECTED ROUTES */}
           <Route element={<ProtectedRoute />}>
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/feed" element={<Feed />} />
+            <Route path="/network" element={<Network />} />
             <Route path="/applications" element={<Applications />} />
             <Route path="/saved-jobs" element={<SavedJobs />} />
             <Route path="/messages" element={<Messages />} />

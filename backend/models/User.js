@@ -218,6 +218,20 @@ const userSchema = new mongoose.Schema(
       }
     ],
 
+    savedPosts: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Post"
+      }
+    ],
+
+    blockedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User"
+      }
+    ],
+
     categorizedSkills: [
       {
         name: { type: String, trim: true },

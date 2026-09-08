@@ -14,17 +14,25 @@ export const getPendingRequests = async () => {
   return res.data;
 };
 
+export const getSentRequests = async () => {
+  const res = await api.get('/connections/sent-requests');
+  return res.data;
+};
+
+export const cancelPendingRequest = async (id) => {
+  const res = await api.delete(`/connections/request/${id}`);
+  return res.data;
+};
+
 export const respondToRequest = async (id, action) => {
-  if (!isValidObjectId(id)) {
-    throw new Error('Invalid connection request ID');
-  }
   // action: 'accept' or 'reject'
   const res = await api.put(`/connections/request/${id}`, { action });
   return res.data;
 };
 
-export const getMyConnections = async () => {
-  const res = await api.get('/connections');
+export const getMyConnections = async (search = '') => {
+  const query = search ? `?search=${encodeURIComponent(search)}` : '';
+  const res = await api.get(`/connections${query}`);
   return res.data;
 };
 
@@ -36,8 +44,23 @@ export const removeConnection = async (userId) => {
   return res.data;
 };
 
+export const getMutualConnections = async (userId) => {
+  if (!isValidObjectId(userId)) {
+    throw new Error('Invalid user ID');
+  }
+  const res = await api.get(`/connections/mutual/${userId}`);
+  return res.data;
+};
+
+export const getConnectionStatus = async (userId) => {
+  if (!isValidObjectId(userId)) {
+    throw new Error('Invalid user ID');
+  }
+  const res = await api.get(`/connections/status/${userId}`);
+  return res.data;
+};
+
 export const getConnectionSuggestions = async () => {
   const res = await api.get('/connections/suggestions');
   return res.data;
 };
-

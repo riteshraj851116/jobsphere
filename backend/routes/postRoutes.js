@@ -3,11 +3,24 @@ const express = require("express");
 const {
   createPost,
   getFeed,
+  getPostById,
   getUserPosts,
-  likePost,
-  addComment,
+  updatePost,
   deletePost,
-  deleteComment
+  likePost,
+  getPostLikes,
+  sharePost,
+  toggleSavePost,
+  getSavedPosts,
+  addComment,
+  editComment,
+  deleteComment,
+  likeComment,
+  addCommentReply,
+  deleteCommentReply,
+  likeCommentReply,
+  getTrendingHashtags,
+  getPostsByHashtag
 } = require("../controllers/postController");
 
 const { protect, optionalAuth } = require("../middleware/authMiddleware");
@@ -16,65 +29,40 @@ const upload = require("../utils/upload");
 const router = express.Router();
 
 // Create post
-router.post(
-  "/",
-  protect,
-  upload.single('image'),
-  createPost
-);
+router.post("/", protect, upload.single("image"), createPost);
 
-// Get feed
-router.get(
-  "/",
-  optionalAuth,
-  getFeed
-);
+// Feed & Discovery
+router.get("/", optionalAuth, getFeed);
+router.get("/feed", optionalAuth, getFeed);
+router.get("/saved", protect, getSavedPosts);
+router.get("/tags/trending", getTrendingHashtags);
+router.get("/tag/:tag", optionalAuth, getPostsByHashtag);
 
-router.get(
-  "/feed",
-  optionalAuth,
-  getFeed
-);
+// User posts
+router.get("/user/:userId", optionalAuth, getUserPosts);
 
-// Get user's posts
-router.get(
-  "/user/:userId",
-  protect,
-  getUserPosts
-);
+// Single post operations
+router.get("/:id", optionalAuth, getPostById);
+router.put("/:id", protect, updatePost);
+router.delete("/:id", protect, deletePost);
 
-// Like / unlike post
-router.post(
-  "/:id/like",
-  protect,
-  likePost
-);
+// Likes & Shares
+router.post("/:id/like", protect, likePost);
+router.put("/:id/like", protect, likePost);
+router.get("/:id/likes", getPostLikes);
+router.post("/:id/share", protect, sharePost);
+router.post("/:id/save", protect, toggleSavePost);
+router.delete("/:id/save", protect, toggleSavePost);
 
-router.put(
-  "/:id/like",
-  protect,
-  likePost
-);
+// Comments
+router.post("/:id/comment", protect, addComment);
+router.put("/:id/comment/:commentId", protect, editComment);
+router.delete("/:id/comment/:commentId", protect, deleteComment);
+router.post("/:id/comment/:commentId/like", protect, likeComment);
 
-// Add comment
-router.post(
-  "/:id/comment",
-  protect,
-  addComment
-);
-
-// Delete comment
-router.delete(
-  "/:id/comment/:commentId",
-  protect,
-  deleteComment
-);
-
-// Delete post
-router.delete(
-  "/:id",
-  protect,
-  deletePost
-);
+// Comment replies
+router.post("/:id/comment/:commentId/reply", protect, addCommentReply);
+router.delete("/:id/comment/:commentId/reply/:replyId", protect, deleteCommentReply);
+router.post("/:id/comment/:commentId/reply/:replyId/like", protect, likeCommentReply);
 
 module.exports = router;

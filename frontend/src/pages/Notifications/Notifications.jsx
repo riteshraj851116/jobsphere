@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   Bell,
   CheckCheck,
@@ -6,6 +7,11 @@ import {
   Briefcase,
   MessageCircle,
   UserPlus,
+  UserCheck,
+  Heart,
+  Repeat,
+  AtSign,
+  Share2
 } from "lucide-react";
 
 import {
@@ -18,6 +24,7 @@ import {
 import "./Notifications.css";
 
 const Notifications = () => {
+  const navigate = useNavigate();
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -81,6 +88,40 @@ const Notifications = () => {
     }
   };
 
+  const handleNotificationClick = async (notification) => {
+    if (!notification.isRead) {
+      handleMarkAsRead(notification._id);
+    }
+
+    const type = String(notification.type || "").toLowerCase();
+    const sender = notification.sender;
+
+    if (type === "connection_request") {
+      navigate("/network?tab=requests");
+    } else if (type === "connection_accepted" || type === "new_follower") {
+      if (sender?.username) {
+        navigate(`/profile/${sender.username}`);
+      } else if (sender?._id) {
+        navigate(`/profile/${sender._id}`);
+      } else {
+        navigate("/network");
+      }
+    } else if (
+      type === "post_like" ||
+      type === "post_comment" ||
+      type === "comment_reply" ||
+      type === "comment_like" ||
+      type === "mention" ||
+      type === "post_share"
+    ) {
+      navigate("/feed");
+    } else if (type === "message") {
+      navigate("/messages");
+    } else if (type === "job_application" || type === "application_status") {
+      navigate("/applications");
+    }
+  };
+
   const handleMarkAllAsRead = async () => {
     try {
       setMarkingAll(true);
@@ -127,25 +168,31 @@ const Notifications = () => {
   };
 
   const getIcon = (type) => {
-    const notificationType =
-      String(type || "").toLowerCase();
+    const notificationType = String(type || "").toLowerCase();
 
     if (notificationType === "message") {
       return <MessageCircle size={20} />;
     }
-
-    if (
-      notificationType === "connection" ||
-      notificationType === "connect"
-    ) {
-      return <UserPlus size={20} />;
+    if (notificationType === "connection_request" || notificationType === "connection") {
+      return <UserPlus size={20} color="#818cf8" />;
     }
-
-    if (
-      notificationType === "job" ||
-      notificationType === "application"
-    ) {
-      return <Briefcase size={20} />;
+    if (notificationType === "connection_accepted" || notificationType === "new_follower") {
+      return <UserCheck size={20} color="#34d399" />;
+    }
+    if (notificationType === "post_like" || notificationType === "comment_like") {
+      return <Heart size={20} color="#f43f5e" fill="#f43f5e" />;
+    }
+    if (notificationType === "post_comment" || notificationType === "comment_reply") {
+      return <MessageCircle size={20} color="#60a5fa" />;
+    }
+    if (notificationType === "mention") {
+      return <AtSign size={20} color="#38bdf8" />;
+    }
+    if (notificationType === "post_share") {
+      return <Repeat size={20} color="#a855f7" />;
+    }
+    if (notificationType === "job" || notificationType === "application" || notificationType === "job_application") {
+      return <Briefcase size={20} color="#fbbf24" />;
     }
 
     return <Bell size={20} />;
@@ -270,7 +317,11 @@ const Notifications = () => {
                     {getIcon(notification.type)}
                   </div>
 
-                  <div className="notification-content">
+                  <div
+                    className="notification-content clickable"
+                    onClick={() => handleNotificationClick(notification)}
+                    style={{ cursor: "pointer" }}
+                  >
                     <p>
                       {notification.message}
                     </p>

@@ -19,10 +19,15 @@ const notificationSchema = new mongoose.Schema(
       enum: [
         "connection_request",
         "connection_accepted",
+        "new_follower",
         "job_application",
         "application_status",
         "post_like",
         "post_comment",
+        "comment_reply",
+        "comment_like",
+        "mention",
+        "post_share",
         "message"
       ],
       required: true

@@ -145,10 +145,15 @@ export const getSavedJobs = async () => {
 
 export const getUserProfile = async (username) => {
   try {
-    const res = await api.get(`/users/${username}`);
+    const res = await api.get(`/users/profile/${username}`);
     return res.data;
   } catch (error) {
-    return { success: true, data: DEMO_CANDIDATE, user: DEMO_CANDIDATE };
+    try {
+      const fallbackRes = await api.get(`/users/${username}`);
+      return fallbackRes.data;
+    } catch (_e) {
+      return { success: true, data: DEMO_CANDIDATE, user: DEMO_CANDIDATE };
+    }
   }
 };
 
@@ -167,6 +172,57 @@ export const getUserById = async (id) => {
   }
 };
 
+export const searchUsers = async (params = {}) => {
+  const query = new URLSearchParams();
+  if (params.search) query.set("search", params.search);
+  if (params.page) query.set("page", params.page);
+  if (params.limit) query.set("limit", params.limit);
+
+  const qs = query.toString();
+  const res = await api.get(`/users/search${qs ? `?${qs}` : ""}`);
+  return res.data;
+};
+
+export const followUser = async (id) => {
+  const res = await api.post(`/users/${id}/follow`);
+  return res.data;
+};
+
+export const unfollowUser = async (id) => {
+  const res = await api.post(`/users/${id}/unfollow`);
+  return res.data;
+};
+
+export const getFollowers = async (id) => {
+  const res = await api.get(`/users/${id}/followers`);
+  return res.data;
+};
+
+export const getFollowing = async (id) => {
+  const res = await api.get(`/users/${id}/following`);
+  return res.data;
+};
+
+export const blockUser = async (id) => {
+  const res = await api.post(`/users/${id}/block`);
+  return res.data;
+};
+
+export const unblockUser = async (id) => {
+  const res = await api.post(`/users/${id}/unblock`);
+  return res.data;
+};
+
+export const getBlockedUsers = async () => {
+  const res = await api.get("/users/me/blocked");
+  return res.data;
+};
+
+export const submitReport = async (reportData) => {
+  const res = await api.post("/reports", reportData);
+  return res.data;
+};
+
 const userService = {
   getMyProfile,
   updateProfile,
@@ -179,6 +235,15 @@ const userService = {
   getSavedJobs,
   getUserProfile,
   getUserById,
+  searchUsers,
+  followUser,
+  unfollowUser,
+  getFollowers,
+  getFollowing,
+  blockUser,
+  unblockUser,
+  getBlockedUsers,
+  submitReport
 };
 
 export default userService;

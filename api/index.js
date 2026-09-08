@@ -22,24 +22,32 @@ try {
 }
 
 module.exports = async (req, res) => {
+  const reqOrigin = req.headers.origin || "*";
+
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": reqOrigin,
+      "Access-Control-Allow-Credentials": "true",
       "Access-Control-Allow-Methods": "GET,POST,PUT,PATCH,DELETE,OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type,Authorization"
+      "Access-Control-Allow-Headers": "Content-Type,Authorization,X-Requested-With,Accept"
     });
     return res.end();
   }
 
-  // Recover original URL path if rewritten by Vercel
+  // Recover original URL path and preserve query string if rewritten by Vercel
   const matched = req.headers["x-matched-path"] || "";
+  const queryIndex = req.url ? req.url.indexOf("?") : -1;
+  const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
+  const rawPath = queryIndex !== -1 ? req.url.slice(0, queryIndex) : (req.url || "");
+
   if (matched && matched.startsWith("/api")) {
-    req.url = matched;
-  } else if (req.url === "/api/index.js" || req.url.startsWith("/api/index.js")) {
-    req.url = req.url.replace(/^\/api\/index\.js\/?/, "/api/");
-  } else if (req.url && !req.url.startsWith("/api")) {
-    req.url = "/api" + (req.url.startsWith("/") ? req.url : "/" + req.url);
+    req.url = matched + queryString;
+  } else if (rawPath === "/api/index.js" || rawPath.startsWith("/api/index.js")) {
+    const fixedPath = rawPath.replace(/^\/api\/index\.js\/?/, "/api/");
+    req.url = fixedPath + queryString;
+  } else if (rawPath && !rawPath.startsWith("/api")) {
+    req.url = "/api" + (rawPath.startsWith("/") ? rawPath : "/" + rawPath) + queryString;
   }
 
   // If backend failed to load, respond with diagnostic error JSON

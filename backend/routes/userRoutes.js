@@ -11,16 +11,23 @@ const {
   getUserById,
   searchUsers,
   saveJob,
-  getSavedJobs
+  getSavedJobs,
+  followUser,
+  unfollowUser,
+  getFollowers,
+  getFollowing,
+  blockUser,
+  unblockUser,
+  getBlockedUsers
 } = require("../controllers/userController");
-const { protect } = require("../middleware/authMiddleware");
+const { protect, optionalAuth } = require("../middleware/authMiddleware");
 
 const router = express.Router();
 
 // Base users list / search
 router.get("/", searchUsers);
 router.get("/search", searchUsers);
-router.get("/profile/:username", getUserProfile);
+router.get("/profile/:username", optionalAuth, getUserProfile);
 
 /* ==================================
    CURRENT LOGGED-IN USER (/me & /profile)
@@ -37,6 +44,9 @@ router.put("/profile", protect, updateProfile);
 
 // Skills
 router.put("/me/skills", protect, updateSkills);
+
+// Blocked users
+router.get("/me/blocked", protect, getBlockedUsers);
 
 /* ==================================
    EDUCATION
@@ -59,9 +69,25 @@ router.delete("/saved-jobs/:jobId", protect, saveJob);
 router.post("/save-job/:jobId", protect, saveJob);
 
 /* ==================================
+   SOCIAL: FOLLOW / UNFOLLOW
+================================== */
+router.post("/:id/follow", protect, followUser);
+router.delete("/:id/follow", protect, unfollowUser);
+router.post("/:id/unfollow", protect, unfollowUser);
+router.get("/:id/followers", getFollowers);
+router.get("/:id/following", getFollowing);
+
+/* ==================================
+   SOCIAL: BLOCK / UNBLOCK
+================================== */
+router.post("/:id/block", protect, blockUser);
+router.delete("/:id/block", protect, unblockUser);
+router.post("/:id/unblock", protect, unblockUser);
+
+/* ==================================
    DYNAMIC ROUTE (MUST STAY AT BOTTOM)
 ================================== */
-router.get("/id/:id", getUserById);
-router.get("/:id", getUserById);
+router.get("/id/:id", optionalAuth, getUserById);
+router.get("/:id", optionalAuth, getUserById);
 
 module.exports = router;
