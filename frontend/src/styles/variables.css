@@ -1,103 +1,116 @@
 /* =========================================================
-   JOBSPHERE — MONOCHROME DESIGN TOKENS
-   Strict Black, White & Grayscale Editorial System
-   Allowed: #000000, #111111, #222222, #333333, #666666,
-            #888888, #AAAAAA, #DDDDDD, #F5F5F5, #FFFFFF
+   JOBSPHERE — LUXURY EDITORIAL DESIGN TOKENS
+   Warm Espresso, Rich Mocha, Warm Bronze & Crema System
 ========================================================= */
 
 :root {
   /* =======================================================
-     CORE MONOCHROME PALETTE
+     CORE LUXURY ESPRESSO & WARM BROWN PALETTE
   ======================================================= */
-  --black: #000000;
-  --black-pure: #000000;
-  --black-soft: #111111;
-  --black-muted: #222222;
-  --black-subtle: #333333;
+  --espresso-950: #120C0A; /* Deepest warm espresso black */
+  --espresso-900: #1B1310; /* Primary dark background / heavy text */
+  --espresso-800: #261B17; /* Card dark / border strong */
+  --espresso-700: #382721; /* Deep rich mocha */
+  --espresso-600: #4D3932; /* Warm roasted coffee */
+  --espresso-500: #684F45; /* Medium warm umber */
 
-  --gray-900: #111111;
-  --gray-800: #222222;
-  --gray-700: #333333;
-  --gray-600: #666666;
-  --gray-500: #888888;
-  --gray-400: #AAAAAA;
-  --gray-300: #CCCCCC;
-  --gray-200: #DDDDDD;
-  --gray-100: #F5F5F5;
-  --gray-50: #FAFAFA;
+  --brown-accent: #7A4E32; /* Warm saddle leather / rich brown */
+  --brown-accent-hover: #613B24; /* Darker hover brown */
+  --brown-accent-light: #F4EBE3; /* Soft crema tint */
+  --brown-bronze: #9E6B47; /* Warm polished bronze */
+  --brown-amber: #B97D53; /* Light bronze amber */
+  --brown-border: #DFD3C8; /* Soft warm parchment border */
+
+  --black: #1B1310;
+  --black-pure: #120C0A;
+  --black-soft: #1B1310;
+  --black-muted: #261B17;
+  --black-subtle: #382721;
+
+  --gray-900: #1B1310;
+  --gray-800: #261B17;
+  --gray-700: #382721;
+  --gray-600: #4D3932;
+  --gray-500: #684F45;
+  --gray-400: #937F75;
+  --gray-300: #C2B3AA;
+  --gray-200: #DFD3C8;
+  --gray-100: #F4EFEB;
+  --gray-50: #FAF7F2;
 
   --white: #FFFFFF;
 
   /* =======================================================
-     SURFACES & BACKGROUNDS
+     SURFACES & BACKGROUNDS — Warm Parchment & Pure Card White
   ======================================================= */
-  --bg: #FFFFFF;
-  --bg-secondary: #FAFAFA;
-  --bg-subtle: #F5F5F5;
+  --bg: #FCFAF7;
+  --bg-secondary: #F8F4EE;
+  --bg-subtle: #F4EFEB;
   --surface: #FFFFFF;
-  --surface-soft: #F5F5F5;
-  --surface-muted: #EEEEEE;
-  --surface-hover: #F0F0F0;
-  --surface-active: #E5E5E5;
+  --surface-soft: #F4EFEB;
+  --surface-muted: #EAE3DC;
+  --surface-hover: #ECE4DC;
+  --surface-active: #DFD3C8;
 
   /* =======================================================
-     TEXT HIERARCHY
+     TEXT HIERARCHY — Deep Espresso Readability
   ======================================================= */
-  --text: #000000;
-  --text-primary: #111111;
-  --text-secondary: #555555;
-  --text-muted: #777777;
-  --text-placeholder: #AAAAAA;
+  --text: #1B1310;
+  --text-primary: #120C0A;
+  --text-secondary: #4D3932;
+  --text-muted: #7A665E;
+  --text-placeholder: #9E8C83;
   --text-inverse: #FFFFFF;
 
   /* =======================================================
-     ACCENTS — Strict Monochrome
+     ACCENTS — Warm Brown & Bronze
   ======================================================= */
-  --accent: #000000;
-  --accent-hover: #222222;
-  --accent-light: #F5F5F5;
+  --accent: #7A4E32;
+  --accent-hover: #613B24;
+  --accent-light: #F4EBE3;
   --accent-text: #FFFFFF;
+  --accent-bronze: #9E6B47;
 
   /* =======================================================
      BORDERS
   ======================================================= */
-  --border: #DDDDDD;
-  --border-light: #EEEEEE;
-  --border-strong: #000000;
-  --border-focus: #000000;
+  --border: #DFD3C8;
+  --border-light: #EFE8E1;
+  --border-strong: #7A4E32;
+  --border-focus: #7A4E32;
 
   /* =======================================================
-     STATUS — Grayscale Editorial Indicators
+     STATUS — Warm Editorial Indicators
   ======================================================= */
-  --success: #111111;
-  --success-bg: #F5F5F5;
-  --success-border: #DDDDDD;
-  --success-text: #111111;
+  --success: #261B17;
+  --success-bg: #F4EFEB;
+  --success-border: #DFD3C8;
+  --success-text: #261B17;
 
-  --danger: #222222;
-  --danger-bg: #F5F5F5;
-  --danger-border: #AAAAAA;
-  --danger-text: #222222;
+  --danger: #4D3932;
+  --danger-bg: #F4EFEB;
+  --danger-border: #C2B3AA;
+  --danger-text: #382721;
 
-  --warning: #333333;
-  --warning-bg: #F5F5F5;
-  --warning-border: #CCCCCC;
-  --warning-text: #333333;
+  --warning: #7A4E32;
+  --warning-bg: #F4EBE3;
+  --warning-border: #DFD3C8;
+  --warning-text: #613B24;
 
-  --info: #111111;
-  --info-bg: #F5F5F5;
-  --info-border: #DDDDDD;
-  --info-text: #111111;
+  --info: #261B17;
+  --info-bg: #F4EFEB;
+  --info-border: #DFD3C8;
+  --info-text: #1B1310;
 
   /* =======================================================
-     BORDER RADIUS — Clean Architectural
+     BORDER RADIUS — Architectural Precision
   ======================================================= */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 6px;
-  --radius-lg: 8px;
-  --radius-xl: 12px;
-  --radius-2xl: 16px;
+  --radius-xs: 3px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-2xl: 20px;
   --radius-full: 9999px;
 
   /* =======================================================
@@ -126,17 +139,17 @@
   --space-32: 8rem;
 
   /* =======================================================
-     SHADOWS — Crisp Minimalist Depth
+     SHADOWS — Warm Diffuse Luxury Depth
   ======================================================= */
-  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
-  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);
-  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.09);
-  --shadow-floating: 0 16px 32px rgba(0, 0, 0, 0.12);
-  --focus-ring: 0 0 0 2px #000000;
+  --shadow-xs: 0 1px 2px rgba(27, 19, 16, 0.04);
+  --shadow-sm: 0 1px 3px rgba(27, 19, 16, 0.06);
+  --shadow-md: 0 4px 14px rgba(27, 19, 16, 0.07);
+  --shadow-lg: 0 12px 28px rgba(27, 19, 16, 0.09);
+  --shadow-xl: 0 20px 48px rgba(27, 19, 16, 0.12);
+  --shadow-card: 0 1px 3px rgba(27, 19, 16, 0.05);
+  --shadow-card-hover: 0 10px 30px rgba(27, 19, 16, 0.1);
+  --shadow-floating: 0 18px 40px rgba(27, 19, 16, 0.14);
+  --focus-ring: 0 0 0 3px rgba(122, 78, 50, 0.2);
 
   /* =======================================================
      TRANSITIONS

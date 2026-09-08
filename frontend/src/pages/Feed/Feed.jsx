@@ -670,7 +670,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Rocket size={16} color="#444444" />
+                  <Rocket size={16} />
                   <span>Project</span>
                 </button>
                 <button
@@ -681,7 +681,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Briefcase size={16} color="#555555" />
+                  <Briefcase size={16} />
                   <span>Career Update</span>
                 </button>
                 <button
@@ -692,7 +692,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Code2 size={16} color="#555555" />
+                  <Code2 size={16} />
                   <span>Tech Article</span>
                 </button>
                 <button
@@ -703,7 +703,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Award size={16} color="#666666" />
+                  <Award size={16} />
                   <span>Milestone</span>
                 </button>
               </div>
@@ -968,7 +968,7 @@ const Feed = () => {
             {/* Trending Hashtags */}
             <div className="sidebar-widget">
               <div className="widget-header">
-                <Hash size={16} color="#444444" />
+                <Hash size={16} />
                 <h3>Trending Topics</h3>
               </div>
               <div className="trending-tags-list">
@@ -995,7 +995,7 @@ const Feed = () => {
             {/* People You May Know Quick Widget */}
             <div className="sidebar-widget">
               <div className="widget-header">
-                <Users size={16} color="#555555" />
+                <Users size={16} />
                 <h3>People You May Know</h3>
               </div>
               <div className="sidebar-people-list">
@@ -1443,7 +1443,7 @@ const PostCard = ({
         {post.projectRef?.title && (
           <div className="attached-project-card">
             <div className="attached-project-header">
-              <Rocket size={16} color="#444444" />
+              <Rocket size={16} />
               <strong>{post.projectRef.title}</strong>
             </div>
             {post.projectRef.link && (
@@ -1473,7 +1473,7 @@ const PostCard = ({
         {post.jobRef?.title && (
           <div className="attached-job-card">
             <div className="attached-job-header">
-              <Briefcase size={16} color="#555555" />
+              <Briefcase size={16} />
               <div>
                 <strong>{post.jobRef.title}</strong>
                 <span> • {post.jobRef.company}</span>
