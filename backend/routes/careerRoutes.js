@@ -82,4 +82,88 @@ router.patch("/applications/:id/reminders/:reminderId", protect, toggleApplicati
 // 11. Export Data
 router.get("/export", protect, exportUserData);
 
+// ==========================================
+// 12. AI CAREER OS & NEXT-GEN PLATFORM
+// ==========================================
+const {
+  getCareerTwin,
+  updateCareerProfile,
+  getAutopilotGoals,
+  createAutopilotGoal,
+  toggleGoalMilestone,
+  simulateScenario,
+  generateProjectBlueprint,
+  getProjectBlueprints,
+  auditPortfolio,
+  getSkillPassport,
+  verifySkill,
+  analyzeJobReality,
+  getOpportunityRadar,
+  getSkillDemandMarket,
+  getLearningAgent,
+  getRevisionSessions,
+  generateNewRevisionSession,
+  toggleRevisionTopic,
+  getInterviewPlan,
+  getDailyCareerBrief,
+  getTalentMarketplace,
+  recruiterAiAssistant,
+} = require("../controllers/careerOsController");
+
+// Digital Twin & Career Command Center
+router.get("/twin", protect, getCareerTwin);
+router.get("/profile", protect, getCareerTwin);
+router.put("/profile", protect, updateCareerProfile);
+
+// AI Career Autopilot & Goals
+router.get("/autopilot", protect, getAutopilotGoals);
+router.post("/autopilot", protect, createAutopilotGoal);
+router.get("/goals", protect, getAutopilotGoals);
+router.post("/goals", protect, createAutopilotGoal);
+router.patch("/autopilot/:goalId/milestones/:milestoneId", protect, toggleGoalMilestone);
+router.patch("/goals/:goalId/milestones/:milestoneId", protect, toggleGoalMilestone);
+
+// Career Scenario Simulator
+router.post("/simulate", protect, simulateScenario);
+
+// AI Project Advisor & Blueprints
+router.post("/project-advisor", protect, generateProjectBlueprint);
+router.get("/project-blueprints", protect, getProjectBlueprints);
+
+// AI Portfolio Auditor
+router.get("/portfolio-audit", protect, auditPortfolio);
+router.post("/portfolio-audit", protect, auditPortfolio);
+
+// Skill Proof System & Passport
+router.get("/passport", protect, getSkillPassport);
+router.post("/passport/verify", protect, verifySkill);
+
+// AI Job Reality Analyzer ("Should I Apply?")
+router.post("/analyze-job", protect, analyzeJobReality);
+
+// Opportunity Radar
+router.get("/opportunities", protect, getOpportunityRadar);
+
+// Skill Demand Intelligence (Platform Aggregated Market Data)
+router.get("/market", getSkillDemandMarket);
+
+// AI Learning Agent & Revision Sessions
+router.get("/learning-agent", protect, getLearningAgent);
+router.get("/revision", protect, getRevisionSessions);
+router.post("/revision/generate", protect, generateNewRevisionSession);
+router.patch("/revision/:sessionId/topics/:topicId", protect, toggleRevisionTopic);
+
+// AI Interview Preparation
+router.post("/interview-prep", protect, getInterviewPlan);
+
+// AI Daily Career Brief
+router.get("/daily-brief", protect, getDailyCareerBrief);
+
+// Talent Marketplace & Recruiter Assistant
+router.get("/talent/marketplace", protect, getTalentMarketplace);
+router.get("/marketplace", protect, getTalentMarketplace);
+router.get("/talent", protect, getTalentMarketplace);
+router.post("/recruiter/assistant", protect, recruiterAiAssistant);
+
 module.exports = router;
+

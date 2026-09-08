@@ -16,6 +16,7 @@ import {
   X,
   Sparkles,
   FileSearch,
+  Code2,
 } from "lucide-react";
 
 import { useAuth } from "../../hooks/useAuth";
@@ -581,6 +582,62 @@ const JobDetails = () => {
                   );
                 })}
               </div>
+            </div>
+
+            {/* TARGETED DSA PREPARATION CARD */}
+            <div className="side-card" style={{
+              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08))",
+              border: "1px solid rgba(99, 102, 241, 0.3)",
+              borderRadius: "12px",
+              padding: "1.25rem"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
+                <span className="side-label" style={{ color: "#6366f1", fontWeight: 700, margin: 0, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                  <Code2 size={16} /> DSA INTERVIEW PREP
+                </span>
+                <span style={{ fontSize: "0.75rem", color: "#a5b4fc", fontWeight: 600 }}>
+                  Role Targeted
+                </span>
+              </div>
+
+              <p style={{ margin: "0 0 0.75rem", color: "var(--text-secondary, #555)", fontSize: "0.82rem", lineHeight: 1.5 }}>
+                Master algorithmic problems frequently asked in technical interviews for {job.title || "this role"}.
+              </p>
+
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1rem" }}>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                  Arrays & Two Pointers
+                </span>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                  Dynamic Programming
+                </span>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                  Trees & Graphs
+                </span>
+              </div>
+
+              <Link
+                to="/dsa"
+                className="btn btn-primary"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  width: "100%",
+                  textDecoration: "none",
+                  fontSize: "0.85rem",
+                  padding: "0.6rem 1rem",
+                  borderRadius: "8px",
+                  background: "#6366f1",
+                  color: "#fff",
+                  fontWeight: 600,
+                  boxShadow: "0 2px 8px rgba(99, 102, 241, 0.3)"
+                }}
+              >
+                <span>Practice DSA for this Role</span>
+                <ArrowUpRight size={15} />
+              </Link>
             </div>
 
             {Array.isArray(job.skills) && job.skills.length > 0 && (

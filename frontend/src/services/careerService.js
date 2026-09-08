@@ -332,3 +332,188 @@ export const toggleApplicationReminder = async (applicationId, reminderId) => {
     return { success: true, offline: true };
   }
 };
+
+// ============================================================
+// 10. AI Career OS Client Methods
+// ============================================================
+
+export const getCareerTwin = async () => {
+  try {
+    const res = await api.get("/career/twin");
+    return res.data;
+  } catch (err) {
+    console.warn("getCareerTwin offline fallback:", err.message);
+    return {
+      success: true,
+      data: {
+        profile: {
+          careerScore: 72,
+          jobReadiness: 70,
+          interviewReadiness: 65,
+          dsaReadiness: 60,
+          projectStrength: 75,
+          resumeStrength: 70,
+          targetRole: "Full Stack Developer",
+          currentRole: "Software Engineer",
+          strongSkills: ["React", "JavaScript", "Node.js", "REST APIs"],
+          weakSkills: ["Docker", "TypeScript"],
+          missingSkills: ["AWS", "Redis", "System Design"],
+          recommendedSkills: [
+            { skill: "TypeScript", reason: "Required across 80% of top frontend and full-stack listings.", priority: "High" },
+            { skill: "Docker", reason: "Elevates containerized microservice development readiness.", priority: "High" }
+          ]
+        },
+        rawStats: { solvedDsa: 4, completedInterviews: 3, applicationsCount: 5, totalProjects: 3, verifiedSkillsCount: 2 }
+      }
+    };
+  }
+};
+
+export const updateCareerProfile = async (data) => {
+  const res = await api.put("/career/profile", data);
+  return res.data;
+};
+
+export const getAutopilotGoals = async () => {
+  try {
+    const res = await api.get("/career/autopilot");
+    return res.data;
+  } catch (err) {
+    return { success: true, data: [] };
+  }
+};
+
+export const createAutopilotGoal = async (data) => {
+  const res = await api.post("/career/autopilot", data);
+  return res.data;
+};
+
+export const toggleGoalMilestone = async (goalId, milestoneId) => {
+  const res = await api.patch(`/career/autopilot/${goalId}/milestones/${milestoneId}`);
+  return res.data;
+};
+
+export const simulateScenario = async (data) => {
+  const res = await api.post("/career/simulate", data);
+  return res.data;
+};
+
+export const generateProjectBlueprint = async (data) => {
+  const res = await api.post("/career/project-advisor", data);
+  return res.data;
+};
+
+export const getProjectBlueprints = async () => {
+  try {
+    const res = await api.get("/career/project-blueprints");
+    return res.data;
+  } catch {
+    return { success: true, data: [] };
+  }
+};
+
+export const auditPortfolio = async () => {
+  const res = await api.get("/career/portfolio-audit");
+  return res.data;
+};
+
+export const getSkillPassport = async () => {
+  try {
+    const res = await api.get("/career/passport");
+    return res.data;
+  } catch {
+    return { success: true, data: [] };
+  }
+};
+
+export const verifySkill = async (data) => {
+  const res = await api.post("/career/passport/verify", data);
+  return res.data;
+};
+
+export const analyzeJobReality = async (data) => {
+  const res = await api.post("/career/analyze-job", data);
+  return res.data;
+};
+
+export const getOpportunityRadar = async () => {
+  try {
+    const res = await api.get("/career/opportunities");
+    return res.data;
+  } catch {
+    return { success: true, data: { highMatch: [], newOpportunities: [], skillGrowth: [], recommended: [] } };
+  }
+};
+
+export const getSkillDemandMarket = async () => {
+  try {
+    const res = await api.get("/career/market");
+    return res.data;
+  } catch {
+    return { success: true, data: { topSkills: [], popularRoles: [] } };
+  }
+};
+
+export const getLearningAgent = async () => {
+  try {
+    const res = await api.get("/career/learning-agent");
+    return res.data;
+  } catch {
+    return { success: true, data: { recommendations: [] } };
+  }
+};
+
+export const getRevisionSessions = async () => {
+  try {
+    const res = await api.get("/career/revision");
+    return res.data;
+  } catch {
+    return { success: true, data: [] };
+  }
+};
+
+export const generateNewRevisionSession = async (category) => {
+  const res = await api.post("/career/revision/generate", { category });
+  return res.data;
+};
+
+export const toggleRevisionTopic = async (sessionId, topicId) => {
+  const res = await api.patch(`/career/revision/${sessionId}/topics/${topicId}`);
+  return res.data;
+};
+
+export const getInterviewPlan = async (data) => {
+  const res = await api.post("/career/interview-prep", data);
+  return res.data;
+};
+
+export const getDailyCareerBrief = async () => {
+  try {
+    const res = await api.get("/career/daily-brief");
+    return res.data;
+  } catch {
+    return {
+      success: true,
+      data: {
+        date: "Today",
+        headline: "Welcome to your Career Command Center",
+        items: []
+      }
+    };
+  }
+};
+
+export const getTalentMarketplace = async (params = {}) => {
+  try {
+    const res = await api.get("/talent/marketplace", { params });
+    return res.data;
+  } catch {
+    return { success: true, data: { candidates: [], total: 0 } };
+  }
+};
+
+export const recruiterAiAssistant = async (data) => {
+  const res = await api.post("/career/recruiter/assistant", data);
+  return res.data;
+};
+

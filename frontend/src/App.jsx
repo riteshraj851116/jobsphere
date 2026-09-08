@@ -43,6 +43,25 @@ import JobAlerts from "./pages/Career/JobAlerts.jsx";
 import InterviewBookmarks from "./pages/Interview/InterviewBookmarks.jsx";
 import InterviewAnalytics from "./pages/Interview/InterviewAnalytics.jsx";
 
+import DsaHome from "./pages/DSA/DsaHome.jsx";
+import ProblemList from "./pages/DSA/ProblemList.jsx";
+import ProblemWorkspace from "./pages/DSA/ProblemWorkspace.jsx";
+import DsaSheet from "./pages/DSA/DsaSheet.jsx";
+import DsaTopics from "./pages/DSA/DsaTopics.jsx";
+
+import CareerDashboard from "./pages/Career/CareerDashboard.jsx";
+import CareerAutopilot from "./pages/Career/CareerAutopilot.jsx";
+import CareerSimulator from "./pages/Career/CareerSimulator.jsx";
+import ProjectAdvisor from "./pages/Career/ProjectAdvisor.jsx";
+import SkillPassport from "./pages/Career/SkillPassport.jsx";
+import JobRealityAnalyzer from "./pages/Career/JobRealityAnalyzer.jsx";
+import OpportunityRadar from "./pages/Career/OpportunityRadar.jsx";
+import SkillDemandMarket from "./pages/Career/SkillDemandMarket.jsx";
+import LearningAgent from "./pages/Career/LearningAgent.jsx";
+import InterviewPrepare from "./pages/Interview/InterviewPrepare.jsx";
+import PortfolioAuditor from "./pages/Career/PortfolioAuditor.jsx";
+import TalentMarketplace from "./pages/Recruiter/TalentMarketplace.jsx";
+
 const NotFound = () => {
   return (
     <div
@@ -55,7 +74,6 @@ const NotFound = () => {
         gap: "12px",
       }}
     >
-      {/* FIX 1: Properly formatted text and added closing div */}
       <h2>404</h2>
       <p>Page not found</p>
     </div>
@@ -64,7 +82,6 @@ const NotFound = () => {
 
 const App = () => {
   return (
-    // FIX 2: Added missing opening div and Navbar
     <div className="app-shell">
       <Navbar />
       
@@ -88,6 +105,24 @@ const App = () => {
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profile" element={<CandidateProfile />} />
             
+            {/* AI CAREER OPERATING SYSTEM ROUTES */}
+            <Route path="/career" element={<CareerDashboard />} />
+            <Route path="/career/dashboard" element={<CareerDashboard />} />
+            <Route path="/career/autopilot" element={<CareerAutopilot />} />
+            <Route path="/career/goals" element={<CareerAutopilot />} />
+            <Route path="/career/skill-gap" element={<SkillGapAnalyzer />} />
+            <Route path="/career/simulator" element={<CareerSimulator />} />
+            <Route path="/career/portfolio-audit" element={<PortfolioAuditor />} />
+            <Route path="/career/opportunities" element={<OpportunityRadar />} />
+            <Route path="/career/market" element={<SkillDemandMarket />} />
+            <Route path="/projects/ai-advisor" element={<ProjectAdvisor />} />
+            <Route path="/skills/passport" element={<SkillPassport />} />
+            <Route path="/jobs/analyze" element={<JobRealityAnalyzer />} />
+            <Route path="/learning/ai" element={<LearningAgent />} />
+            <Route path="/learning/revision" element={<LearningAgent />} />
+            <Route path="/interview/prepare" element={<InterviewPrepare />} />
+            <Route path="/talent" element={<TalentMarketplace />} />
+            
             {/* INTERVIEW PRACTICE ROUTES */}
             <Route path="/interview-practice" element={<InterviewPractice />} />
             <Route path="/interview-practice/session/:sessionId" element={<InterviewSession />} />
@@ -107,9 +142,17 @@ const App = () => {
             <Route path="/jobs/compare" element={<JobComparison />} />
             <Route path="/job-alerts" element={<JobAlerts />} />
             
+            {/* DSA PRACTICE PLATFORM ROUTES */}
+            <Route path="/dsa" element={<DsaHome />} />
+            <Route path="/dsa/problems" element={<ProblemList />} />
+            <Route path="/dsa/problems/:idOrSlug" element={<ProblemWorkspace />} />
+            <Route path="/dsa/sheet" element={<DsaSheet />} />
+            <Route path="/dsa/topics" element={<DsaTopics />} />
+            
             {/* RECRUITER ROUTES */}
             <Route path="/recruiter-dashboard" element={<RecruiterDashboard />} />
             <Route path="/recruiter/dashboard" element={<RecruiterDashboard />} />
+            <Route path="/recruiter/talent" element={<TalentMarketplace />} />
             <Route path="/company-profile" element={<CompanyProfile />} />
             <Route path="/recruiter/company" element={<CompanyProfile />} />
             <Route path="/create-job" element={<CreateJob />} />

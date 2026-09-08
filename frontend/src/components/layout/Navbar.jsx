@@ -19,6 +19,8 @@ import {
   GraduationCap,
   FileSearch,
   Map,
+  Code2,
+  Award,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
 import { getNotifications } from "../../services/notificationService";
@@ -110,6 +112,12 @@ const Navbar = () => {
           <NavLink to="/jobs" className={navLinkClass}>
             <span>Jobs</span>
           </NavLink>
+          <NavLink to="/dsa" className={navLinkClass}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+              <Code2 size={15} color="#818cf8" />
+              DSA
+            </span>
+          </NavLink>
           <NavLink to="/companies" className={navLinkClass}>
             <span>Companies</span>
           </NavLink>
@@ -121,6 +129,12 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/career-roadmap" className={navLinkClass}>
             <span>Career Roadmap</span>
+          </NavLink>
+          <NavLink to="/career" className={navLinkClass}>
+            <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
+              <Sparkles size={15} color="#3b82f6" />
+              Career OS
+            </span>
           </NavLink>
         </nav>
 
@@ -230,9 +244,33 @@ const Navbar = () => {
                             <Building2 size={16} />
                             <span>Company Profile</span>
                           </Link>
+                          <Link
+                            to="/talent"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Users size={16} />
+                            <span>Talent Marketplace</span>
+                          </Link>
                         </>
                       ) : (
                         <>
+                          <Link
+                            to="/career"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Sparkles size={16} color="#3b82f6" />
+                            <span>Career Command Center</span>
+                          </Link>
+                          <Link
+                            to="/skills/passport"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Award size={16} color="#10b981" />
+                            <span>Skill Passport</span>
+                          </Link>
                           <Link
                             to="/applications"
                             className="js-dropdown-item"
@@ -256,6 +294,14 @@ const Navbar = () => {
                           >
                             <User size={16} />
                             <span>Candidate Profile</span>
+                          </Link>
+                          <Link
+                            to="/dsa"
+                            className="js-dropdown-item"
+                            onClick={() => setIsUserMenuOpen(false)}
+                          >
+                            <Code2 size={16} color="#818cf8" />
+                            <span>DSA Practice Arena</span>
                           </Link>
                           <Link
                             to="/interview-practice"
@@ -347,6 +393,14 @@ const Navbar = () => {
               >
                 <span>Companies</span>
               </Link>
+              <Link
+                to="/career"
+                className="js-mobile-item"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <Sparkles size={17} color="#3b82f6" />
+                <span>Career OS</span>
+              </Link>
             </div>
 
             {isAuthenticated && user ? (
@@ -397,9 +451,33 @@ const Navbar = () => {
                       <Building2 size={17} />
                       <span>Company Profile</span>
                     </Link>
+                    <Link
+                      to="/talent"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Users size={17} color="#3b82f6" />
+                      <span>Talent Marketplace</span>
+                    </Link>
                   </>
                 ) : (
                   <>
+                    <Link
+                      to="/career"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Sparkles size={17} color="#3b82f6" />
+                      <span>Career Command Center</span>
+                    </Link>
+                    <Link
+                      to="/skills/passport"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Award size={17} color="#10b981" />
+                      <span>Skill Passport</span>
+                    </Link>
                     <Link
                       to="/applications"
                       className="js-mobile-item"
@@ -423,6 +501,14 @@ const Navbar = () => {
                     >
                       <User size={17} />
                       <span>My Profile</span>
+                    </Link>
+                    <Link
+                      to="/dsa"
+                      className="js-mobile-item"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <Code2 size={17} />
+                      <span>DSA Practice</span>
                     </Link>
                     <Link
                       to="/interview-practice"
