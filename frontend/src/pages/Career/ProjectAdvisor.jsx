@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FolderGit2, Sparkles, Layers, Database, Server, CheckCircle2, ArrowRight, Briefcase } from "lucide-react";
+import { FolderGit2, Sparkles, Layers, Database, Server, ArrowRight } from "lucide-react";
 import CareerSubNav from "../../components/career/CareerSubNav";
-import AIExplanationBanner from "../../components/career/AIExplanationBanner";
 import { generateProjectBlueprint, getProjectBlueprints } from "../../services/careerService";
 import "./career.css";
 

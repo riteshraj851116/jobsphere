@@ -1582,6 +1582,25 @@
     line-height: 1.7;
   }
 
+  .hero-content {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .hero-popular {
+    max-width: 100%;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .popular-tag {
+    font-size: 0.72rem;
+    padding: 0.35rem 0.65rem;
+    max-width: 100%;
+    white-space: normal;
+    word-break: break-word;
+  }
+
   .hero-visual {
     height: 320px;
   }

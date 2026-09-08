@@ -9,7 +9,6 @@ import {
 } from "../../services/careerService";
 import Loader from "../../components/common/Loader";
 import {
-  Briefcase,
   MapPin,
   ExternalLink,
   Calendar,
@@ -19,8 +18,6 @@ import {
   StickyNote,
   Bell,
   Clock,
-  CheckCircle2,
-  PlusCircle,
   X
 } from "lucide-react";
 import "./Applications.css";
@@ -62,22 +59,23 @@ const Applications = () => {
   const [reminderTitle, setReminderTitle] = useState("");
   const [reminderDate, setReminderDate] = useState("");
 
-  useEffect(() => {
-    fetchApplications();
-  }, []);
-
-  const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
       const res = await getMyApplications();
       setApplications(res.data?.applications || []);
     } catch (err) {
+      console.warn("Error fetching applications:", err?.message || err);
       setError("Failed to load applications. Please try again.");
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchApplications();
+  }, [fetchApplications]);
 
   const handleStageChange = async (appId, newStage) => {
     try {

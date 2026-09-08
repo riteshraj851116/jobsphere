@@ -7,11 +7,8 @@ import {
   Sparkles,
   ArrowRight,
   History,
-  Briefcase,
-  Layers,
   AlertCircle,
-  Loader2,
-  CheckCircle2
+  Loader2
 } from "lucide-react";
 import { analyzeResume } from "../../services/resumeService";
 import { getJobs } from "../../services/jobService";
@@ -168,7 +165,6 @@ const ResumeAnalyzer = () => {
       // Generate instant client-side ATS analysis report
       const jobTitle = tabMode === "select" ? selectedJobDetails?.title || "Target Position" : customTitle || "Target Position";
       const jobDesc = tabMode === "select" ? selectedJobDetails?.description || "" : customDescription;
-      const skills = selectedJobDetails?.skills || ["React", "JavaScript", "Node.js", "TypeScript", "REST APIs", "CSS3", "Git"];
 
       const matchedKeywords = ["React", "JavaScript", "Node.js", "Git", "REST APIs", "TypeScript", "Frontend Architecture"];
       const missingKeywords = ["GraphQL", "Docker", "CI/CD", "AWS", "Microservices"];

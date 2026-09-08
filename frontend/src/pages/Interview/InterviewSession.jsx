@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
   Clock,
@@ -17,9 +17,7 @@ import {
   VolumeX,
   Bot,
   Eye,
-  EyeOff,
-  ThumbsUp,
-  AlertCircle
+  EyeOff
 } from "lucide-react";
 import {
   getInterviewSession,

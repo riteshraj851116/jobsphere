@@ -49,6 +49,7 @@ const createJob = async (req, res) => {
     }
 
     if (
+      companyExists.recruiter &&
       companyExists.recruiter.toString() !==
       req.user._id.toString()
     ) {

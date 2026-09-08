@@ -10,9 +10,7 @@ import {
   History,
   Lightbulb,
   CheckCircle2,
-  Award,
   ArrowRight,
-  Flame,
 } from "lucide-react";
 import CodeEditor from "../../components/dsa/CodeEditor";
 import TestCasesPanel from "../../components/dsa/TestCasesPanel";
@@ -192,7 +190,7 @@ const ProblemWorkspace = () => {
   };
 
   // Trigger AI to Debug from TestCasesPanel
-  const handleAskAiDebug = (failedResult) => {
+  const handleAskAiDebug = (_failedResult) => {
     setIsAiCoachOpen(true);
   };
 

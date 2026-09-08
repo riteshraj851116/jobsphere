@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { 
-  Sparkles, CheckCircle, HelpCircle, Code2, Users, 
-  Layers, ArrowRight, Play, BookOpen, CheckSquare, Square 
+  Sparkles, Code2, Users, 
+  Layers, Play, CheckSquare, Square 
 } from "lucide-react";
 import CareerSubNav from "../../components/career/CareerSubNav";
 import AIExplanationBanner from "../../components/career/AIExplanationBanner";

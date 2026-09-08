@@ -436,3 +436,59 @@
 .career-table tr:hover td {
   background: rgba(37, 99, 235, 0.02);
 }
+
+/* ==========================================================================
+   Responsive Grid Utilities
+   ========================================================================== */
+.career-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.career-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.career-grid-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.career-dashboard-brief-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 900px) {
+  .career-grid-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .career-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .career-grid-2,
+  .career-grid-3,
+  .career-grid-4,
+  .career-dashboard-brief-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .career-subnav {
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+}
+

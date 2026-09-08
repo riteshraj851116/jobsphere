@@ -27,6 +27,9 @@ export default defineConfig({
           if (id.includes('node_modules/three') || id.includes('node_modules/@react-three')) {
             return 'three';
           }
+          if (id.includes('node_modules/@monaco-editor')) {
+            return 'monaco';
+          }
           if (id.includes('node_modules/lucide-react')) {
             return 'icons';
           }

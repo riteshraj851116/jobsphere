@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { 
-  GraduationCap, BookOpen, RefreshCw, CheckCircle, 
-  Sparkles, ArrowRight, BrainCircuit, CheckSquare, Square, Plus
+  GraduationCap, RefreshCw, CheckCircle, 
+  BrainCircuit, CheckSquare, Square, Plus
 } from "lucide-react";
 import CareerSubNav from "../../components/career/CareerSubNav";
 import AIExplanationBanner from "../../components/career/AIExplanationBanner";
@@ -24,11 +24,7 @@ export default function LearningAgent() {
     "DSA", "System Design", "Concepts", "Interview Questions"
   ];
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
     setLoading(true);
     try {
       const [learnRes, revRes] = await Promise.all([
@@ -46,7 +42,12 @@ export default function LearningAgent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
+
 
   const handleGenerateRevision = async (cat) => {
     setGeneratingCategory(cat);

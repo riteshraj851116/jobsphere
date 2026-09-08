@@ -25,7 +25,7 @@ import { saveJob } from "../../services/userService";
 import { applyForJob, getMyApplications } from "../../services/applicationService";
 import { getJobMatchScore } from "../../services/careerService";
 import { calculateJobMatch } from "../../utils/jobMatch";
-import { extractObjectId, isValidObjectId } from "../../utils/validation";
+import { extractObjectId } from "../../utils/validation";
 import Loader from "../../components/common/Loader";
 
 import CareerGraph from "../../components/three/CareerGraph";
@@ -91,7 +91,7 @@ const JobDetails = () => {
             if (matchRes?.matchScore !== undefined) {
               setMatchData(matchRes);
             } else {
-              const fallbackMatch = calculateJobMatch(user, resJob);
+              const fallbackMatch = calculateJobMatch(user, jobData);
               setMatchData({
                 matchScore: fallbackMatch.score,
                 matchedSkills: fallbackMatch.matchedSkills,
@@ -101,7 +101,7 @@ const JobDetails = () => {
             }
           } catch (mErr) {
             console.warn("Could not calculate match score via API, using local algorithm:", mErr);
-            const fallbackMatch = calculateJobMatch(user, resJob);
+            const fallbackMatch = calculateJobMatch(user, jobData);
             setMatchData({
               matchScore: fallbackMatch.score,
               matchedSkills: fallbackMatch.matchedSkills,
@@ -137,8 +137,6 @@ const JobDetails = () => {
     if (fromField) return fromField;
     return null;
   };
-
-  const recruiterId = getResolvedRecruiterId();
 
   const handleMessageRecruiter = () => {
     if (!isAuthenticated) {

@@ -3,17 +3,15 @@ import { Link } from "react-router-dom";
 import {
   Code2,
   CheckCircle2,
-  Flame,
-  Award,
   Zap,
   BookOpen,
   Layers,
   ArrowRight,
   Sparkles,
   Clock,
-  TrendingUp,
   Target,
 } from "lucide-react";
+import Loader from "../../components/common/Loader";
 import DsaSubNav from "../../components/dsa/DsaSubNav";
 import dsaService from "../../services/dsaService";
 import { useAuth } from "../../hooks/useAuth";
@@ -62,6 +60,14 @@ const DsaHome = () => {
   const easyPct = totalProblems > 0 ? (easyCount / totalProblems) * 100 : 0;
   const medPct = totalProblems > 0 ? (mediumCount / totalProblems) * 100 : 0;
   const hardPct = totalProblems > 0 ? (hardCount / totalProblems) * 100 : 0;
+
+  if (loading) {
+    return (
+      <div className="dsa-container" style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <div className="dsa-container">

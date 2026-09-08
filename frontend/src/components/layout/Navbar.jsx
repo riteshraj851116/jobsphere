@@ -3,7 +3,6 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import {
   Menu,
   X,
-  Search,
   Bell,
   MessageSquare,
   User,
@@ -60,7 +59,7 @@ const Navbar = () => {
         const list = res?.data?.notifications || res?.notifications || res?.data || [];
         const unread = Array.isArray(list) ? list.filter((n) => !n.read && !n.isRead).length : 0;
         if (mounted) setUnreadCount(unread || 2);
-      } catch (err) {
+      } catch (_err) {
         if (mounted) setUnreadCount(2);
       }
     };

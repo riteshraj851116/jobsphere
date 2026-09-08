@@ -224,7 +224,7 @@ const CareerDashboard = () => {
         />
 
         {/* Daily Career Brief & Today's Actions */}
-        <div style={{ display: "grid", gridTemplateColumns: "1.2fr 1fr", gap: "1.5rem", marginBottom: "2rem" }}>
+        <div className="career-dashboard-brief-grid">
           {/* Today's Recommended Actions */}
           <div className="career-card">
             <div className="career-card-header">

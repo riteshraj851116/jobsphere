@@ -35,3 +35,9 @@ export const removeConnection = async (userId) => {
   const res = await api.delete(`/connections/${userId}`);
   return res.data;
 };
+
+export const getConnectionSuggestions = async () => {
+  const res = await api.get('/connections/suggestions');
+  return res.data;
+};
+
