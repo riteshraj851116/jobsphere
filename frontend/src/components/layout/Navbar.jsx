@@ -22,16 +22,18 @@ import {
   Award,
 } from "lucide-react";
 import { useAuth } from "../../hooks/useAuth";
+import { useSocket } from "../../context/SocketContext";
 import { getNotifications } from "../../services/notificationService";
 import "./Navbar.css";
 
 const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
+  const { onNotification } = useSocket();
   const navigate = useNavigate();
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(2);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const userDropdownRef = useRef(null);
 
@@ -57,10 +59,11 @@ const Navbar = () => {
       try {
         const res = await getNotifications();
         const list = res?.data?.notifications || res?.notifications || res?.data || [];
-        const unread = Array.isArray(list) ? list.filter((n) => !n.read && !n.isRead).length : 0;
-        if (mounted) setUnreadCount(unread || 2);
+        const serverUnread = typeof res?.data?.unreadCount === "number" ? res.data.unreadCount : null;
+        const unread = serverUnread !== null ? serverUnread : (Array.isArray(list) ? list.filter((n) => !n.read && !n.isRead).length : 0);
+        if (mounted) setUnreadCount(unread);
       } catch (_err) {
-        if (mounted) setUnreadCount(2);
+        if (mounted) setUnreadCount(0);
       }
     };
     loadNotifs();
@@ -70,6 +73,19 @@ const Navbar = () => {
       clearInterval(interval);
     };
   }, [isAuthenticated]);
+
+  // Real-time socket notification listener
+  useEffect(() => {
+    if (!onNotification || !isAuthenticated) return;
+    const unsub = onNotification((newNotif) => {
+      if (newNotif) {
+        setUnreadCount((prev) => prev + 1);
+      }
+    });
+    return () => {
+      if (typeof unsub === "function") unsub();
+    };
+  }, [onNotification, isAuthenticated]);
 
   const handleLogout = () => {
     logout();
