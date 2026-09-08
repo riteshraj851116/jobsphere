@@ -165,8 +165,8 @@ const Login = () => {
 
           {/* 1-Click Quick Demo Accounts for Resume Reviewers */}
           <div style={{
-            background: "rgba(15, 23, 42, 0.04)",
-            border: "1px solid rgba(15, 23, 42, 0.1)",
+            background: "rgba(0, 0, 0, 0.04)",
+            border: "1px solid rgba(0, 0, 0, 0.1)",
             borderRadius: "10px",
             padding: "14px",
             marginBottom: "20px"
@@ -176,7 +176,7 @@ const Login = () => {
               fontWeight: "700",
               letterSpacing: "0.08em",
               textTransform: "uppercase",
-              color: "#475569",
+              color: "#555555",
               marginBottom: "10px",
               display: "flex",
               alignItems: "center",
@@ -192,7 +192,7 @@ const Login = () => {
                 onClick={() => handleDemoLogin("candidate")}
                 disabled={submitting}
                 style={{
-                  background: "#0f172a",
+                  background: "#111111",
                   color: "#fff",
                   padding: "9px 12px",
                   borderRadius: "8px",
@@ -211,7 +211,7 @@ const Login = () => {
                 onClick={() => handleDemoLogin("recruiter")}
                 disabled={submitting}
                 style={{
-                  background: "#2563eb",
+                  background: "#000000",
                   color: "#fff",
                   padding: "9px 12px",
                   borderRadius: "8px",

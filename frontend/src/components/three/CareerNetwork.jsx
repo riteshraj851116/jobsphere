@@ -34,7 +34,7 @@ const NetworkMesh = () => {
 
       nodeList.push({
         size: 0.22,
-        color: '#2563EB',
+        color: '#000000',
         basePos: pos,
         currentPos: pos.clone(),
         tier: 'MEDIUM'

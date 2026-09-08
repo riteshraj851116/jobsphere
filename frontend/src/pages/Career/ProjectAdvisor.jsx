@@ -61,7 +61,7 @@ const ProjectAdvisor = () => {
         <div className="career-card">
           <div className="career-card-header">
             <h3 className="career-card-title">
-              <Sparkles size={18} color="var(--accent, #2563eb)" />
+              <Sparkles size={18} color="var(--accent, #000000)" />
               Specify Your Project Vision
             </h3>
           </div>
@@ -126,7 +126,7 @@ const ProjectAdvisor = () => {
 
               {/* Features & Architecture Grid */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
-                <div style={{ background: "var(--surface-soft, #f8fafc)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
+                <div style={{ background: "var(--surface-soft, #FAFAFA)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
                   <h4 style={{ margin: "0 0 0.5rem", fontSize: "0.85rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: 4 }}>
                     <Layers size={15} color="var(--accent)" /> Core Features
                   </h4>
@@ -137,9 +137,9 @@ const ProjectAdvisor = () => {
                   </ul>
                 </div>
 
-                <div style={{ background: "var(--surface-soft, #f8fafc)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
+                <div style={{ background: "var(--surface-soft, #FAFAFA)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
                   <h4 style={{ margin: "0 0 0.5rem", fontSize: "0.85rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: 4 }}>
-                    <Server size={15} color="#10b981" /> Architecture & APIs
+                    <Server size={15} color="#222222" /> Architecture & APIs
                   </h4>
                   <p style={{ margin: "0 0 0.5rem", fontSize: "0.825rem", color: "var(--text-secondary)" }}>
                     {activeBlueprint.architectureSummary}
@@ -152,16 +152,16 @@ const ProjectAdvisor = () => {
 
               {/* Database & Deployment */}
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
-                <div style={{ background: "var(--surface-soft, #f8fafc)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
+                <div style={{ background: "var(--surface-soft, #FAFAFA)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
                   <h4 style={{ margin: "0 0 0.35rem", fontSize: "0.85rem", color: "var(--text-primary)", display: "flex", alignItems: "center", gap: 4 }}>
-                    <Database size={15} color="#f59e0b" /> Database Architecture
+                    <Database size={15} color="#333333" /> Database Architecture
                   </h4>
                   <p style={{ margin: 0, fontSize: "0.825rem", color: "var(--text-secondary)", lineHeight: 1.5 }}>
                     {activeBlueprint.databaseDesign}
                   </p>
                 </div>
 
-                <div style={{ background: "var(--surface-soft, #f8fafc)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
+                <div style={{ background: "var(--surface-soft, #FAFAFA)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem" }}>
                   <h4 style={{ margin: "0 0 0.35rem", fontSize: "0.85rem", color: "var(--text-primary)" }}>
                     Testing & Deployment Strategy
                   </h4>
@@ -173,10 +173,10 @@ const ProjectAdvisor = () => {
 
               {/* Connected Job Roles */}
               {activeBlueprint.relevantJobRoles?.length > 0 && (
-                <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "10px", padding: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "10px", padding: "1rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
                   <div>
-                    <strong style={{ fontSize: "0.85rem", color: "#15803d" }}>Project &rarr; Job Intelligence:</strong>
-                    <span style={{ fontSize: "0.825rem", color: "#16a34a", marginLeft: 8 }}>
+                    <strong style={{ fontSize: "0.85rem", color: "#000000" }}>Project &rarr; Job Intelligence:</strong>
+                    <span style={{ fontSize: "0.825rem", color: "#111111", marginLeft: 8 }}>
                       Demonstrates core competencies for {activeBlueprint.relevantJobRoles.join(", ")}.
                     </span>
                   </div>

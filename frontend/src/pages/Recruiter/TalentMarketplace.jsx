@@ -91,7 +91,7 @@ export default function TalentMarketplace() {
 
       {/* Recruiter AI Assistant Drawer / Card */}
       {showAssistant && (
-        <div className="career-card" style={{ marginBottom: "2rem", border: "2px solid var(--accent, #2563eb)" }}>
+        <div className="career-card" style={{ marginBottom: "2rem", border: "2px solid var(--accent, #000000)" }}>
           <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
             <h3 style={{ fontSize: "1.15rem", fontWeight: 700, display: "flex", alignItems: "center", gap: "0.5rem", margin: 0 }}>
               <Bot size={20} className="text-primary" /> AI Recruiter Assistant & Candidate Matcher
@@ -101,7 +101,7 @@ export default function TalentMarketplace() {
             </span>
           </div>
 
-          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: "0 0 1rem" }}>
+          <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: "0 0 1rem" }}>
             Paste your target job opening or requirements. The assistant analyzes candidates, recommends tailored interview inquiries, and assesses listing clarity.
           </p>
 
@@ -133,7 +133,7 @@ export default function TalentMarketplace() {
           </form>
 
           {assistantResult && (
-            <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border, #e2e8f0)", display: "flex", flexDirection: "column", gap: "1rem" }}>
+            <div style={{ marginTop: "1.5rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border, #DDDDDD)", display: "flex", flexDirection: "column", gap: "1rem" }}>
               <div className="career-grid-2">
                 <div style={{ padding: "0.75rem", background: "var(--bg-secondary)", borderRadius: "8px" }}>
                   <h4 style={{ fontSize: "0.95rem", fontWeight: 700, marginBottom: "0.5rem" }}>
@@ -212,7 +212,7 @@ export default function TalentMarketplace() {
                     <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0 }}>
                       {c.name}
                     </h3>
-                    <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: "0.15rem 0 0" }}>
+                    <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: "0.15rem 0 0" }}>
                       {c.targetRole || c.headline || "Software Engineer"}
                     </p>
                   </div>
@@ -226,7 +226,7 @@ export default function TalentMarketplace() {
                 </div>
 
                 {/* Candidate breakdown indicators */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", background: "var(--bg-secondary, #f8fafc)", padding: "0.6rem", borderRadius: "6px", marginBottom: "0.75rem", fontSize: "0.75rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0.5rem", background: "var(--bg-secondary, #FAFAFA)", padding: "0.6rem", borderRadius: "6px", marginBottom: "0.75rem", fontSize: "0.75rem" }}>
                   <div>
                     <span style={{ color: "var(--text-secondary)" }}>Verified Skills:</span>{" "}
                     <strong>{c.verifiedSkillsCount || 2}</strong>
@@ -255,7 +255,7 @@ export default function TalentMarketplace() {
                 </div>
               </div>
 
-              <div style={{ display: "flex", gap: "0.5rem", borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: "0.75rem" }}>
+              <div style={{ display: "flex", gap: "0.5rem", borderTop: "1px solid var(--border, #DDDDDD)", paddingTop: "0.75rem" }}>
                 <Link 
                   to={`/profile/${c._id || c.id}`} 
                   className="career-btn-secondary" 

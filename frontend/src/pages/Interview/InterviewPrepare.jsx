@@ -134,7 +134,7 @@ export default function InterviewPrepare() {
         </form>
 
         {error && (
-          <div style={{ marginTop: "1rem", padding: "0.75rem", background: "rgba(239, 68, 68, 0.1)", border: "1px solid #ef4444", borderRadius: "8px", color: "#ef4444", fontSize: "0.85rem" }}>
+          <div style={{ marginTop: "1rem", padding: "0.75rem", background: "rgba(0, 0, 0, 0.1)", border: "1px solid #222222", borderRadius: "8px", color: "#222222", fontSize: "0.85rem" }}>
             {error}
           </div>
         )}
@@ -155,7 +155,7 @@ export default function InterviewPrepare() {
 
             <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
               <div style={{ textAlign: "right" }}>
-                <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--accent, #2563eb)" }}>
+                <div style={{ fontSize: "1.25rem", fontWeight: 700, color: "var(--accent, #000000)" }}>
                   {progressPercent}%
                 </div>
                 <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
@@ -195,12 +195,12 @@ export default function InterviewPrepare() {
                         alignItems: "center", 
                         gap: "0.5rem", 
                         padding: "0.5rem", 
-                        background: isDone ? "rgba(16, 185, 129, 0.05)" : "var(--bg-secondary, #f8fafc)", 
+                        background: isDone ? "rgba(0, 0, 0, 0.05)" : "var(--bg-secondary, #FAFAFA)", 
                         borderRadius: "6px", 
                         cursor: "pointer" 
                       }}
                     >
-                      {isDone ? <CheckSquare size={16} style={{ color: "#10b981" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
+                      {isDone ? <CheckSquare size={16} style={{ color: "#222222" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
                       <span style={{ fontSize: "0.875rem", textDecoration: isDone ? "line-through" : "none" }}>{t}</span>
                     </div>
                   );
@@ -226,12 +226,12 @@ export default function InterviewPrepare() {
                         alignItems: "center", 
                         gap: "0.5rem", 
                         padding: "0.5rem", 
-                        background: isDone ? "rgba(16, 185, 129, 0.05)" : "var(--bg-secondary, #f8fafc)", 
+                        background: isDone ? "rgba(0, 0, 0, 0.05)" : "var(--bg-secondary, #FAFAFA)", 
                         borderRadius: "6px", 
                         cursor: "pointer" 
                       }}
                     >
-                      {isDone ? <CheckSquare size={16} style={{ color: "#10b981" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
+                      {isDone ? <CheckSquare size={16} style={{ color: "#222222" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
                       <span style={{ fontSize: "0.875rem", textDecoration: isDone ? "line-through" : "none" }}>{t}</span>
                     </div>
                   );
@@ -262,12 +262,12 @@ export default function InterviewPrepare() {
                         alignItems: "center", 
                         gap: "0.5rem", 
                         padding: "0.5rem", 
-                        background: isDone ? "rgba(16, 185, 129, 0.05)" : "var(--bg-secondary, #f8fafc)", 
+                        background: isDone ? "rgba(0, 0, 0, 0.05)" : "var(--bg-secondary, #FAFAFA)", 
                         borderRadius: "6px", 
                         cursor: "pointer" 
                       }}
                     >
-                      {isDone ? <CheckSquare size={16} style={{ color: "#10b981" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
+                      {isDone ? <CheckSquare size={16} style={{ color: "#222222" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
                       <span style={{ fontSize: "0.875rem", textDecoration: isDone ? "line-through" : "none" }}>{t}</span>
                     </div>
                   );
@@ -293,12 +293,12 @@ export default function InterviewPrepare() {
                         alignItems: "center", 
                         gap: "0.5rem", 
                         padding: "0.5rem", 
-                        background: isDone ? "rgba(16, 185, 129, 0.05)" : "var(--bg-secondary, #f8fafc)", 
+                        background: isDone ? "rgba(0, 0, 0, 0.05)" : "var(--bg-secondary, #FAFAFA)", 
                         borderRadius: "6px", 
                         cursor: "pointer" 
                       }}
                     >
-                      {isDone ? <CheckSquare size={16} style={{ color: "#10b981" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
+                      {isDone ? <CheckSquare size={16} style={{ color: "#222222" }} /> : <Square size={16} style={{ color: "var(--text-secondary)" }} />}
                       <span style={{ fontSize: "0.875rem", textDecoration: isDone ? "line-through" : "none" }}>{t}</span>
                     </div>
                   );

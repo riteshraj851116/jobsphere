@@ -47,10 +47,10 @@ export default function OpportunityRadar() {
               <span className="career-badge-verified" style={{ fontSize: "0.75rem", marginBottom: "0.4rem", display: "inline-block" }}>
                 {categoryLabel}
               </span>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0, color: "var(--text, #1e293b)" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: 0, color: "var(--text, #111111)" }}>
                 {job.title}
               </h3>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: "0.2rem 0 0" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: "0.2rem 0 0" }}>
                 {job.company?.name || job.company || "Leading Employer"} &bull; {job.location || "Remote"}
               </p>
             </div>
@@ -59,7 +59,7 @@ export default function OpportunityRadar() {
             </div>
           </div>
 
-          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary, #475569)", margin: "0.5rem 0 1rem", lineHeight: 1.5 }}>
+          <p style={{ fontSize: "0.875rem", color: "var(--text-secondary, #555555)", margin: "0.5rem 0 1rem", lineHeight: 1.5 }}>
             {job.description ? job.description.substring(0, 140) + "..." : "High alignment with your target career profile."}
           </p>
 
@@ -83,7 +83,7 @@ export default function OpportunityRadar() {
           )}
         </div>
 
-        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem", borderTop: "1px solid var(--border, #e2e8f0)", paddingTop: "0.75rem" }}>
+        <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem", borderTop: "1px solid var(--border, #DDDDDD)", paddingTop: "0.75rem" }}>
           <Link 
             to={`/jobs/${job._id || job.id}`} 
             className="career-btn-secondary" 
@@ -177,7 +177,7 @@ export default function OpportunityRadar() {
                 <CheckCircle size={20} className="text-primary" /> High Match Roles (85%+ Alignment)
               </h2>
               <div className="career-grid-3">
-                {highMatchJobs.map(job => renderJobCard(job, "High Match", "#10b981"))}
+                {highMatchJobs.map(job => renderJobCard(job, "High Match", "#222222"))}
               </div>
             </div>
           )}
@@ -188,7 +188,7 @@ export default function OpportunityRadar() {
                 <TrendingUp size={20} className="text-primary" /> Career Growth & Upskilling Roles
               </h2>
               <div className="career-grid-3">
-                {growthJobs.map(job => renderJobCard(job, "Career Growth", "#6366f1"))}
+                {growthJobs.map(job => renderJobCard(job, "Career Growth", "#222222"))}
               </div>
             </div>
           )}

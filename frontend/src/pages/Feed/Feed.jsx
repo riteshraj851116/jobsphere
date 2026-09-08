@@ -670,7 +670,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Rocket size={16} color="#818cf8" />
+                  <Rocket size={16} color="#444444" />
                   <span>Project</span>
                 </button>
                 <button
@@ -681,7 +681,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Briefcase size={16} color="#34d399" />
+                  <Briefcase size={16} color="#555555" />
                   <span>Career Update</span>
                 </button>
                 <button
@@ -692,7 +692,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Code2 size={16} color="#60a5fa" />
+                  <Code2 size={16} color="#555555" />
                   <span>Tech Article</span>
                 </button>
                 <button
@@ -703,7 +703,7 @@ const Feed = () => {
                     setComposerOpen(true);
                   }}
                 >
-                  <Award size={16} color="#fbbf24" />
+                  <Award size={16} color="#666666" />
                   <span>Milestone</span>
                 </button>
               </div>
@@ -968,7 +968,7 @@ const Feed = () => {
             {/* Trending Hashtags */}
             <div className="sidebar-widget">
               <div className="widget-header">
-                <Hash size={16} color="#818cf8" />
+                <Hash size={16} color="#444444" />
                 <h3>Trending Topics</h3>
               </div>
               <div className="trending-tags-list">
@@ -995,7 +995,7 @@ const Feed = () => {
             {/* People You May Know Quick Widget */}
             <div className="sidebar-widget">
               <div className="widget-header">
-                <Users size={16} color="#34d399" />
+                <Users size={16} color="#555555" />
                 <h3>People You May Know</h3>
               </div>
               <div className="sidebar-people-list">
@@ -1304,15 +1304,15 @@ const PostCard = ({
   const getPostTypeBadge = (type) => {
     switch (type) {
       case "project":
-        return { label: "🚀 Project Showcase", color: "#818cf8" };
+        return { label: "🚀 Project Showcase", color: "#444444" };
       case "career_update":
-        return { label: "💼 Career Milestone", color: "#34d399" };
+        return { label: "💼 Career Milestone", color: "#555555" };
       case "achievement":
-        return { label: "🏆 Achievement", color: "#fbbf24" };
+        return { label: "🏆 Achievement", color: "#666666" };
       case "learning":
         return { label: "📚 Learning Note", color: "#f472b6" };
       case "technical":
-        return { label: "💻 Technical Insight", color: "#60a5fa" };
+        return { label: "💻 Technical Insight", color: "#555555" };
       default:
         return null;
     }
@@ -1443,7 +1443,7 @@ const PostCard = ({
         {post.projectRef?.title && (
           <div className="attached-project-card">
             <div className="attached-project-header">
-              <Rocket size={16} color="#818cf8" />
+              <Rocket size={16} color="#444444" />
               <strong>{post.projectRef.title}</strong>
             </div>
             {post.projectRef.link && (
@@ -1473,7 +1473,7 @@ const PostCard = ({
         {post.jobRef?.title && (
           <div className="attached-job-card">
             <div className="attached-job-header">
-              <Briefcase size={16} color="#34d399" />
+              <Briefcase size={16} color="#555555" />
               <div>
                 <strong>{post.jobRef.title}</strong>
                 <span> • {post.jobRef.company}</span>
@@ -1546,7 +1546,7 @@ const PostCard = ({
           className={`post-action-btn ${post.isLiked ? "liked" : ""}`}
           onClick={onLike}
         >
-          <Heart size={18} fill={post.isLiked ? "#f43f5e" : "none"} />
+          <Heart size={18} fill={post.isLiked ? "#222222" : "none"} />
           <span>{post.isLiked ? "Liked" : "Like"}</span>
         </button>
 
@@ -1573,7 +1573,7 @@ const PostCard = ({
           className={`post-action-btn ${post.isSaved ? "saved" : ""}`}
           onClick={onToggleSave}
         >
-          <Bookmark size={18} fill={post.isSaved ? "#6366f1" : "none"} />
+          <Bookmark size={18} fill={post.isSaved ? "#222222" : "none"} />
           <span>{post.isSaved ? "Saved" : "Save"}</span>
         </button>
       </div>

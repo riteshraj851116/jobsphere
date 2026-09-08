@@ -74,7 +74,7 @@ const ConstellationMesh = ({ skills = [] }) => {
           >
             <mesh scale={isHovered ? 1.3 : 1}>
               <sphereGeometry args={[isCenter ? 0.32 : 0.18, 16, 16]} />
-              <meshBasicMaterial color={isHovered ? '#2563EB' : isCenter ? '#18181B' : '#52525B'} />
+              <meshBasicMaterial color={isHovered ? '#000000' : isCenter ? '#111111' : '#555555'} />
             </mesh>
 
             <Html distanceFactor={8.5} position={[0, isCenter ? 0.45 : 0.32, 0]} center>

@@ -54,13 +54,13 @@ const CompanyScene = ({ activeCompany }) => {
           <group key={comp.name} position={comp.pos}>
             <mesh scale={isActive ? 1.4 : 1}>
               <sphereGeometry args={[comp.size, 16, 16]} />
-              <meshBasicMaterial color={isActive ? '#2563EB' : '#18181B'} />
+              <meshBasicMaterial color={isActive ? '#000000' : '#222222'} />
             </mesh>
 
             {/* Emissive Ring */}
             <mesh rotation={[Math.PI / 2, 0, 0]}>
               <torusGeometry args={[comp.size + 0.12, 0.01, 8, 32]} />
-              <meshBasicMaterial color={isActive ? '#2563EB' : '#A1A1AA'} opacity={0.5} transparent />
+              <meshBasicMaterial color={isActive ? '#000000' : '#888888'} opacity={0.5} transparent />
             </mesh>
           </group>
         );

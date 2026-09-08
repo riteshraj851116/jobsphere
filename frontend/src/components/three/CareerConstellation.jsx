@@ -39,14 +39,14 @@ const ConstellationScene = () => {
   return (
     <group ref={groupRef}>
       <line geometry={lineGeo}>
-        <lineBasicMaterial color="#2563EB" opacity={0.4} transparent linewidth={2} />
+        <lineBasicMaterial color="#000000" opacity={0.35} transparent linewidth={2} />
       </line>
 
       {PATH_STAGES.map((stage, idx) => (
         <group key={stage.name} position={stage.pos}>
           <mesh>
             <sphereGeometry args={[0.2, 16, 16]} />
-            <meshBasicMaterial color={idx === 2 ? '#2563EB' : '#18181B'} />
+            <meshBasicMaterial color={idx === 2 ? '#000000' : '#444444'} />
           </mesh>
 
           <Html distanceFactor={8} position={[0, 0.35, 0]} center>

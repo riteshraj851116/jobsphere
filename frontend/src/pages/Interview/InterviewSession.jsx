@@ -410,7 +410,7 @@ const InterviewSession = () => {
       <div className="interview-page">
         <div className="interview-container">
           <div className="review-card" style={{ textAlign: "center", padding: "3rem" }}>
-            <AlertTriangle size={48} color="#dc2626" style={{ margin: "0 auto 1rem" }} />
+            <AlertTriangle size={48} color="#222222" style={{ margin: "0 auto 1rem" }} />
             <h2>Interview Session Not Found</h2>
             <p style={{ color: "#71717a", margin: "1rem 0" }}>{error || "Unable to load interview session."}</p>
             <button
@@ -543,7 +543,7 @@ const InterviewSession = () => {
                   onClick={toggleTextToSpeech}
                   title="Listen to question"
                 >
-                  {isSpeaking ? <VolumeX size={15} color="#ef4444" /> : <Volume2 size={15} color="#2563eb" />}
+                  {isSpeaking ? <VolumeX size={15} color="#222222" /> : <Volume2 size={15} color="#000000" />}
                   <span>{isSpeaking ? "Stop Audio" : "Listen to Question"}</span>
                 </button>
 
@@ -553,7 +553,7 @@ const InterviewSession = () => {
                   onClick={toggleSpeechRecognition}
                   title="Speak your answer"
                 >
-                  {isListening ? <MicOff size={15} /> : <Mic size={15} color="#16a34a" />}
+                  {isListening ? <MicOff size={15} /> : <Mic size={15} color="#111111" />}
                   <span>{isListening ? "Listening (Click to Stop)" : "Voice Input (Speak)"}</span>
                 </button>
               </div>
@@ -595,8 +595,8 @@ const InterviewSession = () => {
 
             {/* Model Answer Preview Drawer */}
             {showModelAnswer && (
-              <div className="eval-sample-box" style={{ marginBottom: "1.25rem", background: "#f8fafc", border: "1px dashed #94a3b8" }}>
-                <div style={{ fontWeight: 700, color: "#475569", marginBottom: "0.25rem", fontSize: "0.8125rem", textTransform: "uppercase" }}>
+              <div className="eval-sample-box" style={{ marginBottom: "1.25rem", background: "#FAFAFA", border: "1px dashed #888888" }}>
+                <div style={{ fontWeight: 700, color: "#555555", marginBottom: "0.25rem", fontSize: "0.8125rem", textTransform: "uppercase" }}>
                   Ideal Model Concept / Answer:
                 </div>
                 <div>{currentQuestion.expectedAnswer || currentQuestion.sampleAnswer}</div>
@@ -626,7 +626,7 @@ const InterviewSession = () => {
               <div className="inline-ai-eval-card">
                 <div className="ai-eval-header">
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Bot size={18} color="#4f46e5" />
+                    <Bot size={18} color="#111111" />
                     <span style={{ fontWeight: 700, fontSize: "0.9375rem" }}>Instant AI Evaluation</span>
                   </div>
                   <span className={`ai-score-badge ${currentEval.score >= 80 ? "high" : currentEval.score >= 65 ? "medium" : "low"}`}>
@@ -634,7 +634,7 @@ const InterviewSession = () => {
                   </span>
                 </div>
 
-                <p style={{ margin: "0 0 0.75rem", fontSize: "0.875rem", color: "#334155" }}>
+                <p style={{ margin: "0 0 0.75rem", fontSize: "0.875rem", color: "#333333" }}>
                   {currentEval.feedback}
                 </p>
 

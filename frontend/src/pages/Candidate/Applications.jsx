@@ -186,7 +186,7 @@ const Applications = () => {
           </div>
 
           <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-            <div style={{ display: "flex", background: "#f1f5f9", padding: "4px", borderRadius: "10px" }}>
+            <div style={{ display: "flex", background: "#F5F5F5", padding: "4px", borderRadius: "10px" }}>
               <button
                 type="button"
                 className={`view-toggle-btn ${viewMode === "kanban" ? "active" : ""}`}
@@ -238,24 +238,24 @@ const Applications = () => {
 
         {/* Dashboard KPI Summary Cards */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: "14px", marginBottom: "2rem" }}>
-          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#2563eb" }}>{totalCount}</div>
-            <div style={{ fontSize: "0.8125rem", color: "#64748b", fontWeight: "600" }}>Total Applications</div>
+          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #DDDDDD", textAlign: "center" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#000000" }}>{totalCount}</div>
+            <div style={{ fontSize: "0.8125rem", color: "#666666", fontWeight: "600" }}>Total Applications</div>
           </div>
 
-          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#d97706" }}>{activeCount}</div>
-            <div style={{ fontSize: "0.8125rem", color: "#64748b", fontWeight: "600" }}>Active Pipeline</div>
+          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #DDDDDD", textAlign: "center" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#222222" }}>{activeCount}</div>
+            <div style={{ fontSize: "0.8125rem", color: "#666666", fontWeight: "600" }}>Active Pipeline</div>
           </div>
 
-          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#9333ea" }}>{interviewsCount}</div>
-            <div style={{ fontSize: "0.8125rem", color: "#64748b", fontWeight: "600" }}>Interviews Scheduled</div>
+          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #DDDDDD", textAlign: "center" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#111111" }}>{interviewsCount}</div>
+            <div style={{ fontSize: "0.8125rem", color: "#666666", fontWeight: "600" }}>Interviews Scheduled</div>
           </div>
 
-          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #e2e8f0", textAlign: "center" }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#16a34a" }}>{offersCount}</div>
-            <div style={{ fontSize: "0.8125rem", color: "#64748b", fontWeight: "600" }}>Offers Received</div>
+          <div style={{ background: "#ffffff", padding: "1.25rem", borderRadius: "14px", border: "1px solid #DDDDDD", textAlign: "center" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: "800", color: "#111111" }}>{offersCount}</div>
+            <div style={{ fontSize: "0.8125rem", color: "#666666", fontWeight: "600" }}>Offers Received</div>
           </div>
         </div>
 
@@ -295,8 +295,8 @@ const Applications = () => {
                 <div
                   key={stage}
                   style={{
-                    background: "#f8fafc",
-                    border: "1px solid #e2e8f0",
+                    background: "#FAFAFA",
+                    border: "1px solid #DDDDDD",
                     borderRadius: "14px",
                     padding: "1rem",
                     display: "flex",
@@ -304,11 +304,11 @@ const Applications = () => {
                     minHeight: "450px"
                   }}
                 >
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", paddingBottom: "0.5rem", borderBottom: "2px solid #e2e8f0" }}>
-                    <h3 style={{ fontSize: "0.9375rem", fontWeight: "700", margin: 0, color: "#1e293b" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem", paddingBottom: "0.5rem", borderBottom: "2px solid #DDDDDD" }}>
+                    <h3 style={{ fontSize: "0.9375rem", fontWeight: "700", margin: 0, color: "#111111" }}>
                       {stage}
                     </h3>
-                    <span style={{ fontSize: "0.75rem", background: "#e2e8f0", padding: "2px 8px", borderRadius: "9999px", fontWeight: "700" }}>
+                    <span style={{ fontSize: "0.75rem", background: "#DDDDDD", padding: "2px 8px", borderRadius: "9999px", fontWeight: "700" }}>
                       {stageApps.length}
                     </span>
                   </div>
@@ -319,18 +319,18 @@ const Applications = () => {
                         key={app._id}
                         style={{
                           background: "#ffffff",
-                          border: "1px solid #e2e8f0",
+                          border: "1px solid #DDDDDD",
                           borderRadius: "12px",
                           padding: "1rem",
                           boxShadow: "0 2px 6px rgba(0,0,0,0.03)"
                         }}
                       >
                         <h4 style={{ margin: "0 0 2px", fontSize: "0.9375rem", fontWeight: "700" }}>
-                          <Link to={`/jobs/${app.job?._id}`} style={{ color: "#0f172a", textDecoration: "none" }}>
+                          <Link to={`/jobs/${app.job?._id}`} style={{ color: "#111111", textDecoration: "none" }}>
                             {app.job?.title || "Job Title"}
                           </Link>
                         </h4>
-                        <div style={{ fontSize: "0.8125rem", color: "#64748b", marginBottom: "8px" }}>
+                        <div style={{ fontSize: "0.8125rem", color: "#666666", marginBottom: "8px" }}>
                           {app.company?.name || "Company"}
                         </div>
 
@@ -339,7 +339,7 @@ const Applications = () => {
                           <select
                             value={app.stage || app.status || "Applied"}
                             onChange={(e) => handleStageChange(app._id, e.target.value)}
-                            style={{ width: "100%", fontSize: "0.75rem", padding: "4px 6px", borderRadius: "6px", border: "1px solid #cbd5e1" }}
+                            style={{ width: "100%", fontSize: "0.75rem", padding: "4px 6px", borderRadius: "6px", border: "1px solid #CCCCCC" }}
                           >
                             {KANBAN_STAGES.map((s) => (
                               <option key={s} value={s}>
@@ -350,11 +350,11 @@ const Applications = () => {
                         </div>
 
                         {/* Actions: Notes, Reminders, Timeline */}
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #f1f5f9", paddingTop: "8px", fontSize: "0.75rem", flexWrap: "wrap", gap: "6px" }}>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderTop: "1px solid #F5F5F5", paddingTop: "8px", fontSize: "0.75rem", flexWrap: "wrap", gap: "6px" }}>
                           <button
                             type="button"
                             onClick={() => setActiveTimelineApp(app)}
-                            style={{ background: "transparent", border: "none", color: "#059669", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0, fontWeight: 600 }}
+                            style={{ background: "transparent", border: "none", color: "#111111", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0, fontWeight: 600 }}
                             title="View application lifecycle timeline"
                           >
                             <Clock size={13} />
@@ -364,7 +364,7 @@ const Applications = () => {
                           <button
                             type="button"
                             onClick={() => setActiveNoteApp(app)}
-                            style={{ background: "transparent", border: "none", color: "#2563eb", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0 }}
+                            style={{ background: "transparent", border: "none", color: "#000000", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0 }}
                           >
                             <StickyNote size={13} />
                             <span>Notes ({app.candidateNotes?.length || 0})</span>
@@ -373,7 +373,7 @@ const Applications = () => {
                           <button
                             type="button"
                             onClick={() => setActiveReminderApp(app)}
-                            style={{ background: "transparent", border: "none", color: "#d97706", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0 }}
+                            style={{ background: "transparent", border: "none", color: "#222222", cursor: "pointer", display: "flex", alignItems: "center", gap: "4px", padding: 0 }}
                           >
                             <Bell size={13} />
                             <span>Remind ({app.reminders?.filter((r) => !r.isCompleted)?.length || 0})</span>
@@ -435,7 +435,7 @@ const Applications = () => {
                       type="button"
                       className="btn-session secondary"
                       onClick={() => setActiveTimelineApp(app)}
-                      style={{ padding: "4px 10px", fontSize: "0.8125rem", color: "#059669", borderColor: "#a7f3d0" }}
+                      style={{ padding: "4px 10px", fontSize: "0.8125rem", color: "#111111", borderColor: "#CCCCCC" }}
                     >
                       <Clock size={14} />
                       <span>Timeline History</span>
@@ -487,13 +487,13 @@ const Applications = () => {
               <div style={{ maxHeight: "200px", overflowY: "auto", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "8px" }}>
                 {activeNoteApp.candidateNotes?.length > 0 ? (
                   activeNoteApp.candidateNotes.map((n, idx) => (
-                    <div key={idx} style={{ background: "#f8fafc", padding: "8px 12px", borderRadius: "8px", fontSize: "0.875rem", borderLeft: "3px solid #2563eb" }}>
+                    <div key={idx} style={{ background: "#FAFAFA", padding: "8px 12px", borderRadius: "8px", fontSize: "0.875rem", borderLeft: "3px solid #000000" }}>
                       <p style={{ margin: "0 0 2px" }}>{n.text}</p>
-                      <span style={{ fontSize: "0.6875rem", color: "#94a3b8" }}>{new Date(n.createdAt).toLocaleString()}</span>
+                      <span style={{ fontSize: "0.6875rem", color: "#888888" }}>{new Date(n.createdAt).toLocaleString()}</span>
                     </div>
                   ))
                 ) : (
-                  <p style={{ color: "#94a3b8", fontSize: "0.875rem", fontStyle: "italic" }}>No notes added yet.</p>
+                  <p style={{ color: "#888888", fontSize: "0.875rem", fontStyle: "italic" }}>No notes added yet.</p>
                 )}
               </div>
 
@@ -532,24 +532,24 @@ const Applications = () => {
               <div style={{ maxHeight: "200px", overflowY: "auto", marginBottom: "1rem", display: "flex", flexDirection: "column", gap: "8px" }}>
                 {activeReminderApp.reminders?.length > 0 ? (
                   activeReminderApp.reminders.map((r) => (
-                    <div key={r._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#f8fafc", padding: "8px 12px", borderRadius: "8px", fontSize: "0.875rem" }}>
+                    <div key={r._id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", background: "#FAFAFA", padding: "8px 12px", borderRadius: "8px", fontSize: "0.875rem" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                         <input
                           type="checkbox"
                           checked={r.isCompleted}
                           onChange={() => handleToggleReminder(activeReminderApp._id, r._id)}
                         />
-                        <span style={{ textDecoration: r.isCompleted ? "line-through" : "none", color: r.isCompleted ? "#94a3b8" : "#0f172a" }}>
+                        <span style={{ textDecoration: r.isCompleted ? "line-through" : "none", color: r.isCompleted ? "#888888" : "#111111" }}>
                           {r.title}
                         </span>
                       </div>
-                      <span style={{ fontSize: "0.75rem", color: "#64748b" }}>
+                      <span style={{ fontSize: "0.75rem", color: "#666666" }}>
                         Due: {new Date(r.dueDate).toLocaleDateString()}
                       </span>
                     </div>
                   ))
                 ) : (
-                  <p style={{ color: "#94a3b8", fontSize: "0.875rem", fontStyle: "italic" }}>No reminders set yet.</p>
+                  <p style={{ color: "#888888", fontSize: "0.875rem", fontStyle: "italic" }}>No reminders set yet.</p>
                 )}
               </div>
 
@@ -586,19 +586,19 @@ const Applications = () => {
         {activeTimelineApp && (
           <div style={{ position: "fixed", inset: 0, background: "rgba(0,0,0,0.5)", display: "flex", alignItems: "center", justifyContent: "center", zIndex: 9999, padding: "1rem" }}>
             <div style={{ background: "#ffffff", borderRadius: "18px", padding: "2rem", width: "100%", maxWidth: "600px", maxHeight: "90vh", overflowY: "auto", boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.25rem", borderBottom: "1px solid #f1f5f9", paddingBottom: "1rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "1.25rem", borderBottom: "1px solid #F5F5F5", paddingBottom: "1rem" }}>
                 <div>
-                  <h3 style={{ margin: "0 0 4px", fontSize: "1.25rem", fontWeight: "800", color: "#0f172a" }}>
+                  <h3 style={{ margin: "0 0 4px", fontSize: "1.25rem", fontWeight: "800", color: "#111111" }}>
                     Application Lifecycle Timeline
                   </h3>
-                  <p style={{ margin: 0, fontSize: "0.875rem", color: "#64748b" }}>
+                  <p style={{ margin: 0, fontSize: "0.875rem", color: "#666666" }}>
                     {activeTimelineApp.job?.title || "Role"} &bull; {activeTimelineApp.company?.name || "Company"}
                   </p>
                 </div>
                 <button
                   type="button"
                   onClick={() => setActiveTimelineApp(null)}
-                  style={{ background: "#f8fafc", border: "1px solid #e2e8f0", borderRadius: "8px", padding: "6px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
+                  style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "8px", padding: "6px", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}
                   aria-label="Close modal"
                 >
                   <X size={18} />
@@ -606,9 +606,9 @@ const Applications = () => {
               </div>
 
               {/* Visual Progress Lifecycle Stepper */}
-              <div style={{ marginBottom: "2rem", padding: "1rem 0.5rem", background: "#f8fafc", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
-                <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#64748b", marginBottom: "0.75rem", textAlign: "center" }}>
-                  Current Status: <span style={{ color: "#2563eb", textTransform: "none" }}>{activeTimelineApp.status || activeTimelineApp.stage || "Applied"}</span>
+              <div style={{ marginBottom: "2rem", padding: "1rem 0.5rem", background: "#FAFAFA", borderRadius: "12px", border: "1px solid #DDDDDD" }}>
+                <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#666666", marginBottom: "0.75rem", textAlign: "center" }}>
+                  Current Status: <span style={{ color: "#000000", textTransform: "none" }}>{activeTimelineApp.status || activeTimelineApp.stage || "Applied"}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", position: "relative" }}>
                   {["Applied", "Under Review", "Interview", "Selected"].map((step, sIdx) => {
@@ -627,20 +627,20 @@ const Applications = () => {
                             width: "28px",
                             height: "28px",
                             borderRadius: "50%",
-                            background: isPassed ? "#16a34a" : isCurrent ? "#2563eb" : "#e2e8f0",
-                            color: isPassed || isCurrent ? "#ffffff" : "#64748b",
+                            background: isPassed ? "#111111" : isCurrent ? "#000000" : "#DDDDDD",
+                            color: isPassed || isCurrent ? "#ffffff" : "#666666",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             fontSize: "0.75rem",
                             fontWeight: 700,
                             marginBottom: "6px",
-                            boxShadow: isCurrent ? "0 0 0 4px rgba(37, 99, 235, 0.2)" : "none"
+                            boxShadow: isCurrent ? "0 0 0 4px rgba(0, 0, 0, 0.2)" : "none"
                           }}
                         >
                           {isPassed ? "✓" : sIdx + 1}
                         </div>
-                        <span style={{ fontSize: "0.6875rem", fontWeight: isCurrent ? 700 : 500, color: isCurrent ? "#2563eb" : "#64748b", textAlign: "center" }}>
+                        <span style={{ fontSize: "0.6875rem", fontWeight: isCurrent ? 700 : 500, color: isCurrent ? "#000000" : "#666666", textAlign: "center" }}>
                           {step}
                         </span>
                       </div>
@@ -651,11 +651,11 @@ const Applications = () => {
 
               {/* Detailed Event Log */}
               <div style={{ marginBottom: "1.5rem" }}>
-                <h4 style={{ margin: "0 0 1rem", fontSize: "0.9375rem", fontWeight: "700", color: "#334155" }}>
+                <h4 style={{ margin: "0 0 1rem", fontSize: "0.9375rem", fontWeight: "700", color: "#333333" }}>
                   Status History & Timestamps
                 </h4>
 
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "2px solid #e2e8f0", marginLeft: "14px", paddingLeft: "16px" }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderLeft: "2px solid #DDDDDD", marginLeft: "14px", paddingLeft: "16px" }}>
                   {Array.isArray(activeTimelineApp.timeline) && activeTimelineApp.timeline.length > 0 ? (
                     activeTimelineApp.timeline.map((entry, tIdx) => (
                       <div key={tIdx} style={{ position: "relative" }}>
@@ -667,20 +667,20 @@ const Applications = () => {
                             width: "12px",
                             height: "12px",
                             borderRadius: "50%",
-                            background: "#2563eb",
+                            background: "#000000",
                             border: "2px solid #ffffff"
                           }}
                         />
                         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                          <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#0f172a" }}>
+                          <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#111111" }}>
                             {entry.status}
                           </span>
-                          <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                          <span style={{ fontSize: "0.75rem", color: "#888888" }}>
                             {entry.date ? new Date(entry.date).toLocaleString() : "Date unavailable"}
                           </span>
                         </div>
                         {entry.note && (
-                          <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#475569" }}>
+                          <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#555555" }}>
                             {entry.note}
                           </p>
                         )}
@@ -696,19 +696,19 @@ const Applications = () => {
                           width: "12px",
                           height: "12px",
                           borderRadius: "50%",
-                          background: "#2563eb",
+                          background: "#000000",
                           border: "2px solid #ffffff"
                         }}
                       />
                       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-                        <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#0f172a" }}>
+                        <span style={{ fontWeight: 700, fontSize: "0.875rem", color: "#111111" }}>
                           {activeTimelineApp.status || "Applied"}
                         </span>
-                        <span style={{ fontSize: "0.75rem", color: "#94a3b8" }}>
+                        <span style={{ fontSize: "0.75rem", color: "#888888" }}>
                           {new Date(activeTimelineApp.appliedAt || activeTimelineApp.createdAt).toLocaleString()}
                         </span>
                       </div>
-                      <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#475569" }}>
+                      <p style={{ margin: "4px 0 0", fontSize: "0.8125rem", color: "#555555" }}>
                         Application submitted successfully.
                       </p>
                     </div>
@@ -718,8 +718,8 @@ const Applications = () => {
 
               {/* Recruiter Note if any */}
               {activeTimelineApp.recruiterNote && (
-                <div style={{ background: "#eff6ff", border: "1px solid #bfdbfe", padding: "12px", borderRadius: "10px", marginBottom: "1.5rem" }}>
-                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#1d4ed8", marginBottom: "4px", textTransform: "uppercase" }}>
+                <div style={{ background: "#F5F5F5", border: "1px solid #DDDDDD", padding: "12px", borderRadius: "10px", marginBottom: "1.5rem" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: 700, color: "#111111", marginBottom: "4px", textTransform: "uppercase" }}>
                     Recruiter Note
                   </div>
                   <p style={{ margin: 0, fontSize: "0.875rem", color: "#1e3a8a" }}>

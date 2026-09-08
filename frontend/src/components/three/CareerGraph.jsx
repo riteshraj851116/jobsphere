@@ -89,7 +89,7 @@ const GraphContent = ({ skills = [] }) => {
           >
             <mesh scale={isHovered ? 1.3 : 1}>
               <sphereGeometry args={[isCenter ? 0.3 : 0.2, 16, 16]} />
-              <meshBasicMaterial color={isHovered ? '#2563EB' : isCenter ? '#18181B' : '#52525B'} />
+              <meshBasicMaterial color={isHovered ? '#000000' : isCenter ? '#111111' : '#555555'} />
             </mesh>
 
             <Html distanceFactor={10} position={[0, isCenter ? 0.45 : 0.35, 0]} center>

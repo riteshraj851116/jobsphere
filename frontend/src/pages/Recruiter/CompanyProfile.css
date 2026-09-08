@@ -11,16 +11,16 @@
 .form-select {
   width: 100%;
   padding: 0.625rem 0.875rem;
-  border: 1px solid var(--border-light, #e2e8f0);
+  border: 1px solid var(--border-light, #DDDDDD);
   border-radius: 8px;
   background-color: #ffffff;
-  color: var(--text-primary, #0f172a);
+  color: var(--text-primary, #111111);
   font-size: 0.9375rem;
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 
 .form-select:focus {
   outline: none;
-  border-color: var(--primary, #4f46e5);
-  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+  border-color: var(--primary, #111111);
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
 }

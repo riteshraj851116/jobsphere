@@ -244,9 +244,9 @@ const ResumeAnalyzer = () => {
         {error && (
           <div
             style={{
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              color: "#dc2626",
+              background: "#FAFAFA",
+              border: "1px solid #DDDDDD",
+              color: "#222222",
               padding: "12px 16px",
               borderRadius: "12px",
               marginBottom: "1.5rem",
@@ -292,7 +292,7 @@ const ResumeAnalyzer = () => {
                   </div>
 
                   <div className="dropzone-title">
-                    Drag and drop your resume here, or <span style={{ color: "var(--accent, #2563eb)", textDecoration: "underline" }}>browse file</span>
+                    Drag and drop your resume here, or <span style={{ color: "var(--accent, #000000)", textDecoration: "underline" }}>browse file</span>
                   </div>
                   <div className="dropzone-sub">
                     Supports PDF, DOCX, and DOC (Max 10MB)

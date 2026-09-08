@@ -119,7 +119,7 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/dsa" className={navLinkClass}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-              <Code2 size={15} color="#818cf8" />
+              <Code2 size={15} />
               DSA
             </span>
           </NavLink>
@@ -137,7 +137,7 @@ const Navbar = () => {
           </NavLink>
           <NavLink to="/career" className={navLinkClass}>
             <span style={{ display: "inline-flex", alignItems: "center", gap: "4px" }}>
-              <Sparkles size={15} color="#3b82f6" />
+              <Sparkles size={15} />
               Career OS
             </span>
           </NavLink>
@@ -228,7 +228,7 @@ const Navbar = () => {
                         className="js-dropdown-item"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
-                        <Sparkles size={16} color="#818cf8" />
+                        <Sparkles size={16} />
                         <span>Social Feed</span>
                       </Link>
 
@@ -237,7 +237,7 @@ const Navbar = () => {
                         className="js-dropdown-item"
                         onClick={() => setIsUserMenuOpen(false)}
                       >
-                        <Users size={16} color="#34d399" />
+                        <Users size={16} />
                         <span>My Network</span>
                       </Link>
 
@@ -283,7 +283,7 @@ const Navbar = () => {
                             className="js-dropdown-item"
                             onClick={() => setIsUserMenuOpen(false)}
                           >
-                            <Sparkles size={16} color="#3b82f6" />
+                            <Sparkles size={16} />
                             <span>Career Command Center</span>
                           </Link>
                           <Link
@@ -291,7 +291,7 @@ const Navbar = () => {
                             className="js-dropdown-item"
                             onClick={() => setIsUserMenuOpen(false)}
                           >
-                            <Award size={16} color="#10b981" />
+                            <Award size={16} />
                             <span>Skill Passport</span>
                           </Link>
                           <Link
@@ -323,7 +323,7 @@ const Navbar = () => {
                             className="js-dropdown-item"
                             onClick={() => setIsUserMenuOpen(false)}
                           >
-                            <Code2 size={16} color="#818cf8" />
+                            <Code2 size={16} />
                             <span>DSA Practice Arena</span>
                           </Link>
                           <Link
@@ -407,7 +407,7 @@ const Navbar = () => {
                 className="js-mobile-item"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Sparkles size={17} color="#818cf8" />
+                <Sparkles size={17} />
                 <span>Social Feed</span>
               </Link>
               <Link
@@ -415,7 +415,7 @@ const Navbar = () => {
                 className="js-mobile-item"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Users size={17} color="#34d399" />
+                <Users size={17} />
                 <span>Network</span>
               </Link>
               <Link
@@ -437,7 +437,7 @@ const Navbar = () => {
                 className="js-mobile-item"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                <Sparkles size={17} color="#3b82f6" />
+                <Sparkles size={17} />
                 <span>Career OS</span>
               </Link>
             </div>
@@ -495,7 +495,7 @@ const Navbar = () => {
                       className="js-mobile-item"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <Users size={17} color="#3b82f6" />
+                      <Users size={17} />
                       <span>Talent Marketplace</span>
                     </Link>
                   </>
@@ -506,7 +506,7 @@ const Navbar = () => {
                       className="js-mobile-item"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <Sparkles size={17} color="#3b82f6" />
+                      <Sparkles size={17} />
                       <span>Career Command Center</span>
                     </Link>
                     <Link
@@ -514,7 +514,7 @@ const Navbar = () => {
                       className="js-mobile-item"
                       onClick={() => setIsMobileMenuOpen(false)}
                     >
-                      <Award size={17} color="#10b981" />
+                      <Award size={17} />
                       <span>Skill Passport</span>
                     </Link>
                     <Link

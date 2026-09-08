@@ -357,7 +357,7 @@ const JobDetails = () => {
               <button
                 type="button"
                 className="message-job-button"
-                style={{ background: "#eff6ff", borderColor: "#bfdbfe", color: "#2563eb" }}
+                style={{ background: "#F5F5F5", borderColor: "#DDDDDD", color: "#000000" }}
                 onClick={() => navigate(`/resume-analyzer?jobId=${job._id}`)}
               >
                 <FileSearch size={18} />
@@ -387,8 +387,8 @@ const JobDetails = () => {
             {matchData && (
               <div
                 style={{
-                  background: "linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%)",
-                  border: "1px solid #bfdbfe",
+                  background: "linear-gradient(135deg, #F5F5F5 0%, #FAFAFA 100%)",
+                  border: "1px solid #DDDDDD",
                   borderRadius: "16px",
                   padding: "1.5rem",
                   marginBottom: "2rem"
@@ -401,23 +401,23 @@ const JobDetails = () => {
                         width: "52px",
                         height: "52px",
                         borderRadius: "50%",
-                        background: "#2563eb",
+                        background: "#000000",
                         color: "#ffffff",
                         fontWeight: "800",
                         fontSize: "1.125rem",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        boxShadow: "0 4px 10px rgba(37, 99, 235, 0.3)"
+                        boxShadow: "0 4px 10px rgba(0, 0, 0, 0.3)"
                       }}
                     >
                       {matchData.matchScore}%
                     </div>
                     <div>
-                      <div style={{ fontSize: "1.0625rem", fontWeight: "800", color: "#0f172a" }}>
+                      <div style={{ fontSize: "1.0625rem", fontWeight: "800", color: "#111111" }}>
                         Your Profile Match
                       </div>
-                      <p style={{ margin: 0, fontSize: "0.8125rem", color: "#64748b" }}>
+                      <p style={{ margin: 0, fontSize: "0.8125rem", color: "#666666" }}>
                         {matchData.explanation}
                       </p>
                     </div>
@@ -436,12 +436,12 @@ const JobDetails = () => {
 
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "12px", borderTop: "1px solid rgba(0,0,0,0.06)", paddingTop: "12px", fontSize: "0.8125rem" }}>
                   <div>
-                    <span style={{ fontWeight: "700", color: "#16a34a" }}>✓ Matched Skills: </span>
-                    <span style={{ color: "#334155" }}>{matchData.matchedSkills?.join(", ") || "None"}</span>
+                    <span style={{ fontWeight: "700", color: "#111111" }}>✓ Matched Skills: </span>
+                    <span style={{ color: "#333333" }}>{matchData.matchedSkills?.join(", ") || "None"}</span>
                   </div>
                   <div>
-                    <span style={{ fontWeight: "700", color: "#dc2626" }}>✗ Missing Skills: </span>
-                    <span style={{ color: "#64748b" }}>{matchData.missingSkills?.join(", ") || "None"}</span>
+                    <span style={{ fontWeight: "700", color: "#222222" }}>✗ Missing Skills: </span>
+                    <span style={{ color: "#666666" }}>{matchData.missingSkills?.join(", ") || "None"}</span>
                   </div>
                 </div>
               </div>
@@ -528,17 +528,17 @@ const JobDetails = () => {
 
             {/* AI MATCH SCORECARD */}
             <div className="side-card" style={{
-              background: "linear-gradient(135deg, rgba(37, 99, 235, 0.06), rgba(16, 185, 129, 0.06))",
-              border: "1px solid rgba(37, 99, 235, 0.2)",
+              background: "linear-gradient(135deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06))",
+              border: "1px solid rgba(0, 0, 0, 0.2)",
               borderRadius: "12px",
               padding: "1.25rem"
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
-                <span className="side-label" style={{ color: "#2563eb", fontWeight: 700, margin: 0 }}>
+                <span className="side-label" style={{ color: "#000000", fontWeight: 700, margin: 0 }}>
                   ⚡ AI SKILL MATCH
                 </span>
                 <span style={{
-                  background: "#10b981",
+                  background: "#222222",
                   color: "#fff",
                   fontSize: "0.75rem",
                   fontWeight: 800,
@@ -569,10 +569,10 @@ const JobDetails = () => {
                         fontSize: "0.74rem",
                         padding: "3px 8px",
                         borderRadius: "6px",
-                        background: isMatched ? "rgba(16, 185, 129, 0.15)" : "rgba(245, 158, 11, 0.15)",
+                        background: isMatched ? "rgba(0, 0, 0, 0.15)" : "rgba(0, 0, 0, 0.15)",
                         color: isMatched ? "#065f46" : "#92400e",
                         fontWeight: 600,
-                        border: isMatched ? "1px solid rgba(16, 185, 129, 0.3)" : "1px solid rgba(245, 158, 11, 0.3)",
+                        border: isMatched ? "1px solid rgba(0, 0, 0, 0.3)" : "1px solid rgba(0, 0, 0, 0.3)",
                       }}
                     >
                       {isMatched ? "✓ " : "+ "} {skill}
@@ -584,13 +584,13 @@ const JobDetails = () => {
 
             {/* TARGETED DSA PREPARATION CARD */}
             <div className="side-card" style={{
-              background: "linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(139, 92, 246, 0.08))",
-              border: "1px solid rgba(99, 102, 241, 0.3)",
+              background: "linear-gradient(135deg, rgba(0, 0, 0, 0.08), rgba(0, 0, 0, 0.08))",
+              border: "1px solid rgba(0, 0, 0, 0.3)",
               borderRadius: "12px",
               padding: "1.25rem"
             }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.5rem" }}>
-                <span className="side-label" style={{ color: "#6366f1", fontWeight: 700, margin: 0, display: "inline-flex", alignItems: "center", gap: 5 }}>
+                <span className="side-label" style={{ color: "#222222", fontWeight: 700, margin: 0, display: "inline-flex", alignItems: "center", gap: 5 }}>
                   <Code2 size={16} /> DSA INTERVIEW PREP
                 </span>
                 <span style={{ fontSize: "0.75rem", color: "#a5b4fc", fontWeight: 600 }}>
@@ -603,13 +603,13 @@ const JobDetails = () => {
               </p>
 
               <div style={{ display: "flex", flexWrap: "wrap", gap: "6px", marginBottom: "1rem" }}>
-                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.15)", color: "#111111", fontWeight: 600 }}>
                   Arrays & Two Pointers
                 </span>
-                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.15)", color: "#111111", fontWeight: 600 }}>
                   Dynamic Programming
                 </span>
-                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(99, 102, 241, 0.15)", color: "#4f46e5", fontWeight: 600 }}>
+                <span style={{ fontSize: "0.72rem", padding: "2px 7px", borderRadius: "4px", background: "rgba(0, 0, 0, 0.15)", color: "#111111", fontWeight: 600 }}>
                   Trees & Graphs
                 </span>
               </div>
@@ -627,10 +627,10 @@ const JobDetails = () => {
                   fontSize: "0.85rem",
                   padding: "0.6rem 1rem",
                   borderRadius: "8px",
-                  background: "#6366f1",
+                  background: "#222222",
                   color: "#fff",
                   fontWeight: 600,
-                  boxShadow: "0 2px 8px rgba(99, 102, 241, 0.3)"
+                  boxShadow: "0 2px 8px rgba(0, 0, 0, 0.3)"
                 }}
               >
                 <span>Practice DSA for this Role</span>
@@ -763,13 +763,13 @@ const JobDetails = () => {
             </p>
 
             {applyError && (
-              <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.3)', borderRadius: '8px', color: '#f87171', marginBottom: '1rem', fontSize: '0.85rem' }}>
+              <div style={{ padding: '0.75rem', backgroundColor: 'rgba(0, 0, 0, 0.1)', border: '1px solid rgba(0, 0, 0, 0.3)', borderRadius: '8px', color: '#666666', marginBottom: '1rem', fontSize: '0.85rem' }}>
                 {applyError}
               </div>
             )}
 
             {applySuccess && (
-              <div style={{ padding: '0.75rem', backgroundColor: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.3)', borderRadius: '8px', color: '#4ade80', marginBottom: '1rem', fontSize: '0.85rem' }}>
+              <div style={{ padding: '0.75rem', backgroundColor: 'rgba(0, 0, 0, 0.1)', border: '1px solid rgba(0, 0, 0, 0.3)', borderRadius: '8px', color: '#4ade80', marginBottom: '1rem', fontSize: '0.85rem' }}>
                 {applySuccess}
               </div>
             )}
@@ -838,7 +838,7 @@ const JobDetails = () => {
                   style={{
                     padding: '0.75rem 1.5rem',
                     borderRadius: '8px',
-                    background: 'var(--primary, #3b82f6)',
+                    background: 'var(--primary, #111111)',
                     border: 'none',
                     color: '#fff',
                     fontWeight: 600,

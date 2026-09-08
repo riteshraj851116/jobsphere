@@ -98,7 +98,7 @@ const ResumeAnalysisResult = () => {
       <div className="resume-page">
         <div className="resume-container">
           <div className="resume-card" style={{ textAlign: "center", padding: "3rem" }}>
-            <AlertCircle size={48} color="#dc2626" style={{ margin: "0 auto 1rem" }} />
+            <AlertCircle size={48} color="#222222" style={{ margin: "0 auto 1rem" }} />
             <h2>Analysis Report Not Found</h2>
             <p style={{ color: "#71717a", margin: "1rem 0" }}>{error || "Unable to load analysis."}</p>
             <Link to="/resume-analyzer" className="btn-session primary">
@@ -211,7 +211,7 @@ const ResumeAnalysisResult = () => {
                 className="breakdown-bar-fill"
                 style={{
                   width: `${(breakdown.keywordMatch / 35) * 100}%`,
-                  background: breakdown.keywordMatch >= 25 ? "#16a34a" : "#2563eb"
+                  background: breakdown.keywordMatch >= 25 ? "#111111" : "#000000"
                 }}
               />
             </div>
@@ -227,7 +227,7 @@ const ResumeAnalysisResult = () => {
                 className="breakdown-bar-fill"
                 style={{
                   width: `${(breakdown.skillsMatch / 25) * 100}%`,
-                  background: breakdown.skillsMatch >= 18 ? "#16a34a" : "#2563eb"
+                  background: breakdown.skillsMatch >= 18 ? "#111111" : "#000000"
                 }}
               />
             </div>
@@ -243,7 +243,7 @@ const ResumeAnalysisResult = () => {
                 className="breakdown-bar-fill"
                 style={{
                   width: `${(breakdown.experienceRelevance / 20) * 100}%`,
-                  background: breakdown.experienceRelevance >= 14 ? "#16a34a" : "#2563eb"
+                  background: breakdown.experienceRelevance >= 14 ? "#111111" : "#000000"
                 }}
               />
             </div>
@@ -259,7 +259,7 @@ const ResumeAnalysisResult = () => {
                 className="breakdown-bar-fill"
                 style={{
                   width: `${(breakdown.resumeStructure / 10) * 100}%`,
-                  background: breakdown.resumeStructure >= 8 ? "#16a34a" : "#d97706"
+                  background: breakdown.resumeStructure >= 8 ? "#111111" : "#222222"
                 }}
               />
             </div>
@@ -275,7 +275,7 @@ const ResumeAnalysisResult = () => {
                 className="breakdown-bar-fill"
                 style={{
                   width: `${(breakdown.atsReadability / 10) * 100}%`,
-                  background: breakdown.atsReadability >= 8 ? "#16a34a" : "#16a34a"
+                  background: breakdown.atsReadability >= 8 ? "#111111" : "#111111"
                 }}
               />
             </div>
@@ -287,7 +287,7 @@ const ResumeAnalysisResult = () => {
           {/* Matched Keywords */}
           <div className="resume-card" style={{ margin: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "0.5rem" }}>
-              <CheckCircle2 size={18} color="#16a34a" />
+              <CheckCircle2 size={18} color="#111111" />
               <h3 style={{ fontSize: "1.125rem", fontWeight: "700", margin: 0 }}>
                 Matched Keywords ({analysis.matchedKeywords?.length || 0})
               </h3>
@@ -315,7 +315,7 @@ const ResumeAnalysisResult = () => {
           {/* Missing Keywords */}
           <div className="resume-card" style={{ margin: 0 }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "0.5rem" }}>
-              <XCircle size={18} color="#dc2626" />
+              <XCircle size={18} color="#222222" />
               <h3 style={{ fontSize: "1.125rem", fontWeight: "700", margin: 0 }}>
                 Missing Keywords ({analysis.missingKeywords?.length || 0})
               </h3>
@@ -333,7 +333,7 @@ const ResumeAnalysisResult = () => {
                   </span>
                 ))
               ) : (
-                <span style={{ fontSize: "0.875rem", color: "#16a34a", fontWeight: "600" }}>
+                <span style={{ fontSize: "0.875rem", color: "#111111", fontWeight: "600" }}>
                   Outstanding! All primary keywords found.
                 </span>
               )}
@@ -352,32 +352,32 @@ const ResumeAnalysisResult = () => {
 
           <div className="section-checks-grid">
             <div className={`section-check-item ${sections.contactInfo ? "found" : "missing"}`}>
-              {sections.contactInfo ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.contactInfo ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Contact Information</span>
             </div>
 
             <div className={`section-check-item ${sections.summary ? "found" : "missing"}`}>
-              {sections.summary ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.summary ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Professional Summary</span>
             </div>
 
             <div className={`section-check-item ${sections.skills ? "found" : "missing"}`}>
-              {sections.skills ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.skills ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Technical Skills</span>
             </div>
 
             <div className={`section-check-item ${sections.experience ? "found" : "missing"}`}>
-              {sections.experience ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.experience ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Work Experience</span>
             </div>
 
             <div className={`section-check-item ${sections.education ? "found" : "missing"}`}>
-              {sections.education ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.education ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Education</span>
             </div>
 
             <div className={`section-check-item ${sections.projects ? "found" : "missing"}`}>
-              {sections.projects ? <CheckCircle2 size={16} color="#16a34a" /> : <XCircle size={16} color="#dc2626" />}
+              {sections.projects ? <CheckCircle2 size={16} color="#111111" /> : <XCircle size={16} color="#222222" />}
               <span>Projects / Portfolio</span>
             </div>
           </div>
@@ -386,7 +386,7 @@ const ResumeAnalysisResult = () => {
         {/* 4. ACTIONABLE SUGGESTIONS */}
         <div className="resume-card">
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <Lightbulb size={20} color="var(--accent, #2563eb)" />
+            <Lightbulb size={20} color="var(--accent, #000000)" />
             <h3 style={{ fontSize: "1.125rem", fontWeight: "700", margin: 0 }}>
               Actionable Improvement Suggestions
             </h3>

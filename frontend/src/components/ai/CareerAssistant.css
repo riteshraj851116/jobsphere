@@ -51,8 +51,8 @@
   height: 8px;
 
   border-radius: 50%;
-  background: #10b981;
-  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+  background: #222222;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.7);
 
   animation: career-ai-pulse 2s infinite;
 }
@@ -323,12 +323,12 @@
 
   padding: 14px 16px;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid #DDDDDD;
   border-radius: 16px 16px 16px 4px;
 
   background: #ffffff;
 
-  color: #0f172a;
+  color: #111111;
 
   font-size: 0.84rem;
   line-height: 1.6;
@@ -349,8 +349,8 @@
 }
 
 .career-ai-message-error {
-  border-color: rgba(239, 68, 68, 0.3);
-  background: #fef2f2;
+  border-color: rgba(0, 0, 0, 0.3);
+  background: #FAFAFA;
 }
 
 /* =========================================================
@@ -366,7 +366,7 @@
 .career-ai-job-list-title {
   margin-bottom: 8px;
 
-  color: #64748b;
+  color: #666666;
 
   font-size: 0.65rem;
   font-weight: 800;
@@ -381,12 +381,12 @@
   margin-bottom: 10px;
   padding: 14px;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid #DDDDDD;
   border-radius: 12px;
 
   background: #ffffff;
 
-  color: #0f172a;
+  color: #111111;
 
   text-align: left;
   font-family: inherit;
@@ -564,12 +564,12 @@
 
   padding: 0 12px;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid #DDDDDD;
   border-radius: 9999px;
 
   background: #ffffff;
 
-  color: #475569;
+  color: #555555;
 
   font-family: inherit;
   font-size: 0.72rem;
@@ -625,14 +625,14 @@
 
   resize: none;
 
-  border: 1px solid #e2e8f0;
+  border: 1px solid #DDDDDD;
   border-radius: 12px;
 
   outline: none;
 
-  background: #f8fafc;
+  background: #FAFAFA;
 
-  color: #0f172a;
+  color: #111111;
 
   font-family: inherit;
   font-size: 0.82rem;
@@ -645,7 +645,7 @@
 }
 
 .career-ai-input-area textarea::placeholder {
-  color: #94a3b8;
+  color: #888888;
 }
 
 .career-ai-input-area textarea:focus {
@@ -689,7 +689,7 @@
 }
 
 .career-ai-input-area button:hover:not(:disabled) {
-  background: #1e293b;
+  background: #111111;
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }

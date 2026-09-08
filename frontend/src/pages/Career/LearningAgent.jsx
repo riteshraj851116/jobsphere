@@ -114,13 +114,13 @@ export default function LearningAgent() {
         </div>
       ) : activeTab === "recommendations" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-          <div className="career-card" style={{ background: "rgba(37, 99, 235, 0.04)", border: "1px solid rgba(37, 99, 235, 0.2)" }}>
+          <div className="career-card" style={{ background: "rgba(0, 0, 0, 0.04)", border: "1px solid rgba(0, 0, 0, 0.2)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
               <div>
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 700, margin: "0 0 0.25rem" }}>
                   Autonomous Curriculum Sequencing
                 </h3>
-                <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: 0 }}>
+                <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: 0 }}>
                   High-leverage next steps prioritized to maximize career score and interview readiness.
                 </p>
               </div>
@@ -132,7 +132,7 @@ export default function LearningAgent() {
 
           <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
             {(learningData.recommendations || []).map((rec, idx) => (
-              <div key={idx} className="career-card" style={{ borderLeft: `4px solid ${rec.priority === "High" ? "#ef4444" : "#2563eb"}` }}>
+              <div key={idx} className="career-card" style={{ borderLeft: `4px solid ${rec.priority === "High" ? "#222222" : "#000000"}` }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "0.5rem", marginBottom: "0.5rem" }}>
                   <div>
                     <span className={rec.priority === "High" ? "career-badge-assessed" : "career-badge-practicing"} style={{ fontSize: "0.75rem", marginBottom: "0.25rem", display: "inline-block" }}>
@@ -149,7 +149,7 @@ export default function LearningAgent() {
                   )}
                 </div>
 
-                <p style={{ fontSize: "0.9rem", color: "var(--text, #334155)", lineHeight: 1.5, marginBottom: "0.75rem" }}>
+                <p style={{ fontSize: "0.9rem", color: "var(--text, #333333)", lineHeight: 1.5, marginBottom: "0.75rem" }}>
                   {rec.action || rec.description || "Systematic study and hands-on implementation suggested."}
                 </p>
 
@@ -179,7 +179,7 @@ export default function LearningAgent() {
 
             {(!learningData.recommendations || learningData.recommendations.length === 0) && (
               <div className="career-card" style={{ textAlign: "center", padding: "3rem 1rem" }}>
-                <CheckCircle size={36} style={{ color: "#10b981", margin: "0 auto 0.75rem" }} />
+                <CheckCircle size={36} style={{ color: "#222222", margin: "0 auto 0.75rem" }} />
                 <h3 style={{ fontSize: "1.1rem", fontWeight: 600 }}>All Core Foundations Cleared!</h3>
                 <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", maxWidth: "450px", margin: "0.5rem auto 1.5rem" }}>
                   No urgent skill gaps detected. You can strengthen your profile with advanced system design or mock interviews.
@@ -198,7 +198,7 @@ export default function LearningAgent() {
             <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.5rem" }}>
               Generate Targeted Quick-Revision Deck
             </h3>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", marginBottom: "1rem" }}>
               Select a domain below. The AI extracts tricky interview questions, edge cases, and core concepts into a focused revision checklist.
             </p>
             <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -260,9 +260,9 @@ export default function LearningAgent() {
                         onClick={() => handleToggleTopic(session._id, topic._id)}
                         style={{ 
                           padding: "0.6rem 0.75rem", 
-                          background: topic.completed ? "rgba(16, 185, 129, 0.05)" : "var(--bg-secondary, #f8fafc)", 
+                          background: topic.completed ? "rgba(0, 0, 0, 0.05)" : "var(--bg-secondary, #FAFAFA)", 
                           borderRadius: "6px", 
-                          border: `1px solid ${topic.completed ? "rgba(16, 185, 129, 0.3)" : "var(--border, #e2e8f0)"}`,
+                          border: `1px solid ${topic.completed ? "rgba(0, 0, 0, 0.3)" : "var(--border, #DDDDDD)"}`,
                           display: "flex", 
                           alignItems: "flex-start", 
                           gap: "0.6rem", 
@@ -271,7 +271,7 @@ export default function LearningAgent() {
                         }}
                       >
                         {topic.completed ? (
-                          <CheckSquare size={18} style={{ color: "#10b981", flexShrink: 0, marginTop: "2px" }} />
+                          <CheckSquare size={18} style={{ color: "#222222", flexShrink: 0, marginTop: "2px" }} />
                         ) : (
                           <Square size={18} style={{ color: "var(--text-secondary)", flexShrink: 0, marginTop: "2px" }} />
                         )}
@@ -285,7 +285,7 @@ export default function LearningAgent() {
                             {topic.concept}
                           </span>
                           {topic.keyTakeaway && (
-                            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary, #64748b)", margin: "0.2rem 0 0", lineHeight: 1.4 }}>
+                            <p style={{ fontSize: "0.8rem", color: "var(--text-secondary, #666666)", margin: "0.2rem 0 0", lineHeight: 1.4 }}>
                               {topic.keyTakeaway}
                             </p>
                           )}

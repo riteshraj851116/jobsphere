@@ -6,7 +6,7 @@ const AIExplanationBanner = ({ title = "Why this recommendation?", text, points 
 
   return (
     <div className="why-this-banner">
-      <Sparkles size={18} color="var(--accent, #2563eb)" style={{ flexShrink: 0, marginTop: 2 }} />
+      <Sparkles size={18} color="var(--accent, #000000)" style={{ flexShrink: 0, marginTop: 2 }} />
       <div>
         <div className="why-this-title">{title}</div>
         {text && <p className="why-this-text">{text}</p>}

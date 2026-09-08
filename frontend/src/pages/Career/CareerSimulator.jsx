@@ -82,7 +82,7 @@ const CareerSimulator = () => {
         <div className="career-card">
           <div className="career-card-header">
             <h3 className="career-card-title">
-              <Sparkles size={18} color="var(--accent, #2563eb)" />
+              <Sparkles size={18} color="var(--accent, #000000)" />
               Configure Hypothetical Scenario
             </h3>
           </div>
@@ -158,9 +158,9 @@ const CareerSimulator = () => {
                       fontSize: "0.8rem",
                       fontWeight: 600,
                       cursor: "pointer",
-                      border: isSelected ? "1.5px solid var(--accent, #2563eb)" : "1px solid var(--border, #e4e4e7)",
-                      background: isSelected ? "var(--accent-light, #eff6ff)" : "var(--surface, #ffffff)",
-                      color: isSelected ? "var(--accent, #2563eb)" : "var(--text-secondary)",
+                      border: isSelected ? "1.5px solid var(--accent, #000000)" : "1px solid var(--border, #e4e4e7)",
+                      background: isSelected ? "var(--accent-light, #F5F5F5)" : "var(--surface, #ffffff)",
+                      color: isSelected ? "var(--accent, #000000)" : "var(--text-secondary)",
                       transition: "all 0.15s ease",
                     }}
                   >
@@ -192,10 +192,10 @@ const CareerSimulator = () => {
 
         {/* Simulation Results (Current vs Projected) */}
         {simulation && (
-          <div className="career-card" style={{ background: "linear-gradient(145deg, #ffffff, #f8fafc)", border: "1.5px solid #bfdbfe" }}>
+          <div className="career-card" style={{ background: "linear-gradient(145deg, #ffffff, #FAFAFA)", border: "1.5px solid #DDDDDD" }}>
             <div className="career-card-header">
               <h3 className="career-card-title">
-                <TrendingUp size={18} color="var(--accent, #2563eb)" />
+                <TrendingUp size={18} color="var(--accent, #000000)" />
                 Scenario Impact: Current State vs. Projected State
               </h3>
             </div>
@@ -203,7 +203,7 @@ const CareerSimulator = () => {
             {/* Comparison Grid */}
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1.5rem", marginBottom: "1.5rem" }}>
               {/* CURRENT */}
-              <div style={{ background: "var(--surface-soft, #f8fafc)", border: "1px solid var(--border)", borderRadius: "12px", padding: "1.25rem" }}>
+              <div style={{ background: "var(--surface-soft, #FAFAFA)", border: "1px solid var(--border)", borderRadius: "12px", padding: "1.25rem" }}>
                 <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "var(--text-muted)", marginBottom: 8 }}>
                   CURRENT BASELINE
                 </div>
@@ -224,23 +224,23 @@ const CareerSimulator = () => {
               </div>
 
               {/* PROJECTED */}
-              <div style={{ background: "#f0fdf4", border: "1.5px solid #86efac", borderRadius: "12px", padding: "1.25rem" }}>
-                <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#16a34a", marginBottom: 8 }}>
+              <div style={{ background: "#FAFAFA", border: "1.5px solid #86efac", borderRadius: "12px", padding: "1.25rem" }}>
+                <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "#111111", marginBottom: 8 }}>
                   PROJECTED STATE (+{simulation.addedSkills.length} SKILLS)
                 </div>
-                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#15803d", marginBottom: 4 }}>
+                <div style={{ fontSize: "2rem", fontWeight: 900, color: "#000000", marginBottom: 4 }}>
                   {simulation.projectedState.projectedCareerScore}
                 </div>
-                <div style={{ fontSize: "0.825rem", color: "#16a34a", marginBottom: 12 }}>
+                <div style={{ fontSize: "0.825rem", color: "#111111", marginBottom: 12 }}>
                   Potential Career Readiness (+{simulation.projectedState.projectedCareerScore - simulation.currentState.careerScore} pts)
                 </div>
 
-                <div className="readiness-label-row" style={{ color: "#15803d" }}>
+                <div className="readiness-label-row" style={{ color: "#000000" }}>
                   <span>Projected Skill Coverage</span>
                   <span>{simulation.projectedState.projectedSkillCoverage}%</span>
                 </div>
                 <div className="readiness-track">
-                  <div className="readiness-fill" style={{ width: `${simulation.projectedState.projectedSkillCoverage}%`, background: "#16a34a" }} />
+                  <div className="readiness-fill" style={{ width: `${simulation.projectedState.projectedSkillCoverage}%`, background: "#111111" }} />
                 </div>
               </div>
             </div>
@@ -259,7 +259,7 @@ const CareerSimulator = () => {
 
             {/* Disclaimer Alert */}
             <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.775rem", color: "var(--text-muted)", background: "#ffffff", padding: "0.65rem 1rem", borderRadius: "8px", border: "1px solid var(--border)" }}>
-              <ShieldAlert size={15} color="#94a3b8" />
+              <ShieldAlert size={15} color="#888888" />
               <span>{simulation.disclaimer}</span>
             </div>
           </div>

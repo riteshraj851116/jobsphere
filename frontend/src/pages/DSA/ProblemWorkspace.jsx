@@ -208,7 +208,7 @@ const ProblemWorkspace = () => {
   if (error || !problem) {
     return (
       <div className="dsa-workspace" style={{ alignItems: "center", justifyContent: "center" }}>
-        <h3 style={{ color: "#ef4444" }}>Problem Not Found</h3>
+        <h3 style={{ color: "#222222" }}>Problem Not Found</h3>
         <p style={{ color: "var(--dsa-text-secondary)" }}>{error || "The requested problem could not be loaded."}</p>
         <Link to="/dsa/problems" className="daily-action-btn" style={{ marginTop: "1rem" }}>
           Back to Problems Catalog
@@ -254,8 +254,8 @@ const ProblemWorkspace = () => {
           >
             <Bookmark
               size={15}
-              color={problem.isBookmarked ? "#f59e0b" : "var(--dsa-text-muted)"}
-              fill={problem.isBookmarked ? "#f59e0b" : "none"}
+              color={problem.isBookmarked ? "#333333" : "var(--dsa-text-muted)"}
+              fill={problem.isBookmarked ? "#333333" : "none"}
             />
           </button>
         </div>
@@ -365,7 +365,7 @@ const ProblemWorkspace = () => {
                     </div>
                     <div>
                       <span style={{ color: "var(--dsa-text-muted)" }}>Output: </span>
-                      <span style={{ color: "#10b981", fontWeight: 600 }}>{ex.output}</span>
+                      <span style={{ color: "#222222", fontWeight: 600 }}>{ex.output}</span>
                     </div>
                     {ex.explanation && (
                       <div style={{ color: "var(--dsa-text-secondary)", marginTop: "0.25rem" }}>
@@ -397,8 +397,8 @@ const ProblemWorkspace = () => {
                   <div
                     style={{
                       marginTop: "1.5rem",
-                      background: "var(--accent-light, #eff6ff)",
-                      border: "1px solid #bfdbfe",
+                      background: "var(--accent-light, #F5F5F5)",
+                      border: "1px solid #DDDDDD",
                       borderRadius: "8px",
                       padding: "0.85rem",
                       fontSize: "0.85rem",
@@ -432,7 +432,7 @@ const ProblemWorkspace = () => {
 
                 <div
                   style={{
-                    background: "var(--surface-soft, #f8fafc)",
+                    background: "var(--surface-soft, #FAFAFA)",
                     border: "1px solid var(--dsa-border)",
                     borderRadius: "10px",
                     padding: "1rem",
@@ -507,15 +507,15 @@ const ProblemWorkspace = () => {
                   width: 64,
                   height: 64,
                   borderRadius: "50%",
-                  background: "rgba(16, 185, 129, 0.15)",
-                  border: "2px solid #10b981",
+                  background: "rgba(0, 0, 0, 0.15)",
+                  border: "2px solid #222222",
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "center",
                   margin: "0 auto",
                 }}
               >
-                <CheckCircle2 size={36} color="#10b981" />
+                <CheckCircle2 size={36} color="#222222" />
               </div>
             </div>
 
@@ -529,7 +529,7 @@ const ProblemWorkspace = () => {
                 display: "grid",
                 gridTemplateColumns: "repeat(3, 1fr)",
                 gap: "0.75rem",
-                background: "var(--surface-soft, #f8fafc)",
+                background: "var(--surface-soft, #FAFAFA)",
                 border: "1px solid var(--dsa-border)",
                 borderRadius: "12px",
                 padding: "1rem",

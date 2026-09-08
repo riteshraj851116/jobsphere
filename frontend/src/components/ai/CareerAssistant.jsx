@@ -40,7 +40,7 @@ const renderFormattedText = (text) => {
       const content = line.trim().substring(2);
       return (
         <div key={idx} style={{ display: "flex", gap: "8px", margin: "4px 0", paddingLeft: "4px" }}>
-          <span style={{ color: "#3b82f6", fontWeight: "bold" }}>•</span>
+          <span style={{ color: "#111111", fontWeight: "bold" }}>•</span>
           <span>{parseBold(content)}</span>
         </div>
       );
@@ -50,7 +50,7 @@ const renderFormattedText = (text) => {
     if (numMatch) {
       return (
         <div key={idx} style={{ display: "flex", gap: "8px", margin: "4px 0", paddingLeft: "4px" }}>
-          <span style={{ color: "#10b981", fontWeight: 700 }}>{numMatch[1]}.</span>
+          <span style={{ color: "#222222", fontWeight: 700 }}>{numMatch[1]}.</span>
           <span>{parseBold(numMatch[2])}</span>
         </div>
       );
@@ -77,12 +77,12 @@ const parseBold = (text) => {
         <code
           key={index}
           style={{
-            background: "#f1f5f9",
+            background: "#F5F5F5",
             padding: "2px 5px",
             borderRadius: "4px",
             fontSize: "0.85em",
             fontFamily: "monospace",
-            color: "#0f172a"
+            color: "#111111"
           }}
         >
           {part.slice(1, -1)}

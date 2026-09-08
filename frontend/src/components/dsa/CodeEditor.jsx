@@ -131,7 +131,7 @@ const CodeEditor = ({
             onClick={handleCopy}
             title="Copy code"
           >
-            {copied ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
+            {copied ? <Check size={14} color="#222222" /> : <Copy size={14} />}
           </button>
 
           <button

@@ -117,7 +117,7 @@ const JobAlerts = () => {
             <h1 className="roadmap-title" style={{ textAlign: "left", marginBottom: "0.25rem" }}>
               Job Alerts & Notifications
             </h1>
-            <p style={{ color: "#64748b", fontSize: "0.9375rem" }}>
+            <p style={{ color: "#666666", fontSize: "0.9375rem" }}>
               Get notified immediately whenever new jobs matching your target role and skills are posted.
             </p>
           </div>
@@ -140,9 +140,9 @@ const JobAlerts = () => {
           </div>
         ) : alerts.length === 0 ? (
           <div className="phase-card" style={{ textAlign: "center", padding: "3rem" }}>
-            <Bell size={36} color="#94a3b8" style={{ margin: "0 auto 1rem" }} />
+            <Bell size={36} color="#888888" style={{ margin: "0 auto 1rem" }} />
             <h3 style={{ margin: "0 0 8px" }}>No Job Alerts Created</h3>
-            <p style={{ color: "#64748b", maxWidth: "400px", margin: "0 auto 1.5rem" }}>
+            <p style={{ color: "#666666", maxWidth: "400px", margin: "0 auto 1.5rem" }}>
               Set up automated criteria to receive updates when matching engineering positions open up.
             </p>
             <button
@@ -180,15 +180,15 @@ const JobAlerts = () => {
                         padding: "2px 8px",
                         borderRadius: "6px",
                         fontWeight: "700",
-                        background: alert.isActive ? "#f0fdf4" : "#f1f5f9",
-                        color: alert.isActive ? "#16a34a" : "#64748b"
+                        background: alert.isActive ? "#FAFAFA" : "#F5F5F5",
+                        color: alert.isActive ? "#111111" : "#666666"
                       }}
                     >
                       {alert.isActive ? "Active" : "Paused"}
                     </span>
                   </div>
 
-                  <div style={{ fontSize: "0.875rem", color: "#64748b", display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                  <div style={{ fontSize: "0.875rem", color: "#666666", display: "flex", gap: "12px", flexWrap: "wrap" }}>
                     {alert.role && <span>Role: {alert.role}</span>}
                     {alert.location && <span>Location: {alert.location}</span>}
                     <span>Frequency: {alert.frequency}</span>
@@ -212,7 +212,7 @@ const JobAlerts = () => {
                     onClick={() => handleToggle(alert._id)}
                     style={{ padding: "6px 12px" }}
                   >
-                    {alert.isActive ? <ToggleRight size={20} color="#16a34a" /> : <ToggleLeft size={20} color="#94a3b8" />}
+                    {alert.isActive ? <ToggleRight size={20} color="#111111" /> : <ToggleLeft size={20} color="#888888" />}
                     <span>{alert.isActive ? "Active" : "Paused"}</span>
                   </button>
 

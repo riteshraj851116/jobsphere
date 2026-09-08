@@ -89,7 +89,7 @@ const DsaTopics = () => {
 
                     {/* Progress details */}
                     <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: "0.8rem", color: "var(--dsa-text-secondary)", marginBottom: "0.85rem" }}>
-                      <CheckCircle2 size={14} color={t.solvedCount > 0 ? "#10b981" : "var(--dsa-text-muted)"} />
+                      <CheckCircle2 size={14} color={t.solvedCount > 0 ? "#222222" : "var(--dsa-text-muted)"} />
                       <span>
                         {t.solvedCount} of {t.totalProblems} Solved
                       </span>
@@ -123,7 +123,7 @@ const DsaTopics = () => {
                       borderTop: "1px solid var(--dsa-border-light)",
                       paddingTop: "0.75rem",
                       fontSize: "0.8rem",
-                      color: "#818cf8",
+                      color: "#444444",
                       fontWeight: 600,
                     }}
                   >

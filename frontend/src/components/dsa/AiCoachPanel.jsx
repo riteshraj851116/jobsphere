@@ -198,7 +198,7 @@ const AiCoachPanel = ({
           disabled={loadingAction !== null}
           onClick={() => handleAction("hint")}
         >
-          <Lightbulb size={14} color="#f59e0b" />
+          <Lightbulb size={14} color="#333333" />
           <span>{loadingAction === "hint" ? "Thinking..." : `Hint (Lvl ${hintLevel})`}</span>
         </button>
 
@@ -208,7 +208,7 @@ const AiCoachPanel = ({
           disabled={loadingAction !== null}
           onClick={() => handleAction("explain")}
         >
-          <BookOpen size={14} color="#3b82f6" />
+          <BookOpen size={14} color="#111111" />
           <span>{loadingAction === "explain" ? "Thinking..." : "Explain Simply"}</span>
         </button>
 
@@ -218,7 +218,7 @@ const AiCoachPanel = ({
           disabled={loadingAction !== null}
           onClick={() => handleAction("complexity")}
         >
-          <Cpu size={14} color="#10b981" />
+          <Cpu size={14} color="#222222" />
           <span>{loadingAction === "complexity" ? "Analyzing..." : "Analyze Complexity"}</span>
         </button>
 
@@ -238,7 +238,7 @@ const AiCoachPanel = ({
           disabled={loadingAction !== null}
           onClick={() => handleAction("debug")}
         >
-          <Bug size={14} color="#ef4444" />
+          <Bug size={14} color="#222222" />
           <span>{loadingAction === "debug" ? "Diagnosing..." : "Debug Code"}</span>
         </button>
 
@@ -278,7 +278,7 @@ const AiCoachPanel = ({
                 title="Copy response"
               >
                 {copiedId === m.id ? (
-                  <Check size={13} color="#10b981" />
+                  <Check size={13} color="#222222" />
                 ) : (
                   <Copy size={13} />
                 )}

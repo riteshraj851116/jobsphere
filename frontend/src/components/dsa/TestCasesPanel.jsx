@@ -15,25 +15,25 @@ const TestCasesPanel = ({
     switch (status) {
       case "Accepted":
         return (
-          <span style={{ color: "#10b981", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
+          <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
             <CheckCircle2 size={16} /> Accepted
           </span>
         );
       case "Wrong Answer":
         return (
-          <span style={{ color: "#ef4444", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
+          <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
             <XCircle size={16} /> Wrong Answer
           </span>
         );
       case "Time Limit Exceeded":
         return (
-          <span style={{ color: "#f59e0b", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
+          <span style={{ color: "#333333", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
             <Clock size={16} /> Time Limit Exceeded
           </span>
         );
       default:
         return (
-          <span style={{ color: "#ef4444", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
+          <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: "0.3rem", fontWeight: 700 }}>
             <AlertTriangle size={16} /> {status || "Runtime Error"}
           </span>
         );
@@ -68,7 +68,7 @@ const TestCasesPanel = ({
                   borderRadius: "50%",
                   marginLeft: 6,
                   display: "inline-block",
-                  background: executionResult.status === "Accepted" ? "#10b981" : "#ef4444",
+                  background: executionResult.status === "Accepted" ? "#222222" : "#222222",
                 }}
               />
             )}
@@ -164,8 +164,8 @@ const TestCasesPanel = ({
 
                 {/* Failing Test Case Details */}
                 {executionResult.failedTestCase && (
-                  <div style={{ background: "rgba(239, 68, 68, 0.08)", border: "1px solid rgba(239, 68, 68, 0.25)", borderRadius: "8px", padding: "0.85rem", marginBottom: "0.85rem" }}>
-                    <div style={{ fontWeight: 600, color: "#f87171", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
+                  <div style={{ background: "rgba(0, 0, 0, 0.08)", border: "1px solid rgba(0, 0, 0, 0.25)", borderRadius: "8px", padding: "0.85rem", marginBottom: "0.85rem" }}>
+                    <div style={{ fontWeight: 600, color: "#666666", fontSize: "0.8rem", marginBottom: "0.5rem" }}>
                       Failed Case #{executionResult.failedTestCase.index || 1}:
                     </div>
 
@@ -176,7 +176,7 @@ const TestCasesPanel = ({
                     <div className="test-field-box">{executionResult.failedTestCase.expectedOutput}</div>
 
                     <div className="test-field-label">Your Output</div>
-                    <div className="test-field-box" style={{ color: "#f87171" }}>
+                    <div className="test-field-box" style={{ color: "#666666" }}>
                       {executionResult.failedTestCase.actualOutput || "None"}
                     </div>
                   </div>
@@ -189,12 +189,12 @@ const TestCasesPanel = ({
                     <pre
                       style={{
                         background: "rgba(15, 20, 28, 0.9)",
-                        color: "#ef4444",
+                        color: "#222222",
                         padding: "0.75rem",
                         borderRadius: "6px",
                         fontSize: "0.8rem",
                         overflowX: "auto",
-                        border: "1px solid rgba(239, 68, 68, 0.3)",
+                        border: "1px solid rgba(0, 0, 0, 0.3)",
                       }}
                     >
                       {executionResult.errorMessage}

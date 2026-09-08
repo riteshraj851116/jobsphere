@@ -110,24 +110,24 @@ const InterviewBookmarks = () => {
                         <span className={`diff-pill ${q.difficulty || "medium"}`}>
                           {q.difficulty || "Medium"}
                         </span>
-                        <span style={{ fontSize: "0.75rem", background: "#f1f5f9", padding: "2px 8px", borderRadius: "6px", color: "#475569", fontWeight: "600" }}>
+                        <span style={{ fontSize: "0.75rem", background: "#F5F5F5", padding: "2px 8px", borderRadius: "6px", color: "#555555", fontWeight: "600" }}>
                           {q.category || q.role}
                         </span>
                       </div>
 
-                      <h3 style={{ fontSize: "1.125rem", fontWeight: "700", margin: "0 0 8px", color: "#0f172a" }}>
+                      <h3 style={{ fontSize: "1.125rem", fontWeight: "700", margin: "0 0 8px", color: "#111111" }}>
                         {q.question}
                       </h3>
 
                       {q.expectedAnswer && (
-                        <div style={{ background: "#f8fafc", padding: "12px 14px", borderRadius: "10px", marginTop: "10px", fontSize: "0.875rem", color: "#334155", borderLeft: "3px solid #2563eb" }}>
+                        <div style={{ background: "#FAFAFA", padding: "12px 14px", borderRadius: "10px", marginTop: "10px", fontSize: "0.875rem", color: "#333333", borderLeft: "3px solid #000000" }}>
                           <strong>Model Answer: </strong>
                           {q.expectedAnswer}
                         </div>
                       )}
 
                       {bm.notes && (
-                        <p style={{ fontSize: "0.8125rem", color: "#64748b", margin: "8px 0 0", fontStyle: "italic" }}>
+                        <p style={{ fontSize: "0.8125rem", color: "#666666", margin: "8px 0 0", fontStyle: "italic" }}>
                           <strong>My Notes:</strong> {bm.notes}
                         </p>
                       )}

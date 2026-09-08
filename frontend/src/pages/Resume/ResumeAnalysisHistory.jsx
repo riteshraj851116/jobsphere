@@ -110,7 +110,7 @@ const ResumeAnalysisHistory = () => {
         {/* Error State */}
         {!loading && error && (
           <div className="resume-card" style={{ textAlign: "center", padding: "2rem" }}>
-            <p style={{ color: "#dc2626" }}>{error}</p>
+            <p style={{ color: "#222222" }}>{error}</p>
           </div>
         )}
 

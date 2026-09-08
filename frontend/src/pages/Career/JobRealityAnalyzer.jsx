@@ -130,7 +130,7 @@ Nice to Have:
           </div>
 
           {error && (
-            <div style={{ padding: "0.75rem 1rem", background: "rgba(239, 68, 68, 0.1)", border: "1px solid #ef4444", borderRadius: "8px", color: "#ef4444", fontSize: "0.875rem" }}>
+            <div style={{ padding: "0.75rem 1rem", background: "rgba(0, 0, 0, 0.1)", border: "1px solid #222222", borderRadius: "8px", color: "#222222", fontSize: "0.875rem" }}>
               {error}
             </div>
           )}
@@ -155,10 +155,10 @@ Nice to Have:
       {analysis && (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           {/* Verdict Banner */}
-          <div className="career-card" style={{ borderLeft: "4px solid var(--accent, #2563eb)" }}>
+          <div className="career-card" style={{ borderLeft: "4px solid var(--accent, #000000)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", marginBottom: "0.75rem" }}>
               <div>
-                <span style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-secondary, #64748b)" }}>
+                <span style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-secondary, #666666)" }}>
                   Application Verdict
                 </span>
                 <h2 style={{ fontSize: "1.5rem", fontWeight: 700, margin: "0.25rem 0 0" }}>
@@ -170,7 +170,7 @@ Nice to Have:
               </div>
             </div>
 
-            <p style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "var(--text, #1e293b)", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "var(--text, #111111)", marginBottom: "1rem" }}>
               {analysis.verdictExplanation}
             </p>
 
@@ -190,7 +190,7 @@ Nice to Have:
                 <CheckCircle size={18} className="text-primary" /> Required & Preferred Skills
               </h3>
               <div style={{ marginBottom: "1rem" }}>
-                <h4 style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", marginBottom: "0.5rem", textTransform: "uppercase" }}>
+                <h4 style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", marginBottom: "0.5rem", textTransform: "uppercase" }}>
                   Must-Have Skills
                 </h4>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -206,7 +206,7 @@ Nice to Have:
               </div>
 
               <div>
-                <h4 style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", marginBottom: "0.5rem", textTransform: "uppercase" }}>
+                <h4 style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", marginBottom: "0.5rem", textTransform: "uppercase" }}>
                   Preferred / Nice-to-Have
                 </h4>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem" }}>
@@ -246,7 +246,7 @@ Nice to Have:
           {/* Potential Concerns / Missing Details */}
           <div className="career-grid-2">
             <div className="career-card">
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#f59e0b" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#333333" }}>
                 <AlertTriangle size={18} /> Potential Concerns / Red Flags
               </h3>
               <ul style={{ paddingLeft: "1.25rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.9rem" }}>

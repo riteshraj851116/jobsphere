@@ -293,8 +293,8 @@ const ProblemList = () => {
                         >
                           <Bookmark
                             size={16}
-                            color={p.isBookmarked ? "#f59e0b" : "var(--dsa-text-muted)"}
-                            fill={p.isBookmarked ? "#f59e0b" : "none"}
+                            color={p.isBookmarked ? "#333333" : "var(--dsa-text-muted)"}
+                            fill={p.isBookmarked ? "#333333" : "none"}
                           />
                         </button>
                       </td>

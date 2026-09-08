@@ -59,7 +59,7 @@ const GlobeMesh = () => {
 
       {/* Connection Arcs */}
       <lineSegments geometry={connectionLines}>
-        <lineBasicMaterial color="#2563EB" opacity={0.5} transparent />
+        <lineBasicMaterial color="#000000" opacity={0.4} transparent />
       </lineSegments>
 
       {/* Opportunity Hub Markers */}
@@ -78,7 +78,7 @@ const GlobeMesh = () => {
           >
             <mesh scale={isHovered ? 1.4 : 1}>
               <sphereGeometry args={[0.09, 12, 12]} />
-              <meshBasicMaterial color={isHovered ? '#2563EB' : '#18181B'} />
+              <meshBasicMaterial color={isHovered ? '#000000' : '#333333'} />
             </mesh>
 
             {/* Overlay tooltip */}

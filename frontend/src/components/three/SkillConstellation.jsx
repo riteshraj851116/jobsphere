@@ -85,7 +85,7 @@ const ConstellationScene = ({ skills = [] }) => {
             <mesh scale={isHovered || isActive ? 1.4 : 1}>
               <sphereGeometry args={[isMain ? 0.28 : 0.16, 16, 16]} />
               <meshBasicMaterial
-                color={isActive ? '#2563EB' : isHovered ? '#18181B' : isMain ? '#18181B' : '#71717A'}
+                color={isActive ? '#000000' : isHovered ? '#111111' : isMain ? '#222222' : '#666666'}
               />
             </mesh>
 

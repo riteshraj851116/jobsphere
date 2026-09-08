@@ -80,7 +80,7 @@ const DsaHome = () => {
           {/* Main Stats Card */}
           <div className="dsa-hero-card">
             <div className="dsa-hero-title">
-              <Code2 size={28} color="#818cf8" />
+              <Code2 size={28} color="#444444" />
               <span>DSA Practice Arena</span>
             </div>
 
@@ -92,14 +92,14 @@ const DsaHome = () => {
             {/* Metrics Grid */}
             <div className="dsa-stats-grid">
               <div className="dsa-stat-box">
-                <div className="dsa-stat-val" style={{ color: "#10b981" }}>
+                <div className="dsa-stat-val" style={{ color: "#222222" }}>
                   {solvedCount}
                 </div>
                 <div className="dsa-stat-lbl">Solved</div>
               </div>
 
               <div className="dsa-stat-box">
-                <div className="dsa-stat-val" style={{ color: "#f59e0b" }}>
+                <div className="dsa-stat-val" style={{ color: "#333333" }}>
                   {attemptedCount}
                 </div>
                 <div className="dsa-stat-lbl">Attempted</div>
@@ -113,7 +113,7 @@ const DsaHome = () => {
               </div>
 
               <div className="dsa-stat-box">
-                <div className="dsa-stat-val" style={{ color: "#818cf8" }}>
+                <div className="dsa-stat-val" style={{ color: "#444444" }}>
                   {acceptanceRate}%
                 </div>
                 <div className="dsa-stat-lbl">Acceptance</div>
@@ -175,7 +175,7 @@ const DsaHome = () => {
                     </span>
 
                     {dailyChallenge.isCompleted && (
-                      <span style={{ color: "#10b981", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600 }}>
+                      <span style={{ color: "#222222", fontSize: "0.8rem", display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600 }}>
                         <CheckCircle2 size={14} /> Solved Today!
                       </span>
                     )}
@@ -208,8 +208,8 @@ const DsaHome = () => {
             className="dsa-hero-card"
             style={{
               marginBottom: "2rem",
-              background: "linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%)",
-              border: "1px solid #bfdbfe",
+              background: "linear-gradient(135deg, #F5F5F5 0%, #f5f3ff 100%)",
+              border: "1px solid #DDDDDD",
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "0.65rem", marginBottom: "0.5rem" }}>
@@ -268,7 +268,7 @@ const DsaHome = () => {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <div style={{ background: "rgba(37, 99, 235, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
+              <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
                 <BookOpen size={20} color="var(--dsa-accent)" />
               </div>
               <h3 style={{ margin: 0, color: "var(--dsa-text-primary)", fontSize: "1.1rem" }}>Curated DSA Sheet</h3>
@@ -291,7 +291,7 @@ const DsaHome = () => {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <div style={{ background: "rgba(22, 163, 74, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
+              <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
                 <Layers size={20} color="var(--dsa-easy)" />
               </div>
               <h3 style={{ margin: 0, color: "var(--dsa-text-primary)", fontSize: "1.1rem" }}>19 Topic Categories</h3>
@@ -314,7 +314,7 @@ const DsaHome = () => {
             }}
           >
             <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", marginBottom: "0.75rem" }}>
-              <div style={{ background: "rgba(217, 119, 6, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
+              <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "10px" }}>
                 <Target size={20} color="var(--dsa-medium)" />
               </div>
               <h3 style={{ margin: 0, color: "var(--dsa-text-primary)", fontSize: "1.1rem" }}>Problem Catalog</h3>
@@ -351,11 +351,11 @@ const DsaHome = () => {
                   <tr key={sub._id}>
                     <td>
                       {sub.status === "Accepted" ? (
-                        <span style={{ color: "#10b981", display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600 }}>
+                        <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: 4, fontWeight: 600 }}>
                           <CheckCircle2 size={14} /> Accepted
                         </span>
                       ) : (
-                        <span style={{ color: "#ef4444", fontWeight: 600 }}>{sub.status}</span>
+                        <span style={{ color: "#222222", fontWeight: 600 }}>{sub.status}</span>
                       )}
                     </td>
                     <td>

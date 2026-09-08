@@ -133,7 +133,7 @@ const JobComparison = () => {
           </div>
         ) : comparison.length === 0 ? (
           <div className="phase-card" style={{ textAlign: "center", padding: "3rem" }}>
-            <Layers size={36} color="#94a3b8" style={{ margin: "0 auto 1rem" }} />
+            <Layers size={36} color="#888888" style={{ margin: "0 auto 1rem" }} />
             <h3>Select at least 2 jobs above to compare</h3>
           </div>
         ) : (
@@ -141,15 +141,15 @@ const JobComparison = () => {
             {comparison.map((job) => (
               <div key={job._id} className="phase-card" style={{ margin: 0, padding: "1.5rem", display: "flex", flexDirection: "column" }}>
                 {/* Header */}
-                <div style={{ textAlign: "center", paddingBottom: "1rem", borderBottom: "1px solid #e2e8f0", marginBottom: "1rem" }}>
+                <div style={{ textAlign: "center", paddingBottom: "1rem", borderBottom: "1px solid #DDDDDD", marginBottom: "1rem" }}>
                   <div
                     style={{
                       width: "60px",
                       height: "60px",
                       borderRadius: "50%",
-                      border: "3px solid #2563eb",
-                      background: "#eff6ff",
-                      color: "#2563eb",
+                      border: "3px solid #000000",
+                      background: "#F5F5F5",
+                      color: "#000000",
                       fontWeight: "800",
                       fontSize: "1.25rem",
                       display: "flex",
@@ -160,27 +160,27 @@ const JobComparison = () => {
                   >
                     {job.matchScore}%
                   </div>
-                  <div style={{ fontSize: "0.75rem", fontWeight: "700", color: "#2563eb", textTransform: "uppercase" }}>
+                  <div style={{ fontSize: "0.75rem", fontWeight: "700", color: "#000000", textTransform: "uppercase" }}>
                     Your Profile Match
                   </div>
                   <h3 style={{ margin: "6px 0 2px", fontSize: "1.125rem", fontWeight: "700" }}>{job.title}</h3>
-                  <div style={{ color: "#64748b", fontSize: "0.875rem" }}>{job.company}</div>
+                  <div style={{ color: "#666666", fontSize: "0.875rem" }}>{job.company}</div>
                 </div>
 
                 {/* Key Metrics */}
                 <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "0.875rem", marginBottom: "1.25rem" }}>
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <MapPin size={16} color="#64748b" />
+                    <MapPin size={16} color="#666666" />
                     <span><strong>Location:</strong> {job.location || "Remote"}</span>
                   </div>
 
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <Briefcase size={16} color="#64748b" />
+                    <Briefcase size={16} color="#666666" />
                     <span><strong>Type:</strong> {job.jobType || "Full-time"}</span>
                   </div>
 
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                    <DollarSign size={16} color="#64748b" />
+                    <DollarSign size={16} color="#666666" />
                     <span>
                       <strong>Salary:</strong>{" "}
                       {job.salary?.min ? `$${job.salary.min.toLocaleString()} - $${job.salary.max?.toLocaleString()}` : "Competitive"}
@@ -190,12 +190,12 @@ const JobComparison = () => {
 
                 {/* Matched Skills */}
                 <div style={{ marginBottom: "1rem" }}>
-                  <div style={{ fontSize: "0.8125rem", fontWeight: "700", color: "#16a34a", marginBottom: "6px" }}>
+                  <div style={{ fontSize: "0.8125rem", fontWeight: "700", color: "#111111", marginBottom: "6px" }}>
                     ✓ Matched Skills ({job.matchedSkills?.length || 0}):
                   </div>
                   <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
                     {job.matchedSkills?.map((s, idx) => (
-                      <span key={idx} style={{ fontSize: "0.6875rem", background: "#f0fdf4", color: "#16a34a", border: "1px solid #bbf7d0", padding: "2px 6px", borderRadius: "4px" }}>
+                      <span key={idx} style={{ fontSize: "0.6875rem", background: "#FAFAFA", color: "#111111", border: "1px solid #DDDDDD", padding: "2px 6px", borderRadius: "4px" }}>
                         {s}
                       </span>
                     ))}
@@ -204,12 +204,12 @@ const JobComparison = () => {
 
                 {/* Missing Skills */}
                 <div style={{ marginBottom: "1.5rem" }}>
-                  <div style={{ fontSize: "0.8125rem", fontWeight: "700", color: "#dc2626", marginBottom: "6px" }}>
+                  <div style={{ fontSize: "0.8125rem", fontWeight: "700", color: "#222222", marginBottom: "6px" }}>
                     ✗ Missing Skills ({job.missingSkills?.length || 0}):
                   </div>
                   <div style={{ display: "flex", gap: "4px", flexWrap: "wrap" }}>
                     {job.missingSkills?.map((s, idx) => (
-                      <span key={idx} style={{ fontSize: "0.6875rem", background: "#fef2f2", color: "#dc2626", border: "1px solid #fecaca", padding: "2px 6px", borderRadius: "4px" }}>
+                      <span key={idx} style={{ fontSize: "0.6875rem", background: "#FAFAFA", color: "#222222", border: "1px solid #DDDDDD", padding: "2px 6px", borderRadius: "4px" }}>
                         {s}
                       </span>
                     ))}

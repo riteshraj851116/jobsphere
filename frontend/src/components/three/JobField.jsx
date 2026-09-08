@@ -4,12 +4,12 @@ import * as THREE from 'three';
 import SceneShell from './SceneShell';
 
 const CLUSTERS = [
-  { name: 'Frontend', pos: [-2.2, 0.6, 0], color: '#2563EB' },
-  { name: 'Backend', pos: [2.0, 0.8, -0.2], color: '#18181B' },
-  { name: 'Full Stack', pos: [0, 0, 0.2], color: '#18181B' },
-  { name: 'UI/UX', pos: [-1.8, -1.0, 0.3], color: '#71717A' },
-  { name: 'DevOps', pos: [1.8, -0.8, 0.2], color: '#52525B' },
-  { name: 'Data', pos: [0.2, 1.4, -0.3], color: '#3F3F46' }
+  { name: 'Frontend', pos: [-2.2, 0.6, 0], color: '#111111' },
+  { name: 'Backend', pos: [2.0, 0.8, -0.2], color: '#222222' },
+  { name: 'Full Stack', pos: [0, 0, 0.2], color: '#000000' },
+  { name: 'UI/UX', pos: [-1.8, -1.0, 0.3], color: '#444444' },
+  { name: 'DevOps', pos: [1.8, -0.8, 0.2], color: '#555555' },
+  { name: 'Data', pos: [0.2, 1.4, -0.3], color: '#333333' }
 ];
 
 const FieldScene = ({ activeCategory }) => {
@@ -54,7 +54,7 @@ const FieldScene = ({ activeCategory }) => {
           <group key={cluster.name} position={cluster.pos}>
             <mesh scale={isActive ? 1.4 : 1}>
               <sphereGeometry args={[0.25, 16, 16]} />
-              <meshBasicMaterial color={isActive ? '#2563EB' : cluster.color} opacity={0.85} transparent />
+              <meshBasicMaterial color={isActive ? '#000000' : cluster.color} opacity={0.85} transparent />
             </mesh>
 
             {/* Orbiting micro particles */}

@@ -85,8 +85,8 @@ const CareerGraph = ({
                   minWidth: "160px",
                   padding: "1rem",
                   borderRadius: "12px",
-                  background: isActive ? "var(--accent-light, #eff6ff)" : "var(--surface-soft, #f8fafc)",
-                  border: isActive ? "1.5px solid var(--accent, #2563eb)" : "1px solid var(--border, #e4e4e7)",
+                  background: isActive ? "var(--accent-light, #F5F5F5)" : "var(--surface-soft, #FAFAFA)",
+                  border: isActive ? "1.5px solid var(--accent, #000000)" : "1px solid var(--border, #e4e4e7)",
                   cursor: "pointer",
                   transition: "all 0.2s ease",
                   textAlign: "center",
@@ -101,7 +101,7 @@ const CareerGraph = ({
                     width: 32,
                     height: 32,
                     borderRadius: "50%",
-                    background: isActive ? "var(--accent, #2563eb)" : "#e2e8f0",
+                    background: isActive ? "var(--accent, #000000)" : "#DDDDDD",
                     color: isActive ? "#ffffff" : "var(--text-secondary)",
                     marginBottom: "0.5rem",
                   }}
@@ -121,7 +121,7 @@ const CareerGraph = ({
                     fontWeight: 600,
                     padding: "2px 8px",
                     borderRadius: "999px",
-                    background: isActive ? "var(--accent, #2563eb)" : "#ffffff",
+                    background: isActive ? "var(--accent, #000000)" : "#ffffff",
                     color: isActive ? "#ffffff" : "var(--text-secondary)",
                     border: "1px solid var(--border)",
                   }}
@@ -131,7 +131,7 @@ const CareerGraph = ({
               </div>
 
               {idx < steps.length - 1 && (
-                <ArrowRight size={18} color="#94a3b8" style={{ flexShrink: 0 }} />
+                <ArrowRight size={18} color="#888888" style={{ flexShrink: 0 }} />
               )}
             </React.Fragment>
           );

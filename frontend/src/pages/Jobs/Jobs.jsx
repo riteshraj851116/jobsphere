@@ -638,7 +638,7 @@ const Jobs = () => {
                   gap: "12px",
                   marginTop: "2.5rem",
                   paddingTop: "1.5rem",
-                  borderTop: "1px solid #e2e8f0"
+                  borderTop: "1px solid #DDDDDD"
                 }}
               >
                 <button
@@ -654,7 +654,7 @@ const Jobs = () => {
                   Previous
                 </button>
 
-                <span style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600" }}>
+                <span style={{ fontSize: "0.875rem", color: "#666666", fontWeight: "600" }}>
                   Page {currentPage} of {Math.ceil(jobs.length / itemsPerPage)}
                 </span>
 

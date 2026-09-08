@@ -93,7 +93,7 @@ const SkillPassport = () => {
         {/* Overview Stats Bar */}
         <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "1rem", marginBottom: "1.5rem" }}>
           <div className="career-card" style={{ padding: "1.25rem", textAlign: "center", marginBottom: 0 }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#16a34a" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#111111" }}>
               {verifiedCount}
             </div>
             <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "var(--text-secondary)" }}>
@@ -102,7 +102,7 @@ const SkillPassport = () => {
           </div>
 
           <div className="career-card" style={{ padding: "1.25rem", textAlign: "center", marginBottom: 0 }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#2563eb" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#000000" }}>
               {proofs.filter((p) => p.status === "Assessed").length}
             </div>
             <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "var(--text-secondary)" }}>
@@ -111,7 +111,7 @@ const SkillPassport = () => {
           </div>
 
           <div className="career-card" style={{ padding: "1.25rem", textAlign: "center", marginBottom: 0 }}>
-            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#d97706" }}>
+            <div style={{ fontSize: "1.75rem", fontWeight: 900, color: "#222222" }}>
               {proofs.filter((p) => p.status === "Practicing").length}
             </div>
             <div style={{ fontSize: "0.75rem", fontWeight: 700, textTransform: "uppercase", color: "var(--text-secondary)" }}>
@@ -133,7 +133,7 @@ const SkillPassport = () => {
         <div className="career-card">
           <div className="career-card-header">
             <h3 className="career-card-title">
-              <ShieldCheck size={18} color="var(--accent, #2563eb)" />
+              <ShieldCheck size={18} color="var(--accent, #000000)" />
               Skill Passport Matrix
             </h3>
             <span style={{ fontSize: "0.775rem", color: "var(--text-muted)" }}>

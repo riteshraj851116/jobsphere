@@ -174,25 +174,25 @@ const Notifications = () => {
       return <MessageCircle size={20} />;
     }
     if (notificationType === "connection_request" || notificationType === "connection") {
-      return <UserPlus size={20} color="#818cf8" />;
+      return <UserPlus size={20} color="#444444" />;
     }
     if (notificationType === "connection_accepted" || notificationType === "new_follower") {
-      return <UserCheck size={20} color="#34d399" />;
+      return <UserCheck size={20} color="#555555" />;
     }
     if (notificationType === "post_like" || notificationType === "comment_like") {
-      return <Heart size={20} color="#f43f5e" fill="#f43f5e" />;
+      return <Heart size={20} color="#222222" fill="#222222" />;
     }
     if (notificationType === "post_comment" || notificationType === "comment_reply") {
-      return <MessageCircle size={20} color="#60a5fa" />;
+      return <MessageCircle size={20} color="#555555" />;
     }
     if (notificationType === "mention") {
       return <AtSign size={20} color="#38bdf8" />;
     }
     if (notificationType === "post_share") {
-      return <Repeat size={20} color="#a855f7" />;
+      return <Repeat size={20} color="#222222" />;
     }
     if (notificationType === "job" || notificationType === "application" || notificationType === "job_application") {
-      return <Briefcase size={20} color="#fbbf24" />;
+      return <Briefcase size={20} color="#666666" />;
     }
 
     return <Bell size={20} />;

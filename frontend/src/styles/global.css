@@ -107,8 +107,8 @@
 .form-select:focus,
 .form-textarea:focus {
   outline: none;
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  border-color: #000000;
+  box-shadow: 0 0 0 2px #000000;
 }
 
 .form-input:disabled,
@@ -322,42 +322,32 @@
   align-items: center;
   gap: 0.25rem;
   padding: 0.2rem 0.6rem;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-sm);
   font-size: 0.6875rem;
-  font-weight: 500;
+  font-weight: 600;
   line-height: 1.4;
   white-space: nowrap;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  border: 1px solid var(--border);
+  background: var(--surface-soft);
+  color: var(--text-primary);
 }
 
-.badge-info {
-  background: var(--info-bg);
-  color: var(--info);
-}
-
-.badge-success {
-  background: var(--success-bg);
-  color: var(--success);
-}
-
-.badge-warning {
-  background: var(--warning-bg);
-  color: var(--warning);
-}
-
-.badge-danger {
-  background: var(--danger-bg);
-  color: var(--danger);
+.badge-info,
+.badge-success,
+.badge-warning,
+.badge-danger,
+.badge-neutral {
+  background: #F5F5F5;
+  color: #111111;
+  border-color: #DDDDDD;
 }
 
 .badge-primary {
-  background: var(--accent-light);
-  color: var(--accent);
-}
-
-.badge-neutral {
-  background: var(--surface-soft);
-  color: var(--text-primary);
-  border: 1px solid var(--border);
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
 }
 
 /* =========================================================

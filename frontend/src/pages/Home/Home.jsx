@@ -1,6 +1,7 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import gsap from "gsap";
 
 import {
   Search,
@@ -75,9 +76,47 @@ const POPULAR_SEARCHES = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const heroRef = useRef(null);
 
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState("");
+
+  useEffect(() => {
+    const prefersReducedMotion =
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    if (prefersReducedMotion || !heroRef.current) return;
+
+    const ctx = gsap.context(() => {
+      gsap.from(".hero-content > *", {
+        opacity: 0,
+        y: 18,
+        stagger: 0.08,
+        duration: 0.6,
+        ease: "power2.out",
+      });
+
+      gsap.from(".hero-visual", {
+        opacity: 0,
+        scale: 0.96,
+        duration: 0.7,
+        ease: "power2.out",
+        delay: 0.15,
+      });
+
+      gsap.from(".stats-card", {
+        opacity: 0,
+        y: 14,
+        stagger: 0.06,
+        duration: 0.5,
+        ease: "power2.out",
+        delay: 0.25,
+      });
+    }, heroRef);
+
+    return () => ctx.revert();
+  }, []);
 
   const handleSearch = (event) => {
     event.preventDefault();
@@ -145,6 +184,7 @@ const Home = () => {
 
       <section
         className="hero-section"
+        ref={heroRef}
         aria-label="JobSphere job search"
       >
 

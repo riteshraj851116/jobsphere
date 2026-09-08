@@ -123,7 +123,7 @@ const CareerRoadmap = () => {
 
               <div style={{ textAlign: "right" }}>
                 <div className="progress-stat-pill">{percentage}%</div>
-                <div style={{ fontSize: "0.875rem", color: "#94a3b8", marginTop: "4px" }}>
+                <div style={{ fontSize: "0.875rem", color: "#888888", marginTop: "4px" }}>
                   {percentage >= 80 ? "🎉 Job Ready!" : percentage >= 50 ? "⚡ Intermediate" : "🌱 Getting Started"}
                 </div>
               </div>
@@ -145,7 +145,7 @@ const CareerRoadmap = () => {
                       </div>
                     </div>
 
-                    <div style={{ fontSize: "0.875rem", fontWeight: "700", color: "#64748b" }}>
+                    <div style={{ fontSize: "0.875rem", fontWeight: "700", color: "#666666" }}>
                       {phaseCompleted} / {phaseTotal} Completed
                     </div>
                   </div>
@@ -191,14 +191,14 @@ const CareerRoadmap = () => {
                 padding: "1.5rem",
                 background: "var(--card-bg, #ffffff)",
                 borderRadius: "16px",
-                border: "1px solid var(--border-light, #e2e8f0)"
+                border: "1px solid var(--border-light, #DDDDDD)"
               }}
             >
               <div>
                 <h4 style={{ margin: "0 0 4px", fontSize: "1.0625rem", fontWeight: "700" }}>
                   Ready to test your knowledge?
                 </h4>
-                <p style={{ margin: 0, fontSize: "0.875rem", color: "#64748b" }}>
+                <p style={{ margin: 0, fontSize: "0.875rem", color: "#666666" }}>
                   Practice real technical interview questions tailored for {selectedRole}.
                 </p>
               </div>

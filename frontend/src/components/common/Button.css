@@ -1,3 +1,8 @@
+/* =========================================================
+   JOBSPHERE — MONOCHROME BUTTON SYSTEM
+   Strict Black, White, and Grayscale Only
+========================================================= */
+
 .btn {
   display: inline-flex;
   align-items: center;
@@ -7,101 +12,150 @@
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   cursor: pointer;
-  transition: all var(--t-fast);
+  transition: background-color var(--t-fast), border-color var(--t-fast), color var(--t-fast), transform var(--t-fast);
   white-space: nowrap;
   text-decoration: none;
   position: relative;
   letter-spacing: 0.02em;
-  text-transform: uppercase;
   font-size: 0.8125rem;
+  font-family: var(--font-sans);
 }
-.btn:disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
-.btn:active:not(:disabled) { transform: scale(0.98); }
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn:active:not(:disabled) {
+  transform: scale(0.98);
+}
 
 /* Sizes */
-.btn--sm  { padding: 0.5rem 1rem; min-height: 36px; }
-.btn--md  { padding: 0.75rem 1.5rem; min-height: 48px; }
-.btn--lg  { padding: 1rem 2rem; font-size: 0.875rem; min-height: 56px; }
-.btn--full { width: 100%; }
+.btn--sm {
+  padding: 0.45rem 0.85rem;
+  min-height: 32px;
+  font-size: 0.75rem;
+}
 
-/* Primary (Black) */
+.btn--md {
+  padding: 0.65rem 1.25rem;
+  min-height: 42px;
+  font-size: 0.8125rem;
+}
+
+.btn--lg {
+  padding: 0.85rem 1.75rem;
+  font-size: 0.875rem;
+  min-height: 48px;
+}
+
+.btn--full {
+  width: 100%;
+}
+
+/* Primary (Black background, White text) */
 .btn--primary {
-  background: var(--text);
-  color: var(--bg);
-  border-color: var(--text);
-}
-.btn--primary:hover:not(:disabled) {
-  background: var(--text-secondary);
-  border-color: var(--text-secondary);
+  background: #000000;
+  color: #FFFFFF;
+  border-color: #000000;
 }
 
-/* Secondary (White with border) */
-.btn--secondary {
-  background: var(--bg);
-  color: var(--text);
-  border-color: var(--text);
+.btn--primary:hover:not(:disabled) {
+  background: #222222;
+  border-color: #222222;
+  color: #FFFFFF;
 }
+
+/* Secondary (White background, Black border & text) */
+.btn--secondary {
+  background: #FFFFFF;
+  color: #000000;
+  border-color: #000000;
+}
+
 .btn--secondary:hover:not(:disabled) {
-  background: var(--surface-soft);
+  background: #F5F5F5;
+  border-color: #000000;
+  color: #000000;
 }
 
 /* Outline (Light border) */
 .btn--outline {
   background: transparent;
-  color: var(--text);
-  border-color: var(--border);
+  color: #111111;
+  border-color: #DDDDDD;
 }
+
 .btn--outline:hover:not(:disabled) {
-  background: var(--surface-soft);
-  border-color: var(--text);
+  background: #F5F5F5;
+  border-color: #000000;
+  color: #000000;
 }
 
 /* Ghost */
 .btn--ghost {
   background: transparent;
-  color: var(--text-secondary);
+  color: #555555;
   border-color: transparent;
 }
+
 .btn--ghost:hover:not(:disabled) {
-  color: var(--text);
+  background: #F5F5F5;
+  color: #000000;
 }
 
-/* Danger */
+/* Danger (Dark gray / black accent) */
 .btn--danger {
-  background: var(--danger);
-  color: #fff;
-  border-color: var(--danger);
-}
-.btn--danger:hover:not(:disabled) {
-  background: #a80d12;
-  border-color: #a80d12;
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
 }
 
-/* Success */
-.btn--success {
-  background: var(--success);
-  color: #fff;
-  border-color: var(--success);
+.btn--danger:hover:not(:disabled) {
+  background: #333333;
+  border-color: #333333;
 }
+
+/* Success (Monochrome active state) */
+.btn--success {
+  background: #111111;
+  color: #FFFFFF;
+  border-color: #111111;
+}
+
 .btn--success:hover:not(:disabled) {
-  background: #333;
+  background: #333333;
 }
 
 /* Loading */
-.btn--loading { pointer-events: none; color: transparent !important; }
+.btn--loading {
+  pointer-events: none;
+  color: transparent !important;
+}
+
 .btn__spinner {
-  width: 16px; height: 16px;
-  border: 2px solid rgba(255,255,255,0.3);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
   border-top-color: currentColor;
   border-radius: 50%;
-  animation: spin 0.6s linear infinite;
+  animation: btn-spin 0.6s linear infinite;
   position: absolute;
-  left: 50%; top: 50%;
+  left: 50%;
+  top: 50%;
   transform: translate(-50%, -50%);
 }
+
 .btn--secondary .btn__spinner,
 .btn--outline .btn__spinner,
 .btn--ghost .btn__spinner {
-  border-color: rgba(0,0,0,0.1);
-  border-top-color: var(--text);
+  border-color: rgba(0, 0, 0, 0.15);
+  border-top-color: #000000;
+}
+
+@keyframes btn-spin {
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
 }

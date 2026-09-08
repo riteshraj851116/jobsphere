@@ -60,7 +60,7 @@ const DisconnectedMesh = () => {
       {/* Disconnected lone node */}
       <mesh position={[disconnectedNode.x, disconnectedNode.y, disconnectedNode.z]}>
         <sphereGeometry args={[0.24, 16, 16]} />
-        <meshBasicMaterial color="#DC2626" opacity={0.85} transparent />
+        <meshBasicMaterial color="#222222" opacity={0.85} transparent />
       </mesh>
     </group>
   );

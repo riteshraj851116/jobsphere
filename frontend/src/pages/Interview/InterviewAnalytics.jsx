@@ -80,37 +80,37 @@ const InterviewAnalytics = () => {
         {/* 4 Stat Cards */}
         <div className="analytics-stats-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px", marginBottom: "2rem" }}>
           <div className="interview-card" style={{ margin: 0, padding: "1.25rem", textAlign: "center" }}>
-            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#2563eb" }}>
+            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#000000" }}>
               {analytics?.totalSessions || 0}
             </div>
-            <div style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600", marginTop: "4px" }}>
+            <div style={{ fontSize: "0.875rem", color: "#666666", fontWeight: "600", marginTop: "4px" }}>
               Total Sessions Completed
             </div>
           </div>
 
           <div className="interview-card" style={{ margin: 0, padding: "1.25rem", textAlign: "center" }}>
-            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#16a34a" }}>
+            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#111111" }}>
               {analytics?.totalAnswered || 0}
             </div>
-            <div style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600", marginTop: "4px" }}>
+            <div style={{ fontSize: "0.875rem", color: "#666666", fontWeight: "600", marginTop: "4px" }}>
               Questions Answered
             </div>
           </div>
 
           <div className="interview-card" style={{ margin: 0, padding: "1.25rem", textAlign: "center" }}>
-            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#d97706" }}>
+            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#222222" }}>
               {analytics?.totalSkipped || 0}
             </div>
-            <div style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600", marginTop: "4px" }}>
+            <div style={{ fontSize: "0.875rem", color: "#666666", fontWeight: "600", marginTop: "4px" }}>
               Questions Skipped
             </div>
           </div>
 
           <div className="interview-card" style={{ margin: 0, padding: "1.25rem", textAlign: "center" }}>
-            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#0f172a" }}>
+            <div style={{ fontSize: "2rem", fontWeight: "800", color: "#111111" }}>
               {analytics?.completionRate || 0}%
             </div>
-            <div style={{ fontSize: "0.875rem", color: "#64748b", fontWeight: "600", marginTop: "4px" }}>
+            <div style={{ fontSize: "0.875rem", color: "#666666", fontWeight: "600", marginTop: "4px" }}>
               Overall Completion Rate
             </div>
           </div>
@@ -120,18 +120,18 @@ const InterviewAnalytics = () => {
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px", marginBottom: "2rem" }}>
           <div className="interview-card" style={{ margin: 0, padding: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "1rem" }}>
-              <CheckCircle2 size={20} color="#16a34a" />
+              <CheckCircle2 size={20} color="#111111" />
               <h3 style={{ margin: 0, fontSize: "1.125rem", fontWeight: "700" }}>Strong Areas</h3>
             </div>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               {analytics?.strongAreas?.length > 0 ? (
                 analytics.strongAreas.map((area, idx) => (
-                  <span key={idx} style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", color: "#16a34a", padding: "6px 12px", borderRadius: "8px", fontWeight: "600", fontSize: "0.875rem" }}>
+                  <span key={idx} style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", color: "#111111", padding: "6px 12px", borderRadius: "8px", fontWeight: "600", fontSize: "0.875rem" }}>
                     ✓ {area}
                   </span>
                 ))
               ) : (
-                <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>
+                <p style={{ color: "#888888", fontSize: "0.875rem" }}>
                   Complete more practice sessions to uncover your core strengths.
                 </p>
               )}
@@ -140,18 +140,18 @@ const InterviewAnalytics = () => {
 
           <div className="interview-card" style={{ margin: 0, padding: "1.5rem" }}>
             <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "1rem" }}>
-              <TrendingUp size={20} color="#2563eb" />
+              <TrendingUp size={20} color="#000000" />
               <h3 style={{ margin: 0, fontSize: "1.125rem", fontWeight: "700" }}>Areas to Reinforce</h3>
             </div>
             <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
               {analytics?.areasToImprove?.length > 0 ? (
                 analytics.areasToImprove.map((area, idx) => (
-                  <span key={idx} style={{ background: "#eff6ff", border: "1px solid #bfdbfe", color: "#2563eb", padding: "6px 12px", borderRadius: "8px", fontWeight: "600", fontSize: "0.875rem" }}>
+                  <span key={idx} style={{ background: "#F5F5F5", border: "1px solid #DDDDDD", color: "#000000", padding: "6px 12px", borderRadius: "8px", fontWeight: "600", fontSize: "0.875rem" }}>
                     ⚡ {area}
                   </span>
                 ))
               ) : (
-                <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>
+                <p style={{ color: "#888888", fontSize: "0.875rem" }}>
                   No significant weak areas identified yet.
                 </p>
               )}
@@ -171,13 +171,13 @@ const InterviewAnalytics = () => {
               const pct = data.questions > 0 ? Math.round((data.answered / data.questions) * 100) : 0;
 
               return (
-                <div key={cat} style={{ background: "#f8fafc", padding: "12px 16px", borderRadius: "12px", border: "1px solid #e2e8f0" }}>
+                <div key={cat} style={{ background: "#FAFAFA", padding: "12px 16px", borderRadius: "12px", border: "1px solid #DDDDDD" }}>
                   <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px", fontWeight: "700", fontSize: "0.9375rem" }}>
                     <span>{cat}</span>
                     <span>{pct}% ({data.answered}/{data.questions} answered)</span>
                   </div>
-                  <div style={{ height: "8px", background: "#e2e8f0", borderRadius: "9999px", overflow: "hidden" }}>
-                    <div style={{ height: "100%", width: `${pct}%`, background: pct >= 75 ? "#16a34a" : "#2563eb", borderRadius: "9999px" }} />
+                  <div style={{ height: "8px", background: "#DDDDDD", borderRadius: "9999px", overflow: "hidden" }}>
+                    <div style={{ height: "100%", width: `${pct}%`, background: pct >= 75 ? "#111111" : "#000000", borderRadius: "9999px" }} />
                   </div>
                 </div>
               );

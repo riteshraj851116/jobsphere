@@ -132,7 +132,7 @@ const CareerDashboard = () => {
             <div>
               <div className="career-card-header">
                 <h3 className="career-card-title">
-                  <Cpu size={18} color="var(--accent, #2563eb)" />
+                  <Cpu size={18} color="var(--accent, #000000)" />
                   Core Competency Gauges
                 </h3>
                 <button
@@ -166,7 +166,7 @@ const CareerDashboard = () => {
                     <span>{profile.interviewReadiness || 50}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.interviewReadiness || 50}%`, background: "#3b82f6" }} />
+                    <div className="readiness-fill" style={{ width: `${profile.interviewReadiness || 50}%`, background: "#111111" }} />
                   </div>
                 </div>
 
@@ -177,7 +177,7 @@ const CareerDashboard = () => {
                     <span>{profile.dsaReadiness || 45}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.dsaReadiness || 45}%`, background: "#10b981" }} />
+                    <div className="readiness-fill" style={{ width: `${profile.dsaReadiness || 45}%`, background: "#222222" }} />
                   </div>
                 </div>
 
@@ -199,7 +199,7 @@ const CareerDashboard = () => {
                     <span>{profile.resumeStrength || 60}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.resumeStrength || 60}%`, background: "#f59e0b" }} />
+                    <div className="readiness-fill" style={{ width: `${profile.resumeStrength || 60}%`, background: "#333333" }} />
                   </div>
                 </div>
               </div>
@@ -229,7 +229,7 @@ const CareerDashboard = () => {
           <div className="career-card">
             <div className="career-card-header">
               <h3 className="career-card-title">
-                <Target size={18} color="var(--accent, #2563eb)" />
+                <Target size={18} color="var(--accent, #000000)" />
                 Today's High-Yield Actions
               </h3>
               <span style={{ fontSize: "0.775rem", color: "var(--text-muted)" }}>Prioritized by Impact</span>
@@ -241,8 +241,8 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(37, 99, 235, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Target size={18} color="var(--accent, #2563eb)" />
+                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
+                  <Target size={18} color="var(--accent, #000000)" />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
@@ -252,7 +252,7 @@ const CareerDashboard = () => {
                     Eliminating this requirement yields immediate +8% job match boost.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#94a3b8" />
+                <ArrowRight size={16} color="#888888" />
               </Link>
 
               <Link
@@ -260,8 +260,8 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(16, 185, 129, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Zap size={18} color="#10b981" />
+                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
+                  <Zap size={18} color="#222222" />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
@@ -271,7 +271,7 @@ const CareerDashboard = () => {
                     Maintain your practice streak and strengthen algorithmic intuition.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#94a3b8" />
+                <ArrowRight size={16} color="#888888" />
               </Link>
 
               <Link
@@ -279,8 +279,8 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(245, 158, 11, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Briefcase size={18} color="#f59e0b" />
+                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
+                  <Briefcase size={18} color="#333333" />
                 </div>
                 <div style={{ flex: 1 }}>
                   <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
@@ -290,16 +290,16 @@ const CareerDashboard = () => {
                     Apply to verified listings with tailored match score breakdowns.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#94a3b8" />
+                <ArrowRight size={16} color="#888888" />
               </Link>
             </div>
           </div>
 
           {/* AI Daily Career Brief */}
-          <div className="career-card" style={{ background: "linear-gradient(145deg, #ffffff, #f8fafc)", border: "1.5px solid #bfdbfe" }}>
+          <div className="career-card" style={{ background: "linear-gradient(145deg, #ffffff, #FAFAFA)", border: "1.5px solid #DDDDDD" }}>
             <div className="career-card-header">
               <h3 className="career-card-title">
-                <Sparkles size={18} color="var(--accent, #2563eb)" />
+                <Sparkles size={18} color="var(--accent, #000000)" />
                 AI Daily Career Brief
               </h3>
               <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)" }}>
@@ -343,7 +343,7 @@ const CareerDashboard = () => {
         <div className="career-card">
           <div className="career-card-header">
             <h3 className="career-card-title">
-              <Layers size={18} color="var(--accent, #2563eb)" />
+              <Layers size={18} color="var(--accent, #000000)" />
               Skill Diagnostic Breakdown
             </h3>
             <Link to="/career/skill-gap" style={{ fontSize: "0.825rem", color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>
@@ -353,8 +353,8 @@ const CareerDashboard = () => {
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.25rem" }}>
             {/* Strong Skills */}
-            <div style={{ background: "#f0fdf4", border: "1px solid #bbf7d0", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#15803d", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
+              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#000000", textTransform: "uppercase", marginBottom: "0.75rem" }}>
                 ✓ Strong / Verified Skills ({profile.strongSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -371,8 +371,8 @@ const CareerDashboard = () => {
             </div>
 
             {/* Weak / Practicing Skills */}
-            <div style={{ background: "#fffbeb", border: "1px solid #fde68a", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#b45309", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
+              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#111111", textTransform: "uppercase", marginBottom: "0.75rem" }}>
                 ⚡ Needs Practice ({profile.weakSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -389,14 +389,14 @@ const CareerDashboard = () => {
             </div>
 
             {/* Missing Core Skills */}
-            <div style={{ background: "#fef2f2", border: "1px solid #fecaca", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#b91c1c", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
+              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#111111", textTransform: "uppercase", marginBottom: "0.75rem" }}>
                 ✕ Missing for {profile.targetRole || "Role"} ({profile.missingSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {profile.missingSkills?.length > 0 ? (
                   profile.missingSkills.map((s, idx) => (
-                    <span key={idx} style={{ background: "#ffffff", border: "1px solid #fca5a5", color: "#b91c1c", padding: "2px 8px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: 600 }}>
+                    <span key={idx} style={{ background: "#ffffff", border: "1px solid #AAAAAA", color: "#111111", padding: "2px 8px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: 600 }}>
                       {s}
                     </span>
                   ))

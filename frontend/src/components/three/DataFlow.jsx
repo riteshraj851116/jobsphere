@@ -45,13 +45,13 @@ const StreamMesh = () => {
   return (
     <group ref={groupRef}>
       <lineSegments geometry={lineGeometry}>
-        <lineBasicMaterial color="#2563EB" opacity={0.4} transparent />
+        <lineBasicMaterial color="#000000" opacity={0.35} transparent />
       </lineSegments>
 
       {points.map((pos, idx) => (
         <mesh key={idx} position={[pos.x, pos.y, pos.z]}>
           <sphereGeometry args={[0.07, 12, 12]} />
-          <meshBasicMaterial color={idx % 3 === 0 ? '#2563EB' : '#18181B'} />
+          <meshBasicMaterial color={idx % 3 === 0 ? '#000000' : '#444444'} />
         </mesh>
       ))}
     </group>

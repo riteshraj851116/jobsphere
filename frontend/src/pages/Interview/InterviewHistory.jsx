@@ -91,7 +91,7 @@ const InterviewHistory = () => {
         {/* Error State */}
         {!loading && error && (
           <div className="review-card" style={{ textAlign: "center", padding: "2rem" }}>
-            <p style={{ color: "#dc2626" }}>{error}</p>
+            <p style={{ color: "#222222" }}>{error}</p>
           </div>
         )}
 
@@ -136,9 +136,9 @@ const InterviewHistory = () => {
                       {isCompleted ? (
                         <span
                           style={{
-                            background: "#f0fdf4",
-                            color: "#16a34a",
-                            border: "1px solid #bbf7d0",
+                            background: "#FAFAFA",
+                            color: "#111111",
+                            border: "1px solid #DDDDDD",
                             borderRadius: "6px",
                             padding: "2px 8px",
                             fontSize: "0.75rem",
@@ -150,9 +150,9 @@ const InterviewHistory = () => {
                       ) : (
                         <span
                           style={{
-                            background: "#fffbeb",
-                            color: "#d97706",
-                            border: "1px solid #fde68a",
+                            background: "#FAFAFA",
+                            color: "#222222",
+                            border: "1px solid #DDDDDD",
                             borderRadius: "6px",
                             padding: "2px 8px",
                             fontSize: "0.75rem",

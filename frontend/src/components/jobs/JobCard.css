@@ -11,20 +11,20 @@ border: 1px solid rgba(228, 228, 231, 0.95);
 border-radius: 14px;
 box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
 
-color: #0f172a;
+color: #111111;
 cursor: pointer;
 
 transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.22s ease;
 }
 
 .job-card:hover {
-border-color: rgba(37, 99, 235, 0.35);
-box-shadow: 0 16px 36px -6px rgba(15, 23, 42, 0.09), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
-transform: translateY(-3px);
+border-color: #000000;
+box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+transform: translateY(-2px);
 }
 
 .job-card:focus-visible {
-outline: 2px solid #2563eb;
+outline: 2px solid #000000;
 outline-offset: 3px;
 }
 
@@ -41,11 +41,11 @@ margin-bottom: 20px;
 .job-posted {
 padding: 5px 10px;
 
-background: #f8fafc;
-border: 1px solid #e2e8f0;
+background: #FAFAFA;
+border: 1px solid #DDDDDD;
 border-radius: 6px;
 
-color: #64748b;
+color: #666666;
 
 font-size: 10px;
 font-weight: 700;
@@ -222,8 +222,8 @@ padding: 14px 0;
 
 margin-bottom: 18px;
 
-border-top: 1px solid #f1f5f9;
-border-bottom: 1px solid #f1f5f9;
+border-top: 1px solid #F5F5F5;
+border-bottom: 1px solid #F5F5F5;
 }
 
 .job-meta-item {
@@ -236,11 +236,11 @@ gap: 6px;
 
 padding: 4px 10px;
 
-background: #f8fafc;
-border: 1px solid #e2e8f0;
+background: #FAFAFA;
+border: 1px solid #DDDDDD;
 border-radius: 6px;
 
-color: #475569;
+color: #555555;
 
 font-size: 11.5px;
 font-weight: 500;
@@ -250,19 +250,19 @@ white-space: nowrap;
 
 .job-meta-item svg {
 flex-shrink: 0;
-color: #64748b;
+color: #666666;
 }
 
 .job-meta-salary {
-background: #eff6ff;
-border-color: #bfdbfe;
+background: #F5F5F5;
+border-color: #DDDDDD;
 
-color: #1d4ed8;
+color: #111111;
 font-weight: 700;
 }
 
 .job-meta-salary svg {
-color: #2563eb;
+color: #111111;
 }
 
 /* SKILLS */
@@ -277,7 +277,7 @@ margin-bottom: 20px;
 }
 
 .skills-label {
-color: #94a3b8;
+color: #888888;
 
 font-size: 9.5px;
 font-weight: 700;
@@ -298,24 +298,24 @@ gap: 6px;
 display: inline-flex;
 align-items: center;
 padding: 4px 9px;
-background: #f1f5f9;
-border: 1px solid #e2e8f0;
+background: #F5F5F5;
+border: 1px solid #DDDDDD;
 border-radius: 6px;
-color: #334155;
+color: #333333;
 font-size: 11px;
 font-weight: 500;
 transition: all 0.15s ease;
 }
 
 .skill-pill:hover {
-background: #e2e8f0;
-color: #0f172a;
+background: #DDDDDD;
+color: #111111;
 }
 
 .skill-pill--more {
-background: #f1f5f9;
-border-color: #e2e8f0;
-color: #64748b;
+background: #F5F5F5;
+border-color: #DDDDDD;
+color: #666666;
 font-weight: 600;
 }
 

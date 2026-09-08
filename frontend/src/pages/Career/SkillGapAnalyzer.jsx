@@ -101,7 +101,7 @@ const SkillGapAnalyzer = () => {
                   <h2 style={{ margin: "0 0 4px", fontSize: "1.375rem", fontWeight: "800" }}>
                     {selectedRole} Readiness
                   </h2>
-                  <p style={{ margin: 0, color: "#64748b", fontSize: "0.9375rem" }}>
+                  <p style={{ margin: 0, color: "#666666", fontSize: "0.9375rem" }}>
                     You have mastered {gapData?.skillsYouHave?.length || 0} essential skills. Focus on the high-priority skills below to boost your job match score.
                   </p>
                 </div>
@@ -124,7 +124,7 @@ const SkillGapAnalyzer = () => {
               {/* Column 1: Skills You Have */}
               <div className="skill-column-card">
                 <div className="column-header">
-                  <CheckCircle2 size={20} color="#16a34a" />
+                  <CheckCircle2 size={20} color="#111111" />
                   <h3>Skills You Have ({gapData?.skillsYouHave?.length || 0})</h3>
                 </div>
                 <div>
@@ -136,7 +136,7 @@ const SkillGapAnalyzer = () => {
                       </div>
                     ))
                   ) : (
-                    <p style={{ color: "#94a3b8", fontSize: "0.875rem", fontStyle: "italic" }}>
+                    <p style={{ color: "#888888", fontSize: "0.875rem", fontStyle: "italic" }}>
                       No matching skills found on your profile.
                     </p>
                   )}
@@ -146,7 +146,7 @@ const SkillGapAnalyzer = () => {
               {/* Column 2: High Priority To Learn */}
               <div className="skill-column-card">
                 <div className="column-header">
-                  <XCircle size={20} color="#dc2626" />
+                  <XCircle size={20} color="#222222" />
                   <h3>High Priority ({gapData?.skillsToLearn?.highPriority?.length || 0})</h3>
                 </div>
                 <div>
@@ -158,7 +158,7 @@ const SkillGapAnalyzer = () => {
                       </div>
                     ))
                   ) : (
-                    <p style={{ color: "#16a34a", fontSize: "0.875rem", fontWeight: "600" }}>
+                    <p style={{ color: "#111111", fontSize: "0.875rem", fontWeight: "600" }}>
                       Awesome! All high priority skills mastered.
                     </p>
                   )}
@@ -168,7 +168,7 @@ const SkillGapAnalyzer = () => {
               {/* Column 3: Medium & Optional Skills */}
               <div className="skill-column-card">
                 <div className="column-header">
-                  <AlertTriangle size={20} color="#d97706" />
+                  <AlertTriangle size={20} color="#222222" />
                   <h3>Supporting Skills ({gapData?.skillsToLearn?.mediumPriority?.length || 0})</h3>
                 </div>
                 <div>
@@ -180,7 +180,7 @@ const SkillGapAnalyzer = () => {
                       </div>
                     ))
                   ) : (
-                    <p style={{ color: "#94a3b8", fontSize: "0.875rem" }}>
+                    <p style={{ color: "#888888", fontSize: "0.875rem" }}>
                       No pending supporting skills.
                     </p>
                   )}

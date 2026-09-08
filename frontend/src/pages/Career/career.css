@@ -61,8 +61,8 @@
 
 .career-nav-item.active {
   color: #ffffff;
-  background: var(--accent, #2563eb);
-  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25);
+  background: var(--accent, #000000);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
   font-weight: 600;
 }
 
@@ -77,11 +77,11 @@
   gap: 6px;
   padding: 4px 12px;
   border-radius: 9999px;
-  background: var(--accent-light, #eff6ff);
-  border: 1px solid #bfdbfe;
+  background: var(--accent-light, #F5F5F5);
+  border: 1px solid #DDDDDD;
   font-size: 0.775rem;
   font-weight: 700;
-  color: var(--accent, #2563eb);
+  color: var(--accent, #000000);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.75rem;
@@ -149,8 +149,8 @@
 }
 
 .career-score-ring-card {
-  background: linear-gradient(145deg, #ffffff, #f8fafc);
-  border: 1.5px solid #bfdbfe;
+  background: linear-gradient(145deg, #ffffff, #FAFAFA);
+  border: 1.5px solid #DDDDDD;
   border-radius: 16px;
   padding: 2rem 1.5rem;
   text-align: center;
@@ -158,19 +158,19 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.08);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
 }
 
 .score-circle-outer {
   width: 130px;
   height: 130px;
   border-radius: 50%;
-  background: conic-gradient(var(--accent, #2563eb) calc(var(--score-pct, 70) * 1%), #e2e8f0 0);
+  background: conic-gradient(var(--accent, #000000) calc(var(--score-pct, 70) * 1%), #DDDDDD 0);
   display: flex;
   align-items: center;
   justify-content: center;
   margin: 0 auto 1.25rem;
-  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
 .score-circle-inner {
@@ -206,7 +206,7 @@
 }
 
 .readiness-item {
-  background: var(--surface-soft, #f8fafc);
+  background: var(--surface-soft, #FAFAFA);
   border: 1px solid var(--border, #e4e4e7);
   border-radius: 12px;
   padding: 1rem 1.25rem;
@@ -215,7 +215,7 @@
 
 .readiness-item:hover {
   transform: translateY(-2px);
-  border-color: var(--accent, #2563eb);
+  border-color: var(--accent, #000000);
 }
 
 .readiness-label-row {
@@ -230,22 +230,22 @@
 
 .readiness-track {
   height: 7px;
-  background: #e2e8f0;
+  background: #DDDDDD;
   border-radius: 999px;
   overflow: hidden;
 }
 
 .readiness-fill {
   height: 100%;
-  background: var(--accent, #2563eb);
+  background: var(--accent, #000000);
   border-radius: 999px;
   transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* "Why This?" AI Explanation Banner */
 .why-this-banner {
-  background: linear-gradient(135deg, #eff6ff 0%, #f5f3ff 100%);
-  border: 1px solid #bfdbfe;
+  background: linear-gradient(135deg, #F5F5F5 0%, #f5f3ff 100%);
+  border: 1px solid #DDDDDD;
   border-radius: 12px;
   padding: 1rem 1.25rem;
   margin-top: 1rem;
@@ -257,7 +257,7 @@
 .why-this-title {
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--accent, #2563eb);
+  color: var(--accent, #000000);
   text-transform: uppercase;
   letter-spacing: 0.05em;
   margin-bottom: 0.25rem;
@@ -277,9 +277,9 @@
   gap: 4px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #f0fdf4;
-  color: #15803d;
-  border: 1px solid #bbf7d0;
+  background: #FAFAFA;
+  color: #000000;
+  border: 1px solid #DDDDDD;
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -291,9 +291,9 @@
   gap: 4px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #eff6ff;
-  color: #1d4ed8;
-  border: 1px solid #bfdbfe;
+  background: #F5F5F5;
+  color: #111111;
+  border: 1px solid #DDDDDD;
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -305,9 +305,9 @@
   gap: 4px;
   padding: 4px 10px;
   border-radius: 999px;
-  background: #fffbeb;
-  color: #b45309;
-  border: 1px solid #fde68a;
+  background: #FAFAFA;
+  color: #111111;
+  border: 1px solid #DDDDDD;
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -333,7 +333,7 @@
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
-  background: var(--accent, #2563eb);
+  background: var(--accent, #000000);
   color: #ffffff;
   padding: 0.65rem 1.25rem;
   border-radius: 8px;
@@ -343,11 +343,11 @@
   cursor: pointer;
   text-decoration: none;
   transition: all 0.2s ease;
-  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
 
 .career-btn-primary:hover:not(:disabled) {
-  background: var(--accent-hover, #1d4ed8);
+  background: var(--accent-hover, #111111);
   transform: translateY(-1px);
 }
 
@@ -386,14 +386,14 @@
   gap: 1rem;
   padding: 1.25rem;
   border-radius: 12px;
-  background: var(--surface-soft, #f8fafc);
+  background: var(--surface-soft, #FAFAFA);
   border: 1px solid var(--border, #e4e4e7);
   transition: all 0.2s ease;
 }
 
 .milestone-item.completed {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
+  background: #FAFAFA;
+  border-color: #DDDDDD;
 }
 
 /* Interactive SVG Career Flow Graph */
@@ -415,7 +415,7 @@
 }
 
 .career-table th {
-  background: var(--surface-soft, #f8fafc);
+  background: var(--surface-soft, #FAFAFA);
   color: var(--text-secondary, #52525b);
   font-size: 0.775rem;
   text-transform: uppercase;
@@ -434,7 +434,7 @@
 }
 
 .career-table tr:hover td {
-  background: rgba(37, 99, 235, 0.02);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 /* ==========================================================================

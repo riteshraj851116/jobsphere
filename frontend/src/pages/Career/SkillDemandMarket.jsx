@@ -79,14 +79,14 @@ export default function SkillDemandMarket() {
       </div>
 
       {/* Grounded Platform Notice */}
-      <div className="career-card" style={{ background: "rgba(37, 99, 235, 0.04)", border: "1px solid rgba(37, 99, 235, 0.2)", marginBottom: "1.5rem" }}>
+      <div className="career-card" style={{ background: "rgba(0, 0, 0, 0.04)", border: "1px solid rgba(0, 0, 0, 0.2)", marginBottom: "1.5rem" }}>
         <div style={{ display: "flex", gap: "0.75rem", alignItems: "flex-start" }}>
           <ShieldCheck size={20} className="text-primary" style={{ flexShrink: 0, marginTop: "2px" }} />
           <div>
             <h4 style={{ fontSize: "0.95rem", fontWeight: 600, margin: "0 0 0.25rem" }}>
               100% Platform-Verified Data
             </h4>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: 0, lineHeight: 1.5 }}>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: 0, lineHeight: 1.5 }}>
               JobSphere does not fabricate third-party macro statistics. All percentages and counts shown here are computed directly from real job openings, applicant benchmarks, and skill tags active on this platform.
             </p>
           </div>
@@ -105,7 +105,7 @@ export default function SkillDemandMarket() {
             <h2 style={{ fontSize: "1.25rem", fontWeight: 700, marginBottom: "0.5rem", display: "flex", alignItems: "center", gap: "0.5rem" }}>
               <Flame size={20} className="text-primary" /> Most In-Demand Skills on JobSphere
             </h2>
-            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", marginBottom: "1.25rem" }}>
+            <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", marginBottom: "1.25rem" }}>
               Frequency of requirements extracted across all active platform job descriptions.
             </p>
 
@@ -121,7 +121,7 @@ export default function SkillDemandMarket() {
                         </span>
                       )}
                     </div>
-                    <span style={{ color: "var(--accent, #2563eb)" }}>
+                    <span style={{ color: "var(--accent, #000000)" }}>
                       {sk.percentage}% of postings ({sk.count || Math.round(sk.percentage * 0.3)} jobs)
                     </span>
                   </div>
@@ -145,14 +145,14 @@ export default function SkillDemandMarket() {
 
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {emergingSkills.map((item, i) => (
-                  <div key={i} style={{ padding: "0.75rem", background: "var(--bg-secondary, #f8fafc)", borderRadius: "8px", border: "1px solid var(--border, #e2e8f0)" }}>
+                  <div key={i} style={{ padding: "0.75rem", background: "var(--bg-secondary, #FAFAFA)", borderRadius: "8px", border: "1px solid var(--border, #DDDDDD)" }}>
                     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.25rem" }}>
                       <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{item.skill}</span>
                       <span className="career-badge-verified" style={{ fontSize: "0.8rem", fontWeight: 700 }}>
                         {item.growthRate}
                       </span>
                     </div>
-                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary, #64748b)", margin: 0 }}>
+                    <p style={{ fontSize: "0.8rem", color: "var(--text-secondary, #666666)", margin: 0 }}>
                       {item.context}
                     </p>
                   </div>
@@ -170,7 +170,7 @@ export default function SkillDemandMarket() {
 
               <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
                 {popularRoles.map((r, i) => (
-                  <div key={i} style={{ padding: "0.75rem", background: "var(--bg-secondary, #f8fafc)", borderRadius: "8px", border: "1px solid var(--border, #e2e8f0)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div key={i} style={{ padding: "0.75rem", background: "var(--bg-secondary, #FAFAFA)", borderRadius: "8px", border: "1px solid var(--border, #DDDDDD)", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                     <div>
                       <h4 style={{ fontSize: "0.95rem", fontWeight: 600, margin: "0 0 0.2rem" }}>{r.title}</h4>
                       <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>

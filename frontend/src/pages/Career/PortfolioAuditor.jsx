@@ -73,7 +73,7 @@ export default function PortfolioAuditor() {
         </div>
       ) : error ? (
         <div className="career-card" style={{ textAlign: "center", padding: "3rem 1rem" }}>
-          <AlertTriangle size={36} style={{ color: "#ef4444", margin: "0 auto 0.75rem" }} />
+          <AlertTriangle size={36} style={{ color: "#222222", margin: "0 auto 0.75rem" }} />
           <h3 style={{ fontSize: "1.1rem", fontWeight: 600 }}>Audit Could Not Be Completed</h3>
           <p style={{ color: "var(--text-secondary)", fontSize: "0.9rem", margin: "0.5rem auto 1.5rem" }}>{error}</p>
           <button className="career-btn-primary" onClick={runAudit}>Try Again</button>
@@ -89,14 +89,14 @@ export default function PortfolioAuditor() {
               <h2 style={{ fontSize: "1.3rem", fontWeight: 700, margin: 0 }}>
                 Portfolio Health Rating
               </h2>
-              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: "0.25rem 0 0" }}>
+              <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: "0.25rem 0 0" }}>
                 Evaluated against current hiring expectations for full-stack and systems engineering.
               </p>
             </div>
 
             <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
               <div style={{ textAlign: "center" }}>
-                <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--accent, #2563eb)", lineHeight: 1 }}>
+                <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--accent, #000000)", lineHeight: 1 }}>
                   {audit.overallScore || 70}
                 </div>
                 <div style={{ fontSize: "0.75rem", textTransform: "uppercase", color: "var(--text-secondary)", marginTop: "0.25rem" }}>
@@ -129,7 +129,7 @@ export default function PortfolioAuditor() {
           {/* Strengths & Weaknesses */}
           <div className="career-grid-2">
             <div className="career-card">
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#10b981" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#222222" }}>
                 <CheckCircle size={18} /> Portfolio Strengths
               </h3>
               <ul style={{ paddingLeft: "1.25rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.9rem" }}>
@@ -143,7 +143,7 @@ export default function PortfolioAuditor() {
             </div>
 
             <div className="career-card">
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#f59e0b" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 700, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#333333" }}>
                 <AlertTriangle size={18} /> Gaps & Weaknesses
               </h3>
               <ul style={{ paddingLeft: "1.25rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.9rem" }}>
@@ -164,7 +164,7 @@ export default function PortfolioAuditor() {
             </h3>
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
               {(audit.priorityImprovements || []).map((imp, idx) => (
-                <div key={idx} style={{ padding: "0.75rem 1rem", background: "var(--bg-secondary, #f8fafc)", borderRadius: "8px", border: "1px solid var(--border, #e2e8f0)", display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
+                <div key={idx} style={{ padding: "0.75rem 1rem", background: "var(--bg-secondary, #FAFAFA)", borderRadius: "8px", border: "1px solid var(--border, #DDDDDD)", display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
                   <span className="career-score-pill" style={{ fontSize: "0.75rem", marginTop: "2px" }}>
                     #{idx + 1}
                   </span>
@@ -173,7 +173,7 @@ export default function PortfolioAuditor() {
                       {typeof imp === "string" ? imp : imp.title}
                     </h4>
                     {imp.detail && (
-                      <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #64748b)", margin: 0 }}>
+                      <p style={{ fontSize: "0.85rem", color: "var(--text-secondary, #666666)", margin: 0 }}>
                         {imp.detail}
                       </p>
                     )}

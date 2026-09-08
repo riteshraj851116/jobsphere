@@ -60,7 +60,7 @@ const PathScene = () => {
           >
             <mesh scale={isActive ? 1.3 : 1}>
               <sphereGeometry args={[0.18, 16, 16]} />
-              <meshBasicMaterial color={isActive ? '#2563EB' : '#18181B'} />
+              <meshBasicMaterial color={isActive ? '#000000' : '#333333'} />
             </mesh>
 
             <Html distanceFactor={8.5} position={[0, 0.35, 0]} center>

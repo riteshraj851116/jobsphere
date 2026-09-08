@@ -148,8 +148,8 @@ const CareerAutopilot = () => {
                       style={{
                         padding: "1rem 1.25rem",
                         borderRadius: "12px",
-                        background: isSelected ? "var(--accent-light, #eff6ff)" : "var(--surface, #ffffff)",
-                        border: isSelected ? "1.5px solid var(--accent, #2563eb)" : "1px solid var(--border, #e4e4e7)",
+                        background: isSelected ? "var(--accent-light, #F5F5F5)" : "var(--surface, #ffffff)",
+                        border: isSelected ? "1.5px solid var(--accent, #000000)" : "1px solid var(--border, #e4e4e7)",
                         cursor: "pointer",
                         boxShadow: "var(--shadow-xs)",
                         transition: "all 0.2s ease",
@@ -218,9 +218,9 @@ const CareerAutopilot = () => {
                           style={{ cursor: "pointer" }}
                         >
                           {isDone ? (
-                            <CheckCircle2 size={22} color="#16a34a" style={{ flexShrink: 0, marginTop: 2 }} />
+                            <CheckCircle2 size={22} color="#111111" style={{ flexShrink: 0, marginTop: 2 }} />
                           ) : (
-                            <Circle size={22} color="#94a3b8" style={{ flexShrink: 0, marginTop: 2 }} />
+                            <Circle size={22} color="#888888" style={{ flexShrink: 0, marginTop: 2 }} />
                           )}
 
                           <div style={{ flex: 1 }}>
@@ -232,7 +232,7 @@ const CareerAutopilot = () => {
                                   textTransform: "uppercase",
                                   padding: "2px 6px",
                                   borderRadius: "4px",
-                                  background: "#e2e8f0",
+                                  background: "#DDDDDD",
                                   color: "var(--text-secondary)",
                                 }}
                               >
@@ -241,7 +241,7 @@ const CareerAutopilot = () => {
                               <strong
                                 style={{
                                   fontSize: "0.925rem",
-                                  color: isDone ? "#15803d" : "var(--text-primary)",
+                                  color: isDone ? "#000000" : "var(--text-primary)",
                                   textDecoration: isDone ? "line-through" : "none",
                                 }}
                               >

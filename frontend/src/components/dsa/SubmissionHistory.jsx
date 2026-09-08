@@ -63,11 +63,11 @@ const SubmissionHistory = ({ problemId, onSelectCode }) => {
             <tr key={s._id}>
               <td>
                 {s.status === "Accepted" ? (
-                  <span style={{ color: "#10b981", display: "inline-flex", alignItems: "center", gap: "0.25rem", fontWeight: 600 }}>
+                  <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: "0.25rem", fontWeight: 600 }}>
                     <CheckCircle2 size={13} /> Accepted
                   </span>
                 ) : (
-                  <span style={{ color: "#ef4444", display: "inline-flex", alignItems: "center", gap: "0.25rem", fontWeight: 600 }}>
+                  <span style={{ color: "#222222", display: "inline-flex", alignItems: "center", gap: "0.25rem", fontWeight: 600 }}>
                     <XCircle size={13} /> {s.status}
                   </span>
                 )}
@@ -125,7 +125,7 @@ const SubmissionHistory = ({ problemId, onSelectCode }) => {
                   onClick={() => handleCopyCode(selectedSub.code)}
                   title="Copy code"
                 >
-                  {copied ? <Check size={14} color="#10b981" /> : <Copy size={14} />}
+                  {copied ? <Check size={14} color="#222222" /> : <Copy size={14} />}
                 </button>
                 <button
                   type="button"
@@ -142,7 +142,7 @@ const SubmissionHistory = ({ problemId, onSelectCode }) => {
 
             <pre
               style={{
-                background: "var(--surface-soft, #f8fafc)",
+                background: "var(--surface-soft, #FAFAFA)",
                 border: "1px solid var(--dsa-border)",
                 borderRadius: "8px",
                 padding: "1rem",

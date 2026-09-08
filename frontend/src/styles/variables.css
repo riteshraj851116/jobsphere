@@ -1,92 +1,116 @@
 /* =========================================================
-   JOBSPHERE — DESIGN TOKENS
-   Premium Modern Professional System
+   JOBSPHERE — MONOCHROME DESIGN TOKENS
+   Strict Black, White & Grayscale Editorial System
+   Allowed: #000000, #111111, #222222, #333333, #666666,
+            #888888, #AAAAAA, #DDDDDD, #F5F5F5, #FFFFFF
 ========================================================= */
 
 :root {
   /* =======================================================
-     COLORS — White / Off-white dominant
+     CORE MONOCHROME PALETTE
   ======================================================= */
+  --black: #000000;
+  --black-pure: #000000;
+  --black-soft: #111111;
+  --black-muted: #222222;
+  --black-subtle: #333333;
 
+  --gray-900: #111111;
+  --gray-800: #222222;
+  --gray-700: #333333;
+  --gray-600: #666666;
+  --gray-500: #888888;
+  --gray-400: #AAAAAA;
+  --gray-300: #CCCCCC;
+  --gray-200: #DDDDDD;
+  --gray-100: #F5F5F5;
+  --gray-50: #FAFAFA;
+
+  --white: #FFFFFF;
+
+  /* =======================================================
+     SURFACES & BACKGROUNDS
+  ======================================================= */
   --bg: #FFFFFF;
   --bg-secondary: #FAFAFA;
+  --bg-subtle: #F5F5F5;
   --surface: #FFFFFF;
-  --surface-soft: #F7F7F5;
-  --surface-muted: #F3F4F6;
-  --surface-hover: #F0F0EE;
-  --surface-active: #E8E8E6;
+  --surface-soft: #F5F5F5;
+  --surface-muted: #EEEEEE;
+  --surface-hover: #F0F0F0;
+  --surface-active: #E5E5E5;
 
-  --text: #111111;
-  --text-primary: #18181B;
-  --text-secondary: #52525B;
-  --text-muted: #71717A;
-  --text-placeholder: #A1A1AA;
+  /* =======================================================
+     TEXT HIERARCHY
+  ======================================================= */
+  --text: #000000;
+  --text-primary: #111111;
+  --text-secondary: #555555;
+  --text-muted: #777777;
+  --text-placeholder: #AAAAAA;
   --text-inverse: #FFFFFF;
 
   /* =======================================================
-     ACCENT — One subtle blue
+     ACCENTS — Strict Monochrome
   ======================================================= */
-
-  --accent: #2563EB;
-  --accent-hover: #1D4ED8;
-  --accent-light: #EFF6FF;
+  --accent: #000000;
+  --accent-hover: #222222;
+  --accent-light: #F5F5F5;
   --accent-text: #FFFFFF;
 
   /* =======================================================
      BORDERS
   ======================================================= */
-
-  --border: #E4E4E7;
-  --border-light: #EAEAEA;
-  --border-strong: #D4D4D8;
-  --border-focus: #2563EB;
-
-  /* =======================================================
-     STATUS
-  ======================================================= */
-
-  --success: #16A34A;
-  --success-bg: #F0FDF4;
-  --success-border: #BBF7D0;
-
-  --danger: #DC2626;
-  --danger-bg: #FEF2F2;
-  --danger-border: #FECACA;
-
-  --warning: #D97706;
-  --warning-bg: #FFFBEB;
-  --warning-border: #FDE68A;
-
-  --info: #2563EB;
-  --info-bg: #EFF6FF;
-  --info-border: #BFDBFE;
+  --border: #DDDDDD;
+  --border-light: #EEEEEE;
+  --border-strong: #000000;
+  --border-focus: #000000;
 
   /* =======================================================
-     RADIUS — Soft, modern
+     STATUS — Grayscale Editorial Indicators
   ======================================================= */
+  --success: #111111;
+  --success-bg: #F5F5F5;
+  --success-border: #DDDDDD;
+  --success-text: #111111;
 
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 20px;
+  --danger: #222222;
+  --danger-bg: #F5F5F5;
+  --danger-border: #AAAAAA;
+  --danger-text: #222222;
+
+  --warning: #333333;
+  --warning-bg: #F5F5F5;
+  --warning-border: #CCCCCC;
+  --warning-text: #333333;
+
+  --info: #111111;
+  --info-bg: #F5F5F5;
+  --info-border: #DDDDDD;
+  --info-text: #111111;
+
+  /* =======================================================
+     BORDER RADIUS — Clean Architectural
+  ======================================================= */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
   --radius-full: 9999px;
 
   /* =======================================================
-     LAYOUT
+     LAYOUT & CONTAINERS
   ======================================================= */
-
-  --container: 1200px;
-  --container-wide: 1400px;
-  --container-narrow: 720px;
-
+  --container: 1240px;
+  --container-wide: 1440px;
+  --container-narrow: 760px;
   --navbar-height: 64px;
 
   /* =======================================================
      SPACING
   ======================================================= */
-
   --space-1: 0.25rem;
   --space-2: 0.5rem;
   --space-3: 0.75rem;
@@ -102,23 +126,21 @@
   --space-32: 8rem;
 
   /* =======================================================
-     SHADOWS — Subtle, layered
+     SHADOWS — Crisp Minimalist Depth
   ======================================================= */
-
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.02);
-  --shadow-card-hover: 0 12px 30px -4px rgba(15, 23, 42, 0.08), 0 4px 12px -2px rgba(15, 23, 42, 0.04);
-  --shadow-floating: 0 20px 40px -8px rgba(15, 23, 42, 0.12), 0 8px 16px -4px rgba(15, 23, 42, 0.06);
-  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.2);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 12px 24px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.1);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.05);
+  --shadow-card-hover: 0 8px 24px rgba(0, 0, 0, 0.09);
+  --shadow-floating: 0 16px 32px rgba(0, 0, 0, 0.12);
+  --focus-ring: 0 0 0 2px #000000;
 
   /* =======================================================
      TRANSITIONS
   ======================================================= */
-
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-smooth: cubic-bezier(0.2, 0.8, 0.2, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -130,7 +152,6 @@
   /* =======================================================
      Z-INDEX
   ======================================================= */
-
   --z-base: 0;
   --z-content: 10;
   --z-dropdown: 100;
@@ -143,14 +164,9 @@
   /* =======================================================
      TYPOGRAPHY
   ======================================================= */
-
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   --font-mono: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
 }
-
-/* =========================================================
-   MOBILE OVERRIDES
-========================================================= */
 
 @media (max-width: 768px) {
   :root {

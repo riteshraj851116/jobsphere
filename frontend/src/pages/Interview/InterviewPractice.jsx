@@ -133,9 +133,9 @@ const InterviewPractice = () => {
         {error && (
           <div
             style={{
-              background: "#fef2f2",
-              border: "1px solid #fecaca",
-              color: "#dc2626",
+              background: "#FAFAFA",
+              border: "1px solid #DDDDDD",
+              color: "#222222",
               padding: "12px 16px",
               borderRadius: "12px",
               marginBottom: "1.5rem",

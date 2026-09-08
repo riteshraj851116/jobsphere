@@ -107,7 +107,7 @@ const InterviewResult = () => {
       <div className="interview-page">
         <div className="interview-container">
           <div className="review-card" style={{ textAlign: "center", padding: "3rem" }}>
-            <AlertCircle size={48} color="#dc2626" style={{ margin: "0 auto 1rem" }} />
+            <AlertCircle size={48} color="#222222" style={{ margin: "0 auto 1rem" }} />
             <h2>Interview Result Not Found</h2>
             <p style={{ color: "#71717a", margin: "1rem 0" }}>{error || "Unable to load results."}</p>
             <Link to="/interview-practice" className="btn-session primary">
@@ -270,9 +270,9 @@ const InterviewResult = () => {
                         alignItems: "center",
                         gap: "4px",
                         padding: "3px 8px",
-                        background: "#f0fdf4",
-                        color: "#16a34a",
-                        border: "1px solid #bbf7d0",
+                        background: "#FAFAFA",
+                        color: "#111111",
+                        border: "1px solid #DDDDDD",
                         borderRadius: "6px",
                         fontSize: "0.75rem",
                         fontWeight: "700"
@@ -288,9 +288,9 @@ const InterviewResult = () => {
                         alignItems: "center",
                         gap: "4px",
                         padding: "3px 8px",
-                        background: "#fffbeb",
-                        color: "#d97706",
-                        border: "1px solid #fde68a",
+                        background: "#FAFAFA",
+                        color: "#222222",
+                        border: "1px solid #DDDDDD",
                         borderRadius: "6px",
                         fontSize: "0.75rem",
                         fontWeight: "700"

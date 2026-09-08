@@ -81,15 +81,15 @@
   border: 1px solid rgba(228, 228, 231, 0.95);
   border-radius: 16px;
 
-  box-shadow: 0 10px 30px -5px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 6px;
   box-sizing: border-box;
 }
 
 .jobs-search:focus-within {
-  border-color: var(--accent, #2563eb);
-  box-shadow: 0 16px 40px -8px rgba(37, 99, 235, 0.15), 0 0 0 3px rgba(37, 99, 235, 0.15);
+  border-color: var(--accent, #000000);
+  box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.15), 0 0 0 3px rgba(0, 0, 0, 0.15);
 }
 
 .jobs-search-field {
@@ -144,7 +144,7 @@
   height: 38px;
   align-self: center;
 
-  background: var(--border, #e2e8f0);
+  background: var(--border, #DDDDDD);
 }
 
 .jobs-search > button {
@@ -159,7 +159,7 @@
   border: 0;
   border-radius: 12px;
 
-  background: var(--accent, #2563eb);
+  background: var(--accent, #000000);
   color: #ffffff;
 
   font-family: inherit;
@@ -168,14 +168,14 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
-  box-shadow: 0 3px 12px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.25);
   transition: all 0.2s ease;
 }
 
 .jobs-search > button:hover {
-  background: var(--accent-hover, #1d4ed8);
+  background: var(--accent-hover, #111111);
   transform: translateY(-1px);
-  box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 .jobs-search > button:active {
@@ -236,11 +236,11 @@
   margin-bottom: 1.5rem;
   padding: 0.65rem 1rem;
 
-  border: 1px solid var(--border, #e2e8f0);
+  border: 1px solid var(--border, #DDDDDD);
   border-radius: 8px;
 
   background: var(--bg-secondary, #fafafa);
-  color: var(--text-primary, #0f172a);
+  color: var(--text-primary, #111111);
 
   font-family: inherit;
   font-size: 0.75rem;
@@ -251,9 +251,9 @@
 }
 
 .clear-filters:hover {
-  background: #f1f5f9;
-  border-color: #cbd5e1;
-  color: #2563eb;
+  background: #F5F5F5;
+  border-color: #CCCCCC;
+  color: #000000;
 }
 
 .filter-group {
@@ -481,9 +481,9 @@
   height: 34px;
   padding: 0 0.85rem;
   border-radius: 8px;
-  border: 1px solid rgba(37, 99, 235, 0.22);
-  background: rgba(37, 99, 235, 0.06);
-  color: #2563eb;
+  border: 1px solid rgba(0, 0, 0, 0.22);
+  background: rgba(0, 0, 0, 0.06);
+  color: #000000;
   font-family: inherit;
   font-size: 0.76rem;
   font-weight: 600;
@@ -493,11 +493,11 @@
 }
 
 .job-card-msg-btn:hover {
-  background: #2563eb;
+  background: #000000;
   color: #ffffff;
-  border-color: #2563eb;
+  border-color: #000000;
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 .job-arrow {
@@ -935,33 +935,33 @@
   font-weight: 700;
   margin-top: 4px;
   letter-spacing: 0.02em;
-  background: #ecfdf5;
-  color: #059669;
-  border: 1px solid #a7f3d0;
+  background: #FAFAFA;
+  color: #111111;
+  border: 1px solid #CCCCCC;
 }
 
 .smart-match-badge.high {
-  background: #ecfdf5;
+  background: #FAFAFA;
   color: #047857;
-  border-color: #6ee7b7;
+  border-color: #888888;
 }
 
 .smart-match-badge.medium {
-  background: #eff6ff;
-  color: #2563eb;
-  border-color: #bfdbfe;
+  background: #F5F5F5;
+  color: #000000;
+  border-color: #DDDDDD;
 }
 
 .smart-match-badge.low {
-  background: #f8fafc;
-  color: #64748b;
-  border-color: #e2e8f0;
+  background: #FAFAFA;
+  color: #666666;
+  border-color: #DDDDDD;
 }
 
 .skill-tag-match {
-  background: #f0fdf4 !important;
+  background: #FAFAFA !important;
   color: #166534 !important;
-  border: 1px solid #bbf7d0 !important;
+  border: 1px solid #DDDDDD !important;
   display: inline-flex;
   align-items: center;
   gap: 3px;
@@ -983,7 +983,7 @@
   gap: 1.25rem;
   padding: 1.5rem;
   background: #ffffff;
-  border: 1px solid #e2e8f0;
+  border: 1px solid #DDDDDD;
   border-radius: 12px;
   margin-bottom: 1rem;
   animation: pulse-skeleton 1.5s ease-in-out infinite;
@@ -998,7 +998,7 @@
   width: 48px;
   height: 48px;
   border-radius: 10px;
-  background: #f1f5f9;
+  background: #F5F5F5;
 }
 
 .skeleton-lines {
@@ -1011,7 +1011,7 @@
 .skeleton-line {
   height: 14px;
   border-radius: 4px;
-  background: #f1f5f9;
+  background: #F5F5F5;
 }
 
 .skeleton-line.title {

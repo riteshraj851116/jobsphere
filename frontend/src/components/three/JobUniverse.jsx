@@ -5,13 +5,13 @@ import * as THREE from 'three';
 import SceneShell from './SceneShell';
 
 const CATEGORIES = [
-  { name: 'Frontend', pos: [-2.2, 0.8, 0], color: '#18181B' },
-  { name: 'Backend', pos: [2.0, 1.0, -0.4], color: '#27272A' },
-  { name: 'Full Stack', pos: [0, 0, 0.2], color: '#2563EB', isCenter: true },
-  { name: 'Design', pos: [-1.8, -1.2, 0.3], color: '#3F3F46' },
-  { name: 'DevOps', pos: [1.8, -1.0, 0.2], color: '#52525B' },
-  { name: 'Data', pos: [0.2, 1.8, -0.2], color: '#71717A' },
-  { name: 'Product', pos: [-0.4, -1.8, -0.3], color: '#3F3F46' }
+  { name: 'Frontend', pos: [-2.2, 0.8, 0], color: '#111111' },
+  { name: 'Backend', pos: [2.0, 1.0, -0.4], color: '#222222' },
+  { name: 'Full Stack', pos: [0, 0, 0.2], color: '#000000', isCenter: true },
+  { name: 'Design', pos: [-1.8, -1.2, 0.3], color: '#333333' },
+  { name: 'DevOps', pos: [1.8, -1.0, 0.2], color: '#555555' },
+  { name: 'Data', pos: [0.2, 1.8, -0.2], color: '#777777' },
+  { name: 'Product', pos: [-0.4, -1.8, -0.3], color: '#333333' }
 ];
 
 const UniverseScene = ({ onSelectCategory }) => {
@@ -72,7 +72,7 @@ const UniverseScene = ({ onSelectCategory }) => {
             {/* Cluster core */}
             <mesh scale={isHovered ? 1.35 : 1}>
               <sphereGeometry args={[cat.isCenter ? 0.32 : 0.22, 20, 20]} />
-              <meshBasicMaterial color={isHovered ? '#2563EB' : cat.color} />
+              <meshBasicMaterial color={isHovered ? '#000000' : cat.color} />
             </mesh>
 
             {/* Orbiting satellite node */}
