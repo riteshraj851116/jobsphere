@@ -69,15 +69,18 @@ Nice to Have:
   };
 
   return (
-    <div className="career-os-container">
+    <div className="career-container">
+      <div className="career-content-limit">
       <CareerSubNav />
 
-      <div className="career-header-row">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
         <div>
-          <h1 className="career-os-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <FileSearch size={28} className="text-primary" /> AI Job Reality Analyzer
-          </h1>
-          <p className="career-os-subtitle">
+          <div className="career-badge">
+            <FileSearch size={13} />
+            <span>Job Reality Analyzer</span>
+          </div>
+          <h1 className="career-title">AI Job Reality Analyzer</h1>
+          <p className="career-subtitle">
             Paste any job posting. The AI extracts unvarnished reality, highlights interview focus areas, and delivers an evidence-grounded &ldquo;Should I apply?&rdquo; verdict.
           </p>
         </div>
@@ -130,7 +133,7 @@ Nice to Have:
           </div>
 
           {error && (
-            <div style={{ padding: "0.75rem 1rem", background: "rgba(0, 0, 0, 0.1)", border: "1px solid #222222", borderRadius: "8px", color: "#222222", fontSize: "0.875rem" }}>
+            <div style={{ padding: "0.75rem 1rem", background: "rgba(139, 92, 246, 0.08)", border: "1px solid rgba(139, 92, 246, 0.2)", borderRadius: "10px", color: "#94a3b8", fontSize: "0.875rem" }}>
               {error}
             </div>
           )}
@@ -155,7 +158,7 @@ Nice to Have:
       {analysis && (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
           {/* Verdict Banner */}
-          <div className="career-card" style={{ borderLeft: "4px solid var(--accent, #000000)" }}>
+          <div className="career-card" style={{ borderLeft: "4px solid #a78bfa" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem", marginBottom: "0.75rem" }}>
               <div>
                 <span style={{ fontSize: "0.8rem", textTransform: "uppercase", letterSpacing: "0.05em", color: "var(--text-secondary, #666666)" }}>
@@ -170,7 +173,7 @@ Nice to Have:
               </div>
             </div>
 
-            <p style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "var(--text, #111111)", marginBottom: "1rem" }}>
+            <p style={{ fontSize: "0.95rem", lineHeight: 1.6, color: "#cbd5e1", marginBottom: "1rem" }}>
               {analysis.verdictExplanation}
             </p>
 
@@ -246,7 +249,7 @@ Nice to Have:
           {/* Potential Concerns / Missing Details */}
           <div className="career-grid-2">
             <div className="career-card">
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#333333" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 600, marginBottom: "0.75rem", display: "flex", alignItems: "center", gap: "0.5rem", color: "#f1f5f9" }}>
                 <AlertTriangle size={18} /> Potential Concerns / Red Flags
               </h3>
               <ul style={{ paddingLeft: "1.25rem", margin: 0, display: "flex", flexDirection: "column", gap: "0.5rem", fontSize: "0.9rem" }}>
@@ -275,6 +278,7 @@ Nice to Have:
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

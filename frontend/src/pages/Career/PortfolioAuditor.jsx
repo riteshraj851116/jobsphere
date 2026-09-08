@@ -44,15 +44,18 @@ export default function PortfolioAuditor() {
   };
 
   return (
-    <div className="career-os-container">
+    <div className="career-container">
+      <div className="career-content-limit">
       <CareerSubNav />
 
-      <div className="career-header-row">
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "2rem", flexWrap: "wrap", gap: "1rem" }}>
         <div>
-          <h1 className="career-os-title" style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <FolderGit2 size={28} className="text-primary" /> AI Portfolio & Project Auditor
-          </h1>
-          <p className="career-os-subtitle">
+          <div className="career-badge">
+            <FolderGit2 size={13} />
+            <span>Portfolio Auditor</span>
+          </div>
+          <h1 className="career-title">AI Portfolio & Project Auditor</h1>
+          <p className="career-subtitle">
             Rigorous technical depth audit of your projects, GitHub repositories, live deployments, and architectural variety grounded in stored profile data.
           </p>
         </div>
@@ -69,7 +72,7 @@ export default function PortfolioAuditor() {
       {loading ? (
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", padding: "4rem 0" }}>
           <div className="career-spinner" />
-          <p style={{ marginTop: "1rem", color: "var(--text-secondary)" }}>Auditing technical architecture of your project portfolio...</p>
+          <p style={{ marginTop: "1rem", color: "#94a3b8" }}>Auditing technical architecture of your project portfolio...</p>
         </div>
       ) : error ? (
         <div className="career-card" style={{ textAlign: "center", padding: "3rem 1rem" }}>
@@ -193,6 +196,7 @@ export default function PortfolioAuditor() {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 }

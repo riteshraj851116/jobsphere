@@ -74,8 +74,13 @@ router.post("/save-job/:jobId", protect, saveJob);
 router.post("/:id/follow", protect, followUser);
 router.delete("/:id/follow", protect, unfollowUser);
 router.post("/:id/unfollow", protect, unfollowUser);
+router.post("/follow/:id", protect, followUser);
+router.delete("/follow/:id", protect, unfollowUser);
+router.post("/unfollow/:id", protect, unfollowUser);
 router.get("/:id/followers", getFollowers);
 router.get("/:id/following", getFollowing);
+router.get("/followers/:id", getFollowers);
+router.get("/following/:id", getFollowing);
 
 /* ==================================
    SOCIAL: BLOCK / UNBLOCK

@@ -23,10 +23,12 @@ const createJob = async (req, res) => {
       deadline
     } = req.body;
 
+    const companyInput = company || req.body?.companyName;
+
     if (
       !title ||
       !description ||
-      !company ||
+      !companyInput ||
       !location ||
       !jobType ||
       !experienceLevel ||
@@ -39,25 +41,36 @@ const createJob = async (req, res) => {
       });
     }
 
-    const companyExists = await Company.findById(company);
+    let companyId = null;
 
-    if (!companyExists) {
-      return res.status(404).json({
-        success: false,
-        message: "Company not found"
+    if (company && isValidObjectId(String(company))) {
+      const companyExists = await Company.findById(company);
+      if (!companyExists) {
+        return res.status(404).json({
+          success: false,
+          message: "Company not found"
+        });
+      }
+      companyId = companyExists._id;
+    } else {
+      const cName = String(companyInput || "Independent Employer").trim();
+      let comp = await Company.findOne({
+        $or: [
+          { name: new RegExp(`^${cName}$`, "i") },
+          { recruiter: req.user._id }
+        ]
       });
-    }
 
-    if (
-      companyExists.recruiter &&
-      companyExists.recruiter.toString() !==
-      req.user._id.toString()
-    ) {
-      return res.status(403).json({
-        success: false,
-        message:
-          "You can only create jobs for your own company"
-      });
+      if (!comp) {
+        comp = await Company.create({
+          name: cName,
+          description: req.body?.companyDescription || `${cName} is a premier technology and innovation organization hiring top talent.`,
+          recruiter: req.user._id,
+          location: location || "Remote",
+          industry: category || "Technology"
+        });
+      }
+      companyId = comp._id;
     }
 
     if (
@@ -93,7 +106,7 @@ const createJob = async (req, res) => {
             String(skill).trim().toLowerCase()
           )
         : [],
-      company: companyExists._id,
+      company: companyId,
       recruiter: req.user._id,
       location: location.trim(),
       isRemote: Boolean(isRemote),

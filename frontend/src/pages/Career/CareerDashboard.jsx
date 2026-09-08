@@ -108,21 +108,21 @@ const CareerDashboard = () => {
               </div>
             </div>
 
-            <h3 style={{ margin: "0 0 0.35rem", fontSize: "1.2rem", fontWeight: 700, color: "var(--text-primary)" }}>
+            <h3 style={{ margin: "0 0 0.35rem", fontSize: "1.2rem", fontWeight: 700, color: "#f1f5f9" }}>
               Career Readiness
             </h3>
-            <p style={{ margin: "0 0 1rem", fontSize: "0.825rem", color: "var(--text-secondary)" }}>
+            <p style={{ margin: "0 0 1rem", fontSize: "0.825rem", color: "#94a3b8" }}>
               Holistic score evaluated across 5 core competency pillars.
             </p>
 
-            <div style={{ width: "100%", textAlign: "left", fontSize: "0.8rem", color: "var(--text-secondary)" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 4 }}>
+            <div style={{ width: "100%", textAlign: "left", fontSize: "0.8rem", color: "#94a3b8" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
                 <span>Target Role:</span>
-                <strong>{profile.targetRole || "Full Stack Developer"}</strong>
+                <strong style={{ color: "#a78bfa" }}>{profile.targetRole || "Full Stack Developer"}</strong>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>Experience Level:</span>
-                <strong>{profile.experienceLevel || "Junior"}</strong>
+                <strong style={{ color: "#22d3ee" }}>{profile.experienceLevel || "Junior"}</strong>
               </div>
             </div>
           </div>
@@ -132,7 +132,7 @@ const CareerDashboard = () => {
             <div>
               <div className="career-card-header">
                 <h3 className="career-card-title">
-                  <Cpu size={18} color="var(--accent, #000000)" />
+                  <Cpu size={18} color="#a78bfa" />
                   Core Competency Gauges
                 </h3>
                 <button
@@ -152,10 +152,10 @@ const CareerDashboard = () => {
                 <div className="readiness-item">
                   <div className="readiness-label-row">
                     <span>Job Readiness</span>
-                    <span>{profile.jobReadiness || 65}%</span>
+                    <span style={{ color: "#34d399" }}>{profile.jobReadiness || 65}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.jobReadiness || 65}%` }} />
+                    <div className="readiness-fill fill-emerald" style={{ width: `${profile.jobReadiness || 65}%` }} />
                   </div>
                 </div>
 
@@ -163,10 +163,10 @@ const CareerDashboard = () => {
                 <div className="readiness-item">
                   <div className="readiness-label-row">
                     <span>Interview Readiness</span>
-                    <span>{profile.interviewReadiness || 50}%</span>
+                    <span style={{ color: "#a78bfa" }}>{profile.interviewReadiness || 50}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.interviewReadiness || 50}%`, background: "#111111" }} />
+                    <div className="readiness-fill fill-violet" style={{ width: `${profile.interviewReadiness || 50}%` }} />
                   </div>
                 </div>
 
@@ -174,10 +174,10 @@ const CareerDashboard = () => {
                 <div className="readiness-item">
                   <div className="readiness-label-row">
                     <span>DSA Arena Readiness</span>
-                    <span>{profile.dsaReadiness || 45}%</span>
+                    <span style={{ color: "#22d3ee" }}>{profile.dsaReadiness || 45}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.dsaReadiness || 45}%`, background: "#222222" }} />
+                    <div className="readiness-fill fill-cyan" style={{ width: `${profile.dsaReadiness || 45}%` }} />
                   </div>
                 </div>
 
@@ -185,10 +185,10 @@ const CareerDashboard = () => {
                 <div className="readiness-item">
                   <div className="readiness-label-row">
                     <span>Project Strength</span>
-                    <span>{profile.projectStrength || 70}%</span>
+                    <span style={{ color: "#fbbf24" }}>{profile.projectStrength || 70}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.projectStrength || 70}%`, background: "#8b5cf6" }} />
+                    <div className="readiness-fill fill-amber" style={{ width: `${profile.projectStrength || 70}%` }} />
                   </div>
                 </div>
 
@@ -196,10 +196,10 @@ const CareerDashboard = () => {
                 <div className="readiness-item">
                   <div className="readiness-label-row">
                     <span>Resume ATS Score</span>
-                    <span>{profile.resumeStrength || 60}%</span>
+                    <span style={{ color: "#fb7185" }}>{profile.resumeStrength || 60}%</span>
                   </div>
                   <div className="readiness-track">
-                    <div className="readiness-fill" style={{ width: `${profile.resumeStrength || 60}%`, background: "#333333" }} />
+                    <div className="readiness-fill fill-rose" style={{ width: `${profile.resumeStrength || 60}%` }} />
                   </div>
                 </div>
               </div>
@@ -229,10 +229,10 @@ const CareerDashboard = () => {
           <div className="career-card">
             <div className="career-card-header">
               <h3 className="career-card-title">
-                <Target size={18} color="var(--accent, #000000)" />
+                <Target size={18} color="#34d399" />
                 Today's High-Yield Actions
               </h3>
-              <span style={{ fontSize: "0.775rem", color: "var(--text-muted)" }}>Prioritized by Impact</span>
+              <span style={{ fontSize: "0.775rem", color: "#64748b" }}>Prioritized by Impact</span>
             </div>
 
             <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
@@ -241,18 +241,25 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Target size={18} color="var(--accent, #000000)" />
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(244, 63, 94, 0.15), rgba(244, 63, 94, 0.08))",
+                  padding: "0.55rem",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+                  <Target size={18} color="#fb7185" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#f1f5f9" }}>
                     1. Close Key Skill Gap ({profile.missingSkills?.[0] || "TypeScript"})
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                  <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                     Eliminating this requirement yields immediate +8% job match boost.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#888888" />
+                <ArrowRight size={16} color="#64748b" />
               </Link>
 
               <Link
@@ -260,18 +267,25 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Zap size={18} color="#222222" />
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.08))",
+                  padding: "0.55rem",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+                  <Zap size={18} color="#fbbf24" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#f1f5f9" }}>
                     2. Solve Daily DSA Challenge
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                  <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                     Maintain your practice streak and strengthen algorithmic intuition.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#888888" />
+                <ArrowRight size={16} color="#64748b" />
               </Link>
 
               <Link
@@ -279,35 +293,42 @@ const CareerDashboard = () => {
                 className="milestone-item"
                 style={{ textDecoration: "none", color: "inherit" }}
               >
-                <div style={{ background: "rgba(0, 0, 0, 0.1)", padding: "0.5rem", borderRadius: "8px" }}>
-                  <Briefcase size={18} color="#333333" />
+                <div style={{
+                  background: "linear-gradient(135deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.08))",
+                  padding: "0.55rem",
+                  borderRadius: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}>
+                  <Briefcase size={18} color="#22d3ee" />
                 </div>
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "var(--text-primary)" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.9rem", color: "#f1f5f9" }}>
                     3. Review Opportunity Radar Listings
                   </div>
-                  <div style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>
+                  <div style={{ fontSize: "0.8rem", color: "#94a3b8" }}>
                     Apply to verified listings with tailored match score breakdowns.
                   </div>
                 </div>
-                <ArrowRight size={16} color="#888888" />
+                <ArrowRight size={16} color="#64748b" />
               </Link>
             </div>
           </div>
 
           {/* AI Daily Career Brief */}
-          <div className="career-card" style={{ background: "linear-gradient(145deg, #ffffff, #FAFAFA)", border: "1.5px solid #DDDDDD" }}>
+          <div className="career-card" style={{ background: "rgba(30, 27, 75, 0.5)", border: "1px solid rgba(139, 92, 246, 0.2)" }}>
             <div className="career-card-header">
               <h3 className="career-card-title">
-                <Sparkles size={18} color="var(--accent, #000000)" />
+                <Sparkles size={18} color="#a78bfa" />
                 AI Daily Career Brief
               </h3>
-              <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "var(--accent)" }}>
+              <span style={{ fontSize: "0.75rem", fontWeight: 700, color: "#a78bfa" }}>
                 {dailyBrief?.date || "Today"}
               </span>
             </div>
 
-            <p style={{ fontSize: "0.875rem", color: "var(--text-secondary)", lineHeight: 1.55, marginBottom: "1.25rem" }}>
+            <p style={{ fontSize: "0.875rem", color: "#94a3b8", lineHeight: 1.55, marginBottom: "1.25rem" }}>
               {dailyBrief?.headline || "Welcome to your personal Career Command Center."}
             </p>
 
@@ -316,21 +337,21 @@ const CareerDashboard = () => {
                 <div
                   key={idx}
                   style={{
-                    background: "#ffffff",
-                    border: "1px solid var(--border)",
-                    borderRadius: "10px",
+                    background: "rgba(15, 23, 42, 0.5)",
+                    border: "1px solid rgba(148, 163, 184, 0.08)",
+                    borderRadius: "12px",
                     padding: "0.75rem 1rem",
                   }}
                 >
                   <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 4 }}>
-                    <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", color: "var(--accent)" }}>
+                    <span style={{ fontSize: "0.7rem", fontWeight: 700, textTransform: "uppercase", color: "#a78bfa", letterSpacing: "0.05em" }}>
                       {item.badge}
                     </span>
                   </div>
-                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "var(--text-primary)" }}>
+                  <div style={{ fontWeight: 600, fontSize: "0.875rem", color: "#f1f5f9" }}>
                     {item.title}
                   </div>
-                  <div style={{ fontSize: "0.775rem", color: "var(--text-secondary)", marginTop: 2 }}>
+                  <div style={{ fontSize: "0.775rem", color: "#94a3b8", marginTop: 2 }}>
                     {item.why}
                   </div>
                 </div>
@@ -343,18 +364,23 @@ const CareerDashboard = () => {
         <div className="career-card">
           <div className="career-card-header">
             <h3 className="career-card-title">
-              <Layers size={18} color="var(--accent, #000000)" />
+              <Layers size={18} color="#22d3ee" />
               Skill Diagnostic Breakdown
             </h3>
-            <Link to="/career/skill-gap" style={{ fontSize: "0.825rem", color: "var(--accent)", textDecoration: "none", fontWeight: 600 }}>
+            <Link to="/career/skill-gap" style={{ fontSize: "0.825rem", color: "#a78bfa", textDecoration: "none", fontWeight: 600 }}>
               Detailed Gap Analysis &rarr;
             </Link>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: "1.25rem" }}>
             {/* Strong Skills */}
-            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#000000", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{
+              background: "rgba(16, 185, 129, 0.06)",
+              border: "1px solid rgba(16, 185, 129, 0.15)",
+              borderRadius: "14px",
+              padding: "1.15rem",
+            }}>
+              <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#34d399", textTransform: "uppercase", marginBottom: "0.75rem", letterSpacing: "0.04em" }}>
                 ✓ Strong / Verified Skills ({profile.strongSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -365,14 +391,19 @@ const CareerDashboard = () => {
                     </span>
                   ))
                 ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>Add verified skills</span>
+                  <span style={{ fontSize: "0.8rem", color: "#64748b" }}>Add verified skills</span>
                 )}
               </div>
             </div>
 
             {/* Weak / Practicing Skills */}
-            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#111111", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{
+              background: "rgba(245, 158, 11, 0.06)",
+              border: "1px solid rgba(245, 158, 11, 0.15)",
+              borderRadius: "14px",
+              padding: "1.15rem",
+            }}>
+              <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#fbbf24", textTransform: "uppercase", marginBottom: "0.75rem", letterSpacing: "0.04em" }}>
                 ⚡ Needs Practice ({profile.weakSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
@@ -383,25 +414,38 @@ const CareerDashboard = () => {
                     </span>
                   ))
                 ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>No critical weaknesses</span>
+                  <span style={{ fontSize: "0.8rem", color: "#64748b" }}>No critical weaknesses</span>
                 )}
               </div>
             </div>
 
             {/* Missing Core Skills */}
-            <div style={{ background: "#FAFAFA", border: "1px solid #DDDDDD", borderRadius: "12px", padding: "1rem" }}>
-              <div style={{ fontSize: "0.8rem", fontWeight: 700, color: "#111111", textTransform: "uppercase", marginBottom: "0.75rem" }}>
+            <div style={{
+              background: "rgba(244, 63, 94, 0.06)",
+              border: "1px solid rgba(244, 63, 94, 0.15)",
+              borderRadius: "14px",
+              padding: "1.15rem",
+            }}>
+              <div style={{ fontSize: "0.78rem", fontWeight: 700, color: "#fb7185", textTransform: "uppercase", marginBottom: "0.75rem", letterSpacing: "0.04em" }}>
                 ✕ Missing for {profile.targetRole || "Role"} ({profile.missingSkills?.length || 0})
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                 {profile.missingSkills?.length > 0 ? (
                   profile.missingSkills.map((s, idx) => (
-                    <span key={idx} style={{ background: "#ffffff", border: "1px solid #AAAAAA", color: "#111111", padding: "2px 8px", borderRadius: "999px", fontSize: "0.7rem", fontWeight: 600 }}>
+                    <span key={idx} style={{
+                      background: "rgba(244, 63, 94, 0.1)",
+                      border: "1px solid rgba(244, 63, 94, 0.2)",
+                      color: "#fb7185",
+                      padding: "3px 10px",
+                      borderRadius: "999px",
+                      fontSize: "0.7rem",
+                      fontWeight: 700,
+                    }}>
                       {s}
                     </span>
                   ))
                 ) : (
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-secondary)" }}>All requirements covered!</span>
+                  <span style={{ fontSize: "0.8rem", color: "#64748b" }}>All requirements covered!</span>
                 )}
               </div>
             </div>

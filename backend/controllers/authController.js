@@ -7,18 +7,23 @@ const register = async (req, res) => {
   try {
     const {
       name,
-      username,
       email,
       password,
       role
     } = req.body;
 
+    let username = req.body.username;
+
     // Validate required fields
-    if (!name || !username || !email || !password) {
+    if (!name || !email || !password) {
       return res.status(400).json({
         success: false,
-        message: "Name, username, email and password are required"
+        message: "Name, email and password are required"
       });
+    }
+
+    if (!username || !username.trim()) {
+      username = email.split('@')[0].replace(/[^a-zA-Z0-9_]/g, '') + '_' + Math.floor(Math.random() * 10000);
     }
 
     // Validate password

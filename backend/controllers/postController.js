@@ -716,13 +716,20 @@ const toggleSavePost = async (req, res) => {
     }
 
     const user = await User.findById(req.user._id);
-    const postIndex = (user.savedPosts || []).findIndex(
-      (p) => p.toString() === id.toString()
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found"
+      });
+    }
+
+    user.savedPosts = user.savedPosts || [];
+    const postIndex = user.savedPosts.findIndex(
+      (p) => p && p.toString() === id.toString()
     );
 
     let isSaved = false;
     if (postIndex === -1) {
-      user.savedPosts = user.savedPosts || [];
       user.savedPosts.push(id);
       isSaved = true;
     } else {

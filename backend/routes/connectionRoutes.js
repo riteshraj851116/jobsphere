@@ -41,6 +41,26 @@ router.get("/status/:userId", protect, getConnectionStatus);
 router.get("/mutual/:userId", protect, getMutualConnections);
 
 // Accept / reject request
+router.put("/request/:id/accept", protect, (req, res, next) => {
+  req.body = req.body || {};
+  req.body.action = "accept";
+  return respondToRequest(req, res, next);
+});
+router.post("/request/:id/accept", protect, (req, res, next) => {
+  req.body = req.body || {};
+  req.body.action = "accept";
+  return respondToRequest(req, res, next);
+});
+router.put("/request/:id/reject", protect, (req, res, next) => {
+  req.body = req.body || {};
+  req.body.action = "reject";
+  return respondToRequest(req, res, next);
+});
+router.post("/request/:id/reject", protect, (req, res, next) => {
+  req.body = req.body || {};
+  req.body.action = "reject";
+  return respondToRequest(req, res, next);
+});
 router.put("/request/:id", protect, respondToRequest);
 router.put("/respond/:id", protect, respondToRequest);
 
