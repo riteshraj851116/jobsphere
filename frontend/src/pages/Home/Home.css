@@ -9,7 +9,10 @@
   min-height: 100vh;
   background: var(--bg);
   color: var(--text);
-  overflow: hidden;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  position: relative;
 }
 
 
@@ -20,7 +23,8 @@
 .hero-section {
   position: relative;
   min-height: 820px;
-
+  width: 100%;
+  max-width: 100vw;
   display: flex;
   align-items: center;
 
@@ -1614,11 +1618,11 @@
   }
 
   .floating-card-one {
-    left: -35px;
+    left: 4px;
   }
 
   .floating-card-two {
-    right: -35px;
+    right: 4px;
   }
 
   .hero-3d-label {

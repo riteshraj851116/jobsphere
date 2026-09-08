@@ -89,30 +89,60 @@ const Home = () => {
     if (prefersReducedMotion || !heroRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from(".hero-content > *", {
+      const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+      tl.from(".hero-eyebrow", {
+        opacity: 0,
+        y: -14,
+        duration: 0.6,
+      })
+      .from(".hero-title > span", {
+        opacity: 0,
+        y: 35,
+        duration: 0.75,
+        stagger: 0.12,
+      }, "-=0.35")
+      .from(".hero-subtitle", {
+        opacity: 0,
+        y: 18,
+        duration: 0.6,
+      }, "-=0.4")
+      .from(".hero-search-box", {
+        opacity: 0,
+        y: 22,
+        scale: 0.98,
+        duration: 0.7,
+        ease: "back.out(1.3)",
+      }, "-=0.35")
+      .from(".popular-tag", {
+        opacity: 0,
+        y: 10,
+        stagger: 0.06,
+        duration: 0.45,
+      }, "-=0.4")
+      .from(".hero-visual", {
+        opacity: 0,
+        scale: 0.92,
+        duration: 0.85,
+      }, "-=0.6")
+      .from(".floating-card", {
+        opacity: 0,
+        y: 25,
+        stagger: 0.15,
+        duration: 0.7,
+      }, "-=0.5")
+      .from(".stat-item", {
         opacity: 0,
         y: 18,
         stagger: 0.08,
         duration: 0.6,
-        ease: "power2.out",
-      });
-
-      gsap.from(".hero-visual", {
+      }, "-=0.4")
+      .from(".category-card", {
         opacity: 0,
-        scale: 0.96,
-        duration: 0.7,
-        ease: "power2.out",
-        delay: 0.15,
-      });
-
-      gsap.from(".stats-card", {
-        opacity: 0,
-        y: 14,
-        stagger: 0.06,
-        duration: 0.5,
-        ease: "power2.out",
-        delay: 0.25,
-      });
+        y: 20,
+        stagger: 0.05,
+        duration: 0.55,
+      }, "-=0.3");
     }, heroRef);
 
     return () => ctx.revert();

@@ -57,6 +57,119 @@ const POST_TYPES = [
   { id: "technical", label: "Technical Insight", icon: Code2 }
 ];
 
+const DEFAULT_PHOTO_POSTS = [
+  {
+    _id: "demo_photo_post_1",
+    author: {
+      _id: "demo_u1",
+      name: "Elena Rostova",
+      username: "elena_eng",
+      headline: "Lead Systems Architect @ CloudScale | Distributed Systems",
+      profilePicture: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80"
+    },
+    content: "Excited to share our new event-driven microservices architecture migration! Reduced p99 latency from 240ms down to 18ms across 40M daily active requests. Here is our production workspace and telemetry topology diagram 🚀 #SystemDesign #DistributedSystems #Performance #Architecture",
+    image: "https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=1200&q=80",
+    postType: "project",
+    visibility: "public",
+    createdAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    likeCount: 48,
+    isLiked: false,
+    isSaved: false,
+    commentCount: 4,
+    repostCount: 7,
+    projectRef: {
+      title: "CloudScale UltraTelemetry v2",
+      link: "https://github.com",
+      tech: ["Go", "Kafka", "Rust", "gRPC", "Redis"]
+    },
+    comments: [
+      {
+        _id: "c_demo_1",
+        user: {
+          _id: "demo_u_c1",
+          name: "Liam O'Connor",
+          username: "liam_dev",
+          headline: "Senior SRE @ Datadog",
+          profilePicture: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80"
+        },
+        text: "Incredible latency reduction! Did you encounter any head-of-line blocking with the gRPC stream multiplexing?",
+        createdAt: new Date(Date.now() - 3600000).toISOString(),
+        likeCount: 6,
+        isLiked: false,
+        replies: []
+      }
+    ]
+  },
+  {
+    _id: "demo_photo_post_2",
+    author: {
+      _id: "demo_u2",
+      name: "Marcus Vance",
+      username: "marcus_design",
+      headline: "Principal UI/UX Engineer @ Studio Minimal | Design Systems",
+      profilePicture: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80"
+    },
+    content: "Just rolled out our new dark/monochrome design system tokens across JobSphere! Clean typography, crisp contrast ratios, and zero visual clutter. Design is how it works. 🖤 #DesignSystems #WebDevelopment #Frontend #React #Monochrome",
+    image: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=1200&q=80",
+    postType: "technical",
+    visibility: "public",
+    createdAt: new Date(Date.now() - 3600000 * 5).toISOString(),
+    likeCount: 64,
+    isLiked: false,
+    isSaved: false,
+    commentCount: 3,
+    repostCount: 11,
+    comments: []
+  },
+  {
+    _id: "demo_photo_post_3",
+    author: {
+      _id: "demo_u3",
+      name: "Sarah Lin",
+      username: "sarah_lin",
+      headline: "VP of Engineering @ NexaTech | Forbes 30u30",
+      profilePicture: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80"
+    },
+    content: "Huge congratulations to our engineering cohort on winning 1st place in the Global AI Systems Hackathon! 48 hours of intense coding, prototyping, and zero sleep. Proud of this relentless team! 🏆 #EngineeringLeadership #Hackathon #AI #Teamwork",
+    image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80",
+    postType: "achievement",
+    visibility: "public",
+    createdAt: new Date(Date.now() - 3600000 * 9).toISOString(),
+    likeCount: 92,
+    isLiked: false,
+    isSaved: false,
+    commentCount: 8,
+    repostCount: 15,
+    comments: []
+  },
+  {
+    _id: "demo_photo_post_4",
+    author: {
+      _id: "demo_u4",
+      name: "Devon Chen",
+      username: "devon_3d",
+      headline: "Creative Technologist & WebGL / Three.js Engineer",
+      profilePicture: "https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=200&q=80"
+    },
+    content: "Experimenting with interactive Three.js WebGL shaders and GSAP physics timelines for spatial career universes. Rendering 5,000 particle nodes smoothly at constant 60 FPS on mobile and desktop! ✨ #ThreeJS #WebGL #CreativeCoding #JavaScript #GSAP",
+    image: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80",
+    postType: "project",
+    visibility: "public",
+    createdAt: new Date(Date.now() - 3600000 * 14).toISOString(),
+    likeCount: 81,
+    isLiked: false,
+    isSaved: false,
+    commentCount: 6,
+    repostCount: 9,
+    projectRef: {
+      title: "Cosmic Three.js WebGL Engine",
+      link: "https://github.com",
+      tech: ["Three.js", "WebGL", "GLSL", "GSAP", "React"]
+    },
+    comments: []
+  }
+];
+
 const Feed = () => {
   const { user: currentUser } = useAuth();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -135,9 +248,16 @@ const Feed = () => {
 
       const res = await getFeed(params);
       const postList = res?.data?.posts || res?.posts || [];
-      setPosts(postList);
+      if (postList.length === 0 && !activeHashtag && (!feedFilter || feedFilter === "all")) {
+        setPosts(DEFAULT_PHOTO_POSTS);
+      } else {
+        setPosts(postList);
+      }
     } catch (err) {
       console.error("Feed loading error", err);
+      if (!activeHashtag && (!feedFilter || feedFilter === "all")) {
+        setPosts(DEFAULT_PHOTO_POSTS);
+      }
     } finally {
       setLoading(false);
     }
