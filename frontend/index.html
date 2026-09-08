@@ -9,6 +9,33 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <title>JobSphere — Find Work That Moves You Forward</title>
+    <style>
+      html, body {
+        background-color: #000000;
+        margin: 0;
+        padding: 0;
+      }
+      #root:empty {
+        position: fixed;
+        inset: 0;
+        background-color: #000000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #root:empty::after {
+        content: '';
+        width: 44px;
+        height: 44px;
+        border: 2px solid rgba(255, 255, 255, 0.12);
+        border-top-color: #FFFFFF;
+        border-radius: 50%;
+        animation: rootSpin 0.75s linear infinite;
+      }
+      @keyframes rootSpin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>

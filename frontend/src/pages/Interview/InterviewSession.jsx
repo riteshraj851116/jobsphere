@@ -25,6 +25,7 @@ import {
   completeInterviewSession,
   evaluateInterviewAnswer
 } from "../../services/interviewService";
+import Loader from "../../components/common/Loader.jsx";
 import "./Interview.css";
 
 const InterviewSession = () => {
@@ -395,14 +396,7 @@ const InterviewSession = () => {
   };
 
   if (loading) {
-    return (
-      <div className="interview-page">
-        <div className="interview-container" style={{ textAlign: "center", padding: "4rem 0" }}>
-          <Loader2 className="spinner" size={36} style={{ margin: "0 auto 1rem", animation: "spin 1s linear infinite" }} />
-          <h3>Preparing Interview Environment...</h3>
-        </div>
-      </div>
-    );
+    return <Loader fullscreen text="Preparing Interview Environment..." />;
   }
 
   if (error || !session) {

@@ -1,18 +1,19 @@
 /* =========================================================
    JOBSPHERE NEXT-GEN GYROSCOPIC LOADER & SKELETON SUITE
+   100% Pure Black Monochrome Environment
 ========================================================= */
 
 /* FULLSCREEN CONTAINER */
 .loader-fullscreen {
   position: fixed;
   inset: 0;
-  z-index: 99999;
+  z-index: 999999;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background: var(--bg, #000000);
-  color: var(--text, #FFFFFF);
+  background: #000000 !important;
+  color: #FFFFFF !important;
   overflow: hidden;
   perspective: 1000px;
 }
@@ -21,24 +22,24 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.18;
+  opacity: 0.12;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 .loader-bg-glow {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 440px;
+  height: 440px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.04) 0%, rgba(0, 0, 0, 0) 70%);
   pointer-events: none;
   animation: ambientGlow 4s ease-in-out infinite alternate;
 }
 
-/* GLASS CONTAINER */
+/* GLASS CONTAINER — DEEP PURE BLACK */
 .loader-glass-card {
   position: relative;
   z-index: 10;
@@ -46,25 +47,40 @@
   flex-direction: column;
   align-items: center;
   padding: 2.5rem 3rem;
-  background: rgba(18, 18, 18, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
+  background: #000000 !important;
+  border: 1px solid rgba(255, 255, 255, 0.14) !important;
+  border-radius: 20px;
   backdrop-filter: blur(24px);
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.98), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   max-width: 420px;
   width: 90%;
   text-align: center;
   animation: cardFloat 3s ease-in-out infinite alternate;
 }
 
-/* INLINE LOADER */
+/* INLINE LOADER — PURE BLACK */
 .loader-inline {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  padding: 3rem 1.5rem;
+  padding: 3.5rem 1.5rem;
   width: 100%;
+  min-height: 240px;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.loading-container {
+  min-height: 100vh;
+  width: 100%;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .loader-inline-text-wrap {

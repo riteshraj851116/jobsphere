@@ -17,6 +17,7 @@ import {
   Lightbulb
 } from "lucide-react";
 import { getResumeAnalysisById } from "../../services/resumeService";
+import Loader from "../../components/common/Loader.jsx";
 import "./ResumeAnalyzer.css";
 
 const ResumeAnalysisResult = () => {
@@ -83,14 +84,7 @@ const ResumeAnalysisResult = () => {
   }, [analysisId]);
 
   if (loading) {
-    return (
-      <div className="resume-page">
-        <div className="resume-container" style={{ textAlign: "center", padding: "4rem 0" }}>
-          <Loader2 size={36} style={{ margin: "0 auto 1rem", animation: "spin 1s linear infinite" }} />
-          <h3>Generating ATS Compatibility Report...</h3>
-        </div>
-      </div>
-    );
+    return <Loader fullscreen text="Generating ATS Compatibility Report..." />;
   }
 
   if (error || !analysis) {

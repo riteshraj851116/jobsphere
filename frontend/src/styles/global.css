@@ -706,3 +706,19 @@ html {
 .text-muted { color: var(--text-secondary); }
 .text-light { color: var(--text-muted); }
 .text-primary { color: var(--accent); }
+
+/* =========================================================
+   GLOBAL LOADING STATES — 100% Pure Black Monochrome
+========================================================= */
+
+.loading-container,
+.loading-screen,
+.page-loading {
+  min-height: 100vh;
+  width: 100%;
+  background: #000000 !important;
+  color: #FFFFFF !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

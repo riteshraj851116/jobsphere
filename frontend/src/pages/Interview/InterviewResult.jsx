@@ -14,6 +14,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { getInterviewSession } from "../../services/interviewService";
+import Loader from "../../components/common/Loader.jsx";
 import "./Interview.css";
 
 const InterviewResult = () => {
@@ -92,14 +93,7 @@ const InterviewResult = () => {
   };
 
   if (loading) {
-    return (
-      <div className="interview-page">
-        <div className="interview-container" style={{ textAlign: "center", padding: "4rem 0" }}>
-          <Loader2 size={36} style={{ margin: "0 auto 1rem", animation: "spin 1s linear infinite" }} />
-          <h3>Calculating Interview Performance...</h3>
-        </div>
-      </div>
-    );
+    return <Loader fullscreen text="Calculating Interview Performance..." />;
   }
 
   if (error || !session) {

@@ -13,6 +13,7 @@ import {
   GraduationCap
 } from "lucide-react";
 import { getInterviewAnalytics } from "../../services/careerService";
+import Loader from "../../components/common/Loader.jsx";
 import "./Interview.css";
 
 const InterviewAnalytics = () => {
@@ -45,14 +46,7 @@ const InterviewAnalytics = () => {
   }, []);
 
   if (loading) {
-    return (
-      <div className="interview-page">
-        <div className="interview-container" style={{ textAlign: "center", padding: "4rem 0" }}>
-          <Loader2 size={36} style={{ animation: "spin 1s linear infinite", margin: "0 auto 1rem" }} />
-          <h3>Aggregating Interview Performance Metrics...</h3>
-        </div>
-      </div>
-    );
+    return <Loader fullscreen text="Aggregating Interview Performance Metrics..." />;
   }
 
   const categoryPerformance = analytics?.categoryPerformance || {};

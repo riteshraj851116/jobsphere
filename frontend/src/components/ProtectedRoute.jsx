@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 
 import { useAuth } from "../hooks/useAuth";
+import Loader from "./common/Loader.jsx";
 
 const ProtectedRoute = () => {
   const {
@@ -16,13 +17,7 @@ const ProtectedRoute = () => {
   const location = useLocation();
 
   if (loading) {
-    return (
-      <div className="loading-container">
-        <h2>
-          Loading JobSphere...
-        </h2>
-      </div>
-    );
+    return <Loader fullscreen text="Loading JobSphere..." />;
   }
 
   if (!user) {
