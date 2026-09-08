@@ -23,6 +23,8 @@ import {
 
 import CareerNetwork from "../../components/three/CareerNetwork";
 import JobUniverse from "../../components/three/JobUniverse";
+import JobGlobe from "../../components/three/JobGlobe";
+import FloatingParticles from "../../components/three/FloatingParticles";
 import "./Home.css";
 
 const CATEGORIES = [
@@ -80,6 +82,34 @@ const Home = () => {
 
   const [keyword, setKeyword] = useState("");
   const [location, setLocation] = useState("");
+  const [active3DView, setActive3DView] = useState("universe");
+
+  // GSAP 3D Magnetic Card Tilt
+  const handleCardMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(card, {
+      rotateX: -y * 0.06,
+      rotateY: x * 0.06,
+      transformPerspective: 600,
+      scale: 1.02,
+      duration: 0.25,
+      ease: "power2.out",
+    });
+  };
+
+  const handleCardMouseLeave = (e) => {
+    const card = e.currentTarget;
+    gsap.to(card, {
+      rotateX: 0,
+      rotateY: 0,
+      scale: 1,
+      duration: 0.45,
+      ease: "power2.out",
+    });
+  };
 
   useEffect(() => {
     const prefersReducedMotion =
@@ -140,8 +170,14 @@ const Home = () => {
       .from(".category-card", {
         opacity: 0,
         y: 20,
-        stagger: 0.05,
+        stagger: 0.04,
         duration: 0.55,
+      }, "-=0.3")
+      .from(".how-step", {
+        opacity: 0,
+        y: 24,
+        stagger: 0.1,
+        duration: 0.6,
       }, "-=0.3");
     }, heroRef);
 
@@ -539,6 +575,8 @@ const Home = () => {
                       category.name
                     )
                   }
+                  onMouseMove={handleCardMouseMove}
+                  onMouseLeave={handleCardMouseLeave}
                   aria-label={`Browse ${category.name} jobs`}
                 >
 
@@ -575,12 +613,59 @@ const Home = () => {
 
           </div>
 
-          <div style={{ marginTop: '2.5rem' }}>
-            <span className="section-eyebrow" style={{ marginBottom: '0.75rem', display: 'block' }}>
-              <span className="label-dot" />
-              INTERACTIVE 3D ECOSYSTEM
-            </span>
-            <JobUniverse onSelectCategory={(cat) => handleCategoryClick(cat)} />
+          {/* =================================================
+              INTERACTIVE 3D EXPLORATION SUITE
+          ================================================= */}
+          <div style={{ marginTop: '3rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
+              <span className="section-eyebrow" style={{ margin: 0, display: 'inline-flex' }}>
+                <span className="label-dot" />
+                INTERACTIVE 3D ECOSYSTEM & GLOBAL HUBS
+              </span>
+
+              <div style={{ display: 'inline-flex', gap: '0.4rem', border: '1px solid var(--border)', padding: '3px', background: 'var(--surface)' }}>
+                <button
+                  type="button"
+                  onClick={() => setActive3DView("universe")}
+                  style={{
+                    padding: '0.4rem 0.8rem',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    background: active3DView === "universe" ? 'var(--text)' : 'transparent',
+                    color: active3DView === "universe" ? 'var(--bg)' : 'var(--text-secondary)',
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🌌 Skill Universe
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActive3DView("globe")}
+                  style={{
+                    padding: '0.4rem 0.8rem',
+                    fontSize: '0.68rem',
+                    fontWeight: 700,
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                    background: active3DView === "globe" ? 'var(--text)' : 'transparent',
+                    color: active3DView === "globe" ? 'var(--bg)' : 'var(--text-secondary)',
+                    transition: 'all 0.2s ease',
+                    cursor: 'pointer'
+                  }}
+                >
+                  🌐 Global Tech Hubs
+                </button>
+              </div>
+            </div>
+
+            {active3DView === "universe" ? (
+              <JobUniverse onSelectCategory={(cat) => handleCategoryClick(cat)} />
+            ) : (
+              <JobGlobe />
+            )}
           </div>
 
         </div>
@@ -620,7 +705,11 @@ const Home = () => {
 
           <div className="how-steps">
 
-            <div className="how-step">
+            <div
+              className="how-step"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+            >
 
               <span className="step-index">
                 01 / 03
@@ -642,7 +731,11 @@ const Home = () => {
 
             </div>
 
-            <div className="how-step">
+            <div
+              className="how-step"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+            >
 
               <span className="step-index">
                 02 / 03
@@ -664,7 +757,11 @@ const Home = () => {
 
             </div>
 
-            <div className="how-step">
+            <div
+              className="how-step"
+              onMouseMove={handleCardMouseMove}
+              onMouseLeave={handleCardMouseLeave}
+            >
 
               <span className="step-index">
                 03 / 03
@@ -699,14 +796,17 @@ const Home = () => {
       <section
         className="cta-section"
         aria-label="Get started"
+        style={{ position: 'relative', overflow: 'hidden' }}
       >
+
+        <FloatingParticles />
 
         <div
           className="cta-grid"
           aria-hidden="true"
         />
 
-        <div className="container cta-container">
+        <div className="container cta-container" style={{ position: 'relative', zIndex: 3 }}>
 
           <div className="cta-content">
 
