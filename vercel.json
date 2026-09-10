@@ -11,11 +11,11 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api/index.js"
+      "destination": "/api/index.js?_url_path=$1"
     },
     {
       "source": "/api",
-      "destination": "/api/index.js"
+      "destination": "/api/index.js?_url_path="
     },
     {
       "source": "/(.*)",
@@ -23,3 +23,4 @@
     }
   ]
 }
+

@@ -37,6 +37,7 @@ const extractHashtagsAndMentions = async (text) => {
 
 const createPost = async (req, res) => {
   try {
+    const body = req.body || {};
     const {
       content,
       postType = "text",
@@ -44,29 +45,35 @@ const createPost = async (req, res) => {
       projectRef,
       jobRef,
       image: imageUrl
-    } = req.body;
+    } = body;
 
+    // Handle image from either memory buffer (Vercel serverless) or disk filename
     let image = imageUrl || "";
     if (req.file) {
-      image = `/uploads/${req.file.filename}`;
+      if (req.file.buffer) {
+        const mime = req.file.mimetype || "image/jpeg";
+        image = `data:${mime};base64,${req.file.buffer.toString("base64")}`;
+      } else if (req.file.filename) {
+        image = `/uploads/${req.file.filename}`;
+      }
     }
 
     if (!content || !content.trim()) {
       return res.status(400).json({
         success: false,
-        message: "Post content is required"
+        message: "Please provide some text or insight for your post"
       });
     }
 
     const { tags: extractedTags, mentionUserIds } =
       await extractHashtagsAndMentions(content);
 
-    // Also merge any manually passed tags
+    // Merge manually passed tags
     let allTags = extractedTags;
-    if (req.body.tags) {
-      const explicitTags = Array.isArray(req.body.tags)
-        ? req.body.tags
-        : String(req.body.tags).split(",");
+    if (body.tags) {
+      const explicitTags = Array.isArray(body.tags)
+        ? body.tags
+        : String(body.tags).split(",");
       explicitTags.forEach((t) => {
         const clean = String(t).replace("#", "").toLowerCase().trim();
         if (clean && !allTags.includes(clean)) {
@@ -122,7 +129,7 @@ const createPost = async (req, res) => {
       jobRef: parsedJobRef
     });
 
-    // Notify mentioned users
+    // Notify mentioned users asynchronously
     if (mentionUserIds.length > 0) {
       for (const recipientId of mentionUserIds) {
         if (recipientId.toString() !== req.user._id.toString()) {
@@ -130,9 +137,9 @@ const createPost = async (req, res) => {
             recipient: recipientId,
             sender: req.user._id,
             type: "mention",
-            message: `${req.user.name} mentioned you in a post`,
+            message: `${req.user.name || "A connection"} mentioned you in a post`,
             relatedId: post._id
-          });
+          }).catch((err) => console.warn("Mention notification notice:", err.message));
         }
       }
     }
@@ -141,25 +148,49 @@ const createPost = async (req, res) => {
       .populate("author", "name username profilePicture headline location")
       .populate("mentions", "name username profilePicture headline");
 
-    // Real-time broadcast
+    let postData = populatedPost ? populatedPost.toObject() : post.toObject();
+
+    // Ensure author data is always complete even for demo or guest accounts
+    if (!postData.author || typeof postData.author !== "object") {
+      postData.author = {
+        _id: req.user._id || "6a9401084d788adc6a04e900",
+        name: req.user.name || "JobSphere Professional",
+        username: req.user.username || (req.user.name ? req.user.name.toLowerCase().replace(/\s+/g, "_") : "professional"),
+        headline: req.user.headline || "JobSphere Member",
+        profilePicture: req.user.profilePicture || "",
+        location: req.user.location || "Global"
+      };
+    }
+
+    postData.likeCount = 0;
+    postData.isLiked = false;
+    postData.commentCount = 0;
+    postData.repostCount = 0;
+    postData.comments = [];
+
+    // Real-time broadcast if socket.io is active
     const io = global.io;
     if (io) {
-      io.emit("new-post", { post: populatedPost });
+      try {
+        io.emit("new-post", { post: postData });
+      } catch (_ioErr) {
+        // Socket broadcast optional in serverless
+      }
     }
 
     res.status(201).json({
       success: true,
-      message: "Post created successfully",
-      post: populatedPost,
+      message: "Post published successfully!",
+      post: postData,
       data: {
-        post: populatedPost
+        post: postData
       }
     });
   } catch (error) {
     console.error("Create Post Error:", error);
     res.status(500).json({
       success: false,
-      message: "Server error while creating post"
+      message: error.message || "Failed to publish post. Please try again."
     });
   }
 };
@@ -293,6 +324,16 @@ const getFeed = async (req, res) => {
 
     const formattedPosts = posts.map((post) => {
       const postObject = post.toObject();
+
+      if (!postObject.author || typeof postObject.author !== "object") {
+        postObject.author = {
+          _id: post.author || "user_demo",
+          name: "JobSphere Member",
+          username: "member",
+          headline: "Professional",
+          profilePicture: ""
+        };
+      }
 
       postObject.likeCount = post.likes ? post.likes.length : 0;
       postObject.commentCount = post.comments

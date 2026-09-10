@@ -31,9 +31,11 @@ const CreateJob = () => {
     skills: '',
     openings: '1',
     company: '',
+    companyName: '',
     deadline: ''
   });
 
+  const [useCustomCompany, setUseCustomCompany] = useState(false);
   const [companies, setCompanies] = useState([]);
   const [companiesLoading, setCompaniesLoading] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -55,10 +57,13 @@ const CreateJob = () => {
       setCompanies(all);
       // Pre-select first company if available
       if (all.length > 0) {
-        setFormData(prev => ({ ...prev, company: all[0]._id }));
+        setFormData(prev => ({ ...prev, company: all[0]._id, companyName: all[0].name }));
+      } else {
+        setUseCustomCompany(true);
       }
     } catch (err) {
-      console.error('Failed to fetch companies', err);
+      console.warn('Failed to fetch companies, allowing manual entry:', err?.message);
+      setUseCustomCompany(true);
     } finally {
       setCompaniesLoading(false);
     }
@@ -76,10 +81,18 @@ const CreateJob = () => {
     e.preventDefault();
     setError('');
 
-    if (!formData.title.trim()) { setError('Job title is required'); return; }
-    if (!formData.description.trim()) { setError('Job description is required'); return; }
-    if (!formData.location.trim()) { setError('Location is required'); return; }
-    if (!formData.company) { setError('Please select a company, or create one first'); return; }
+    if (!formData.title.trim()) { setError('Please enter a job title'); return; }
+    if (!formData.description.trim()) { setError('Please provide a job description'); return; }
+    if (!formData.location.trim()) { setError('Job location is required (e.g. Remote or City, Country)'); return; }
+
+    const selectedCompanyObj = companies.find(c => c._id === formData.company);
+    const resolvedCompanyId = (!useCustomCompany && formData.company) ? formData.company : undefined;
+    const resolvedCompanyName = (useCustomCompany ? formData.companyName : (selectedCompanyObj?.name || formData.companyName)) || 'JobSphere Partner';
+
+    if (!resolvedCompanyId && !resolvedCompanyName.trim()) {
+      setError('Please provide or select a hiring company');
+      return;
+    }
 
     const salaryMin = formData.salaryMin ? Number(formData.salaryMin) : 0;
     const salaryMax = formData.salaryMax ? Number(formData.salaryMax) : 0;
@@ -102,7 +115,8 @@ const CreateJob = () => {
       responsibilities: formData.responsibilities.split('\n').map(r => r.trim()).filter(Boolean),
       skills: formData.skills.split(',').map(s => s.trim()).filter(Boolean),
       openings: Number(formData.openings) || 1,
-      company: formData.company,
+      company: resolvedCompanyId,
+      companyName: resolvedCompanyName.trim(),
       deadline: formData.deadline || undefined
     };
 
@@ -112,7 +126,7 @@ const CreateJob = () => {
       setSuccess(true);
       setTimeout(() => navigate('/manage-jobs'), 1500);
     } catch (err) {
-      setError(err.response?.data?.message || 'Failed to create job. Please try again.');
+      setError(err.response?.data?.message || 'Failed to publish job. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -145,49 +159,76 @@ const CreateJob = () => {
           </div>
         )}
 
-        {/* Company Warning */}
-        {!companiesLoading && companies.length === 0 && (
-          <div className="no-company-warning">
-            <Building size={20} />
-            <div>
-              <strong>No company profile found.</strong>
-              <p>You must create a company profile before posting jobs.</p>
-            </div>
-            <Link to="/company-profile" className="btn btn--primary btn--sm">
-              <PlusCircle size={16} /> Create Company
-            </Link>
-          </div>
-        )}
-
         <form onSubmit={handleSubmit} className="create-job-form">
           {/* Company Selector */}
           <div className="form-card">
-            <h3 className="form-section-title">Company</h3>
-            <div className="form-group">
-              <label className="form-label" htmlFor="company-select">Select Company *</label>
-              {companiesLoading ? (
-                <div className="skeleton" style={{ height: '42px', borderRadius: '8px' }} />
-              ) : (
-                <select
-                  id="company-select"
-                  name="company"
-                  className="form-select"
-                  value={formData.company}
-                  onChange={handleChange}
-                  required
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+              <h3 className="form-section-title" style={{ margin: 0 }}>Hiring Organization</h3>
+              {companies.length > 0 && (
+                <button
+                  type="button"
+                  className="btn btn--outline btn--sm"
+                  onClick={() => setUseCustomCompany(!useCustomCompany)}
+                  style={{ fontSize: '0.85rem' }}
                 >
-                  <option value="">— Select a company —</option>
-                  {companies.map(c => (
-                    <option key={c._id} value={c._id}>{c.name}</option>
-                  ))}
-                </select>
-              )}
-              {companies.length === 0 && !companiesLoading && (
-                <span className="form-help">
-                  <Link to="/company-profile" className="text-primary">Create your company profile</Link> first.
-                </span>
+                  {useCustomCompany ? '← Pick from existing companies' : '+ Enter custom company name'}
+                </button>
               )}
             </div>
+
+            {useCustomCompany || companies.length === 0 ? (
+              <div className="form-group">
+                <label className="form-label" htmlFor="company-name-input">Company / Organization Name *</label>
+                <Input
+                  id="company-name-input"
+                  name="companyName"
+                  placeholder="e.g. Acme Corp, TechScale, or Global Solutions"
+                  value={formData.companyName}
+                  onChange={handleChange}
+                  required
+                />
+                <span className="form-help">
+                  Enter the hiring organization name. You can also{' '}
+                  <Link to="/company-profile" className="text-primary">create a rich company brand profile</Link> at any time.
+                </span>
+              </div>
+            ) : (
+              <div className="form-group">
+                <label className="form-label" htmlFor="company-select">Select Company Profile *</label>
+                {companiesLoading ? (
+                  <div className="skeleton" style={{ height: '42px', borderRadius: '8px' }} />
+                ) : (
+                  <select
+                    id="company-select"
+                    name="company"
+                    className="form-select"
+                    value={formData.company}
+                    onChange={(e) => {
+                      const cid = e.target.value;
+                      const matched = companies.find(c => c._id === cid);
+                      setFormData(prev => ({ ...prev, company: cid, companyName: matched?.name || '' }));
+                    }}
+                    required
+                  >
+                    <option value="">— Select a registered company —</option>
+                    {companies.map(c => (
+                      <option key={c._id} value={c._id}>{c.name}</option>
+                    ))}
+                  </select>
+                )}
+                <span className="form-help">
+                  Need to add another company?{' '}
+                  <Link to="/company-profile" className="text-primary">Create company profile</Link> or{' '}
+                  <button
+                    type="button"
+                    style={{ background: 'none', border: 'none', color: 'var(--color-primary)', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}
+                    onClick={() => setUseCustomCompany(true)}
+                  >
+                    type company name manually
+                  </button>.
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Basic Info */}

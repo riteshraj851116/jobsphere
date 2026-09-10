@@ -45,15 +45,13 @@ const createJob = async (req, res) => {
 
     if (company && isValidObjectId(String(company))) {
       const companyExists = await Company.findById(company);
-      if (!companyExists) {
-        return res.status(404).json({
-          success: false,
-          message: "Company not found"
-        });
+      if (companyExists) {
+        companyId = companyExists._id;
       }
-      companyId = companyExists._id;
-    } else {
-      const cName = String(companyInput || "Independent Employer").trim();
+    }
+
+    if (!companyId) {
+      const cName = String(companyInput || req.body?.companyName || "Independent Employer").trim();
       let comp = await Company.findOne({
         $or: [
           { name: new RegExp(`^${cName}$`, "i") },

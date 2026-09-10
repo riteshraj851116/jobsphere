@@ -4,8 +4,8 @@ try {
   require("dotenv").config({ path: path.join(__dirname, "../backend/.env") });
   require("dotenv").config({ path: path.join(__dirname, ".env") });
   require("dotenv").config();
-} catch (e) {
-  // Dotenv is optional in serverless
+} catch (_e) {
+  // Dotenv loading is optional in Vercel serverless environments
 }
 
 let app = null;
@@ -14,17 +14,21 @@ let loadError = null;
 try {
   app = require("../backend/Server");
 } catch (err) {
-  console.error("Vercel backend module load error:", err);
+  console.error("Vercel backend module initialization error:", err);
   loadError = {
     message: err?.message || String(err),
     stack: err?.stack || null
   };
 }
 
-module.exports = async (req, res) => {
+/**
+ * Main Vercel serverless function entrypoint.
+ * Proxies incoming HTTP requests into the Express application instance.
+ */
+const handler = async (req, res) => {
   const reqOrigin = req.headers.origin || "*";
 
-  // Handle CORS preflight
+  // Handle CORS preflight options immediately
   if (req.method === "OPTIONS") {
     res.writeHead(204, {
       "Access-Control-Allow-Origin": reqOrigin,
@@ -37,19 +41,31 @@ module.exports = async (req, res) => {
 
   // Extract original requested API URL cleanly for Express routing
   let targetUrl = req.url || "/api";
-  const forwardedUri = req.headers["x-forwarded-uri"] || req.headers["x-original-uri"];
-  
-  if (forwardedUri && forwardedUri.startsWith("/api")) {
-    targetUrl = forwardedUri;
-  } else if (req.url && req.url.startsWith("/api") && !req.url.includes("index.js")) {
-    targetUrl = req.url;
-  } else {
-    const matched = req.headers["x-matched-path"] || "";
-    if (matched && matched.startsWith("/api") && !matched.includes("index.js")) {
-      const queryIndex = req.url ? req.url.indexOf("?") : -1;
-      const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
-      targetUrl = matched + queryString;
+
+  // 1. Check for rewrite query parameter passed by vercel.json
+  try {
+    const parsedUrl = new URL(req.url, "http://localhost");
+    const capturedPath = parsedUrl.searchParams.get("_url_path");
+    if (capturedPath !== null) {
+      parsedUrl.searchParams.delete("_url_path");
+      const cleanQuery = parsedUrl.searchParams.toString();
+      targetUrl = "/api" + (capturedPath ? "/" + capturedPath.replace(/^\//, "") : "") + (cleanQuery ? "?" + cleanQuery : "");
+    } else {
+      // 2. Check standard proxy headers
+      const forwardedUri = req.headers["x-forwarded-uri"] || req.headers["x-original-uri"];
+      const matchedPath = req.headers["x-vercel-matched-path"] || req.headers["x-matched-path"] || "";
+
+      if (forwardedUri && forwardedUri.startsWith("/api")) {
+        targetUrl = forwardedUri;
+      } else if (matchedPath && matchedPath.startsWith("/api") && !matchedPath.includes("index.js")) {
+        const queryIndex = req.url.indexOf("?");
+        const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
+        targetUrl = matchedPath + queryString;
+      }
     }
+  } catch (_urlErr) {
+    // Fallback URL normalizer
+    targetUrl = req.url || "/api";
   }
 
   // Normalize path removing /api/index.js artifact
@@ -76,7 +92,7 @@ module.exports = async (req, res) => {
     );
   }
 
-  // Ensure DB connected
+  // Ensure DB connection is established for this lambda invocation
   try {
     const connectDB = require("../backend/config/db");
     await connectDB();
@@ -106,3 +122,14 @@ module.exports = async (req, res) => {
     res.on("error", resolve);
   });
 };
+
+// Disable Vercel's default bodyParser so Express and Multer handle raw streams & multipart forms cleanly
+handler.config = {
+  api: {
+    bodyParser: false,
+    externalResolver: true
+  }
+};
+
+module.exports = handler;
+

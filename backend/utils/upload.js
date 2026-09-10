@@ -30,14 +30,18 @@ const storage = process.env.VERCEL
 
 // Check File Type
 function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif|webp|pdf|docx|doc/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype) || file.mimetype.startsWith("image/") || file.mimetype.includes("pdf") || file.mimetype.includes("document");
+  const allowedExts = /jpeg|jpg|png|gif|webp|svg|avif|pdf|docx|doc/i;
+  const ext = path.extname(file.originalname || "").toLowerCase();
+  const isExtValid = allowedExts.test(ext);
+  const isMimeValid =
+    (file.mimetype && file.mimetype.startsWith("image/")) ||
+    (file.mimetype && file.mimetype.includes("pdf")) ||
+    (file.mimetype && file.mimetype.includes("document"));
 
-  if (mimetype && extname) {
+  if (isExtValid || isMimeValid || !file.mimetype) {
     return cb(null, true);
   } else {
-    cb(new Error("Images and Documents only!"));
+    return cb(new Error("Please upload a valid image or document format"));
   }
 }
 
