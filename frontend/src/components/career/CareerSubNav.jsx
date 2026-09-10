@@ -1,6 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
+  Map,
   Compass,
   Zap,
   Target,
@@ -25,6 +26,14 @@ const CareerSubNav = () => {
         >
           <Compass size={15} />
           <span>Command Center</span>
+        </NavLink>
+
+        <NavLink
+          to="/career-roadmap"
+          className={({ isActive }) => `career-nav-item ${isActive ? "active" : ""}`}
+        >
+          <Map size={15} />
+          <span>Career Roadmap</span>
         </NavLink>
 
         <NavLink

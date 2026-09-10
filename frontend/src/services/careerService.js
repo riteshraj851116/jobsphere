@@ -32,57 +32,351 @@ const FALLBACK_RECOMMENDATIONS = {
   profileScore: 72
 };
 
-const FALLBACK_ROADMAP = {
-  _id: "local-roadmap",
-  role: "MERN Stack Developer",
-  progressPercent: 56,
-  phases: [
-    {
-      _id: "phase-1",
-      title: "Phase 1 — JavaScript Foundations",
-      order: 1,
-      skills: [
-        { _id: "s1", name: "ES6+ Syntax & Concepts", completed: true, resources: ["MDN Web Docs", "javascript.info"] },
-        { _id: "s2", name: "Promises & Async/Await", completed: true, resources: ["javascript.info/async"] },
-        { _id: "s3", name: "Closures & Scope", completed: false, resources: ["MDN Closures"] },
-        { _id: "s4", name: "Event Loop & Concurrency", completed: false, resources: ["loupe.latentflip.com"] }
-      ]
-    },
-    {
-      _id: "phase-2",
-      title: "Phase 2 — React & Frontend",
-      order: 2,
-      skills: [
-        { _id: "s5", name: "React Hooks (useState, useEffect)", completed: true, resources: ["React Docs"] },
-        { _id: "s6", name: "Context API & State Management", completed: false, resources: ["React Docs — Context"] },
-        { _id: "s7", name: "React Router v6", completed: true, resources: ["reactrouter.com"] },
-        { _id: "s8", name: "Performance Optimization", completed: false, resources: ["React Docs — Performance"] }
-      ]
-    },
-    {
-      _id: "phase-3",
-      title: "Phase 3 — Node.js & Backend",
-      order: 3,
-      skills: [
-        { _id: "s9", name: "Express.js REST APIs", completed: true, resources: ["expressjs.com"] },
-        { _id: "s10", name: "JWT Authentication", completed: true, resources: ["jwt.io"] },
-        { _id: "s11", name: "Middleware & Error Handling", completed: false, resources: ["Express Docs"] },
-        { _id: "s12", name: "File Uploads (Multer)", completed: false, resources: ["npmjs.com/multer"] }
-      ]
-    },
-    {
-      _id: "phase-4",
-      title: "Phase 4 — MongoDB & Deployment",
-      order: 4,
-      skills: [
-        { _id: "s13", name: "Mongoose ORM & Schemas", completed: true, resources: ["mongoosejs.com"] },
-        { _id: "s14", name: "Aggregation Pipeline", completed: false, resources: ["MongoDB Docs"] },
-        { _id: "s15", name: "Vercel / Render Deployment", completed: false, resources: ["vercel.com/docs"] },
-        { _id: "s16", name: "CI/CD with GitHub Actions", completed: false, resources: ["GitHub Actions Docs"] }
-      ]
-    }
-  ]
+const FALLBACK_ROADMAPS = {
+  "MERN Stack Developer": {
+    _id: "local-roadmap-mern",
+    role: "MERN Stack Developer",
+    targetRole: "MERN Stack Developer",
+    completionPercentage: 55,
+    completedSkillsCount: 11,
+    totalSkills: 20,
+    phases: [
+      {
+        _id: "phase-1",
+        phaseNumber: 1,
+        title: "Phase 1: JavaScript & Web Foundations",
+        description: "Master modern asynchronous JavaScript, ES6+ features, and browser execution model.",
+        skills: [
+          { _id: "s1", name: "JavaScript ES6+ & Scopes", description: "Closures, hoisting, modules, destructuring", priority: "high", completed: true, resources: ["MDN Web Docs", "javascript.info"] },
+          { _id: "s2", name: "Asynchronous JS & Promises", description: "Event loop, Microtasks, async/await, error handling", priority: "high", completed: true, resources: ["javascript.info/async"] },
+          { _id: "s3", name: "DOM Manipulation & Web APIs", description: "Event delegation, Web Storage, IntersectionObserver", priority: "medium", completed: true, resources: ["MDN Web APIs"] },
+          { _id: "s4", name: "Fetch API & Network Layer", description: "REST concepts, headers, status codes, CORS", priority: "high", completed: true, resources: ["MDN Fetch API"] }
+        ]
+      },
+      {
+        _id: "phase-2",
+        phaseNumber: 2,
+        title: "Phase 2: Modern Frontend with React",
+        description: "Build performant single-page applications with modern functional components & hooks.",
+        skills: [
+          { _id: "s5", name: "React Components & JSX", description: "Virtual DOM, reconciliation, props, conditional rendering", priority: "high", completed: true, resources: ["React Docs"] },
+          { _id: "s6", name: "Hooks & Custom Hooks", description: "useState, useEffect, useMemo, useCallback, useRef", priority: "high", completed: true, resources: ["React Docs — Hooks"] },
+          { _id: "s7", name: "State Management (Context / Redux)", description: "Predictable state containers, actions, selectors", priority: "medium", completed: false, resources: ["Redux Toolkit Docs"] },
+          { _id: "s8", name: "React Router v6", description: "Dynamic routes, protected routes, loaders, actions", priority: "high", completed: true, resources: ["React Router Docs"] },
+          { _id: "s9", name: "Tailwind CSS & Styling", description: "Responsive layouts, dark mode, animation utilities", priority: "medium", completed: true, resources: ["TailwindCSS Docs"] }
+        ]
+      },
+      {
+        _id: "phase-3",
+        phaseNumber: 3,
+        title: "Phase 3: Backend Services with Node.js & Express",
+        description: "Engineer scalable, secure RESTful microservices and authentication systems.",
+        skills: [
+          { _id: "s10", name: "Node.js Architecture & Streams", description: "Event loop, libuv, buffer, file system streams", priority: "high", completed: true, resources: ["Node.js Docs"] },
+          { _id: "s11", name: "Express.js REST APIs", description: "Route handlers, middleware pipelines, error handling", priority: "high", completed: true, resources: ["Express.js Guide"] },
+          { _id: "s12", name: "JWT Authentication & Security", description: "Bcrypt hashing, refresh tokens, security headers (Helmet)", priority: "high", completed: false, resources: ["OWASP Cheat Sheet"] },
+          { _id: "s13", name: "File Uploads & Validation", description: "Multer, stream pipelines, Joi / Zod validation", priority: "medium", completed: false, resources: ["npmjs.com/multer"] }
+        ]
+      },
+      {
+        _id: "phase-4",
+        phaseNumber: 4,
+        title: "Phase 4: Database Architecture with MongoDB",
+        description: "Design resilient NoSQL schemas, indexing strategies, and complex aggregations.",
+        skills: [
+          { _id: "s14", name: "MongoDB Schema Design & Mongoose", description: "Schemas, virtuals, middleware hooks, populate", priority: "high", completed: true, resources: ["Mongoose Docs"] },
+          { _id: "s15", name: "Aggregation Framework", description: "$match, $group, $lookup, $unwind, $project", priority: "high", completed: false, resources: ["MongoDB University"] },
+          { _id: "s16", name: "Indexing & Query Optimization", description: "Compound indexes, execution plans, TTL indexes", priority: "medium", completed: false, resources: ["MongoDB Indexing Guide"] },
+          { _id: "s17", name: "Redis Caching Layer", description: "Key-value cache, session store, cache invalidation", priority: "optional", completed: false, resources: ["Redis Docs"] }
+        ]
+      },
+      {
+        _id: "phase-5",
+        phaseNumber: 5,
+        title: "Phase 5: Production Engineering & DevOps",
+        description: "Containerization, automated testing, continuous delivery, and observability.",
+        skills: [
+          { _id: "s18", name: "Docker Containerization", description: "Dockerfiles, multi-stage builds, docker-compose", priority: "high", completed: false, resources: ["Docker Docs"] },
+          { _id: "s19", name: "Automated Testing (Jest & RTL)", description: "Unit tests, integration tests, mock server workers", priority: "medium", completed: false, resources: ["Testing Library"] },
+          { _id: "s20", name: "CI/CD & Cloud Deployment", description: "GitHub Actions, Vercel / Render / AWS deployment", priority: "high", completed: false, resources: ["GitHub Actions Docs"] }
+        ]
+      }
+    ]
+  },
+  "Frontend Developer": {
+    _id: "local-roadmap-frontend",
+    role: "Frontend Developer",
+    targetRole: "Frontend Developer",
+    completionPercentage: 60,
+    completedSkillsCount: 9,
+    totalSkills: 15,
+    phases: [
+      {
+        _id: "f-p1",
+        phaseNumber: 1,
+        title: "Phase 1: Semantic Web & Modern CSS",
+        description: "Pixel-perfect layouts, responsive design, and web accessibility standards.",
+        skills: [
+          { _id: "fs1", name: "Semantic HTML5 & Accessibility", description: "ARIA tags, screen readers, semantic structuring", priority: "high", completed: true, resources: ["A11y Project"] },
+          { _id: "fs2", name: "CSS Flexbox & CSS Grid Mastery", description: "Two-dimensional responsive dynamic grids", priority: "high", completed: true, resources: ["CSS Tricks Grid"] },
+          { _id: "fs3", name: "Modern CSS Architecture & Tailwind", description: "CSS variables, Tailwind utility patterns", priority: "high", completed: true, resources: ["Tailwind Docs"] },
+          { _id: "fs4", name: "Animations & Micro-interactions", description: "CSS transitions, keyframes, hardware acceleration", priority: "medium", completed: true, resources: ["web.dev/animations"] }
+        ]
+      },
+      {
+        _id: "f-p2",
+        phaseNumber: 2,
+        title: "Phase 2: TypeScript & Modern JS",
+        description: "Type safety, functional paradigms, and browser engine internals.",
+        skills: [
+          { _id: "fs5", name: "JavaScript ES6+ Deep Dive", description: "Prototypes, event loop, closures, memory leaks", priority: "high", completed: true, resources: ["javascript.info"] },
+          { _id: "fs6", name: "TypeScript Essentials", description: "Generics, union types, interfaces, type narrowing", priority: "high", completed: true, resources: ["TypeScript Handbook"] },
+          { _id: "fs7", name: "Web Performance & Core Web Vitals", description: "LCP, FID, CLS, critical rendering path", priority: "high", completed: false, resources: ["web.dev/vitals"] }
+        ]
+      },
+      {
+        _id: "f-p3",
+        phaseNumber: 3,
+        title: "Phase 3: React & Next.js Ecosystem",
+        description: "Server components, streaming SSR, and client state orchestration.",
+        skills: [
+          { _id: "fs8", name: "React 19 & Component Architecture", description: "Server components, Actions, hooks", priority: "high", completed: true, resources: ["React 19 Docs"] },
+          { _id: "fs9", name: "Next.js App Router & SSR", description: "Server-side rendering, static generation, SEO", priority: "high", completed: true, resources: ["Next.js Docs"] },
+          { _id: "fs10", name: "State Management (Zustand / Redux)", description: "Lightweight scalable state stores", priority: "medium", completed: true, resources: ["Zustand Guide"] },
+          { _id: "fs11", name: "Data Fetching with TanStack Query", description: "Caching, background refetching, optimistic updates", priority: "high", completed: false, resources: ["TanStack Query"] }
+        ]
+      },
+      {
+        _id: "f-p4",
+        phaseNumber: 4,
+        title: "Phase 4: Testing, Tooling & Optimization",
+        description: "Automated component testing, bundlers, and production deployments.",
+        skills: [
+          { _id: "fs12", name: "Jest & React Testing Library", description: "Unit & component integration tests", priority: "high", completed: false, resources: ["Testing Library"] },
+          { _id: "fs13", name: "Vite & Modern Bundlers", description: "HMR, chunk splitting, tree-shaking", priority: "medium", completed: false, resources: ["Vite Guide"] },
+          { _id: "fs14", name: "CI/CD & Cloud Hosting", description: "Automated test pipelines, Vercel deployments", priority: "high", completed: false, resources: ["Vercel Docs"] }
+        ]
+      }
+    ]
+  },
+  "Backend Developer": {
+    _id: "local-roadmap-backend",
+    role: "Backend Developer",
+    targetRole: "Backend Developer",
+    completionPercentage: 50,
+    completedSkillsCount: 6,
+    totalSkills: 12,
+    phases: [
+      {
+        _id: "b-p1",
+        phaseNumber: 1,
+        title: "Phase 1: Node.js Runtime & Server Architecture",
+        description: "Server lifecycles, event-driven loops, and modular system design.",
+        skills: [
+          { _id: "bs1", name: "Node.js Core Architecture", description: "Event loop, libuv, cluster module, child processes", priority: "high", completed: true, resources: ["Node.js Docs"] },
+          { _id: "bs2", name: "TypeScript for Backend", description: "Type-safe controllers, DTOs, interfaces", priority: "high", completed: true, resources: ["TypeScript Backend Guide"] },
+          { _id: "bs3", name: "REST API Design Standards", description: "Status codes, pagination, idempotency, HATEOAS", priority: "high", completed: true, resources: ["RESTful API Guide"] }
+        ]
+      },
+      {
+        _id: "b-p2",
+        phaseNumber: 2,
+        title: "Phase 2: Relational & NoSQL Databases",
+        description: "PostgreSQL, MongoDB, query planning, transactions, and caching.",
+        skills: [
+          { _id: "bs4", name: "PostgreSQL & ACID Transactions", description: "Foreign keys, indexing, isolation levels, EXPLAIN ANALYZE", priority: "high", completed: true, resources: ["PostgreSQL Tutorial"] },
+          { _id: "bs5", name: "MongoDB & Aggregation Framework", description: "Pipelines, compound indexes, replication", priority: "high", completed: true, resources: ["MongoDB Docs"] },
+          { _id: "bs6", name: "Redis Caching Strategies", description: "TTL, cache-aside, write-through, rate limiting", priority: "high", completed: true, resources: ["Redis University"] }
+        ]
+      },
+      {
+        _id: "b-p3",
+        phaseNumber: 3,
+        title: "Phase 3: System Design & Microservices",
+        description: "Message queues, load balancing, API gateways, and distributed state.",
+        skills: [
+          { _id: "bs7", name: "OAuth2, JWT & RBAC Security", description: "Refresh token rotation, permission matrices", priority: "high", completed: false, resources: ["Auth0 Architecture Guide"] },
+          { _id: "bs8", name: "Message Queues (RabbitMQ / Kafka)", description: "Event-driven architecture, pub/sub, consumers", priority: "high", completed: false, resources: ["RabbitMQ Tutorials"] },
+          { _id: "bs9", name: "High-Throughput System Design", description: "Horizontal scaling, database sharding, CAP theorem", priority: "high", completed: false, resources: ["System Design Primer"] }
+        ]
+      },
+      {
+        _id: "b-p4",
+        phaseNumber: 4,
+        title: "Phase 4: Containerization & Cloud Deployment",
+        description: "Docker, Kubernetes fundamentals, and production monitoring.",
+        skills: [
+          { _id: "bs10", name: "Docker & Container Networking", description: "Multi-stage builds, bridge networks, volumes", priority: "high", completed: false, resources: ["Docker Mastery"] },
+          { _id: "bs11", name: "CI/CD Pipelines with GitHub Actions", description: "Automated linting, integration testing, deployments", priority: "high", completed: false, resources: ["GitHub Actions"] },
+          { _id: "bs12", name: "Observability (Prometheus & Grafana)", description: "Metrics collection, tracing, alert rules", priority: "medium", completed: false, resources: ["Prometheus Docs"] }
+        ]
+      }
+    ]
+  },
+  "Full Stack Developer": {
+    _id: "local-roadmap-fullstack",
+    role: "Full Stack Developer",
+    targetRole: "Full Stack Developer",
+    completionPercentage: 58,
+    completedSkillsCount: 7,
+    totalSkills: 12,
+    phases: [
+      {
+        _id: "fs-p1",
+        phaseNumber: 1,
+        title: "Phase 1: End-to-End Application Architecture",
+        description: "Full stack protocol design, modern React/Next.js frontend, and state sync.",
+        skills: [
+          { _id: "fss1", name: "React 19 & Next.js Ecosystem", description: "SSR, SSG, server components, streaming", priority: "high", completed: true, resources: ["Next.js Docs"] },
+          { _id: "fss2", name: "TypeScript Across the Stack", description: "Shared types, DTO contracts, tRPC / Zod validation", priority: "high", completed: true, resources: ["TypeScript Handbook"] },
+          { _id: "fss3", name: "RESTful & GraphQL Protocols", description: "Schema design, queries, mutations, subscriptions", priority: "high", completed: true, resources: ["GraphQL Docs"] }
+        ]
+      },
+      {
+        _id: "fs-p2",
+        phaseNumber: 2,
+        title: "Phase 2: Scalable Services & Dual Databases",
+        description: "Node.js, Express, PostgreSQL, MongoDB, and Redis caching.",
+        skills: [
+          { _id: "fss4", name: "Node.js & Express Microservices", description: "Event loop, streams, routing, rate limiting", priority: "high", completed: true, resources: ["Express.js Docs"] },
+          { _id: "fss5", name: "PostgreSQL & MongoDB Management", description: "Relational joins + flexible document stores", priority: "high", completed: true, resources: ["PostgreSQL Docs"] },
+          { _id: "fss6", name: "Redis Caching & Session Storage", description: "Sub-millisecond query caches, distributed locks", priority: "medium", completed: true, resources: ["Redis Docs"] }
+        ]
+      },
+      {
+        _id: "fs-p3",
+        phaseNumber: 3,
+        title: "Phase 3: Production Infrastructure & Cloud",
+        description: "Docker, Kubernetes basics, automated deployment pipelines, and security.",
+        skills: [
+          { _id: "fss7", name: "Docker Containerization", description: "Multi-service compose, slim base images", priority: "high", completed: true, resources: ["Docker Docs"] },
+          { _id: "fss8", name: "CI/CD & Cloud Infrastructure", description: "GitHub Actions, AWS ECS / Vercel setups", priority: "high", completed: false, resources: ["AWS Docs"] },
+          { _id: "fss9", name: "System Security & Token Auth", description: "CORS, CSRF, sanitized inputs, OAuth2, JWT", priority: "high", completed: false, resources: ["OWASP Top 10"] }
+        ]
+      },
+      {
+        _id: "fs-p4",
+        phaseNumber: 4,
+        title: "Phase 4: Real-time Communication & Scaling",
+        description: "WebSockets, background workers, and horizontal scalability.",
+        skills: [
+          { _id: "fss10", name: "WebSockets & Socket.IO", description: "Bi-directional streaming, rooms, presence tracking", priority: "high", completed: false, resources: ["Socket.IO Docs"] },
+          { _id: "fss11", name: "Background Job Processing (BullMQ)", description: "Redis backed queues, delayed retries, worker pools", priority: "medium", completed: false, resources: ["BullMQ Docs"] },
+          { _id: "fss12", name: "Load Balancing & CDN Delivery", description: "Nginx reverse proxy, Cloudflare caching, edge networks", priority: "medium", completed: false, resources: ["Cloudflare Docs"] }
+        ]
+      }
+    ]
+  },
+  "Cloud & DevOps": {
+    _id: "local-roadmap-devops",
+    role: "Cloud & DevOps",
+    targetRole: "Cloud & DevOps",
+    completionPercentage: 42,
+    completedSkillsCount: 5,
+    totalSkills: 12,
+    phases: [
+      {
+        _id: "d-p1",
+        phaseNumber: 1,
+        title: "Phase 1: Linux, Networking & Bash Automation",
+        description: "System administration, TCP/IP networking, and automation scripts.",
+        skills: [
+          { _id: "ds1", name: "Linux Administration & Bash Scripting", description: "Permissions, systemd, process signals, cron jobs", priority: "high", completed: true, resources: ["Linux Journey"] },
+          { _id: "ds2", name: "Networking Fundamentals & TLS", description: "TCP/IP, DNS, SSL/TLS certificates, load balancing", priority: "high", completed: true, resources: ["Cloudflare Learning"] },
+          { _id: "ds3", name: "Git Workflow & Branching Strategies", description: "Gitflow, trunk-based development, rebase", priority: "high", completed: true, resources: ["Atlassian Git Guide"] }
+        ]
+      },
+      {
+        _id: "d-p2",
+        phaseNumber: 2,
+        title: "Phase 2: Containers & Orchestration",
+        description: "Docker, Kubernetes clusters, Helm charts, and service meshes.",
+        skills: [
+          { _id: "ds4", name: "Docker Container Deep Dive", description: "Image optimization, multi-stage builds, non-root users", priority: "high", completed: true, resources: ["Docker Docs"] },
+          { _id: "ds5", name: "Kubernetes Core Architecture", description: "Pods, Deployments, Services, ConfigMaps, Secrets", priority: "high", completed: true, resources: ["Kubernetes.io"] },
+          { _id: "ds6", name: "Helm Package Management & Ingress", description: "Templated manifests, Nginx Ingress, Cert-Manager", priority: "medium", completed: false, resources: ["Helm Docs"] }
+        ]
+      },
+      {
+        _id: "d-p3",
+        phaseNumber: 3,
+        title: "Phase 3: Infrastructure as Code & Cloud Platforms",
+        description: "AWS/GCP architectures, Terraform provisioning, and secrets management.",
+        skills: [
+          { _id: "ds7", name: "Terraform Infrastructure as Code", description: "HCL syntax, state management, remote backends, modules", priority: "high", completed: false, resources: ["HashiCorp Learn"] },
+          { _id: "ds8", name: "AWS Cloud Core (EC2, S3, RDS, IAM, VPC)", description: "Secure cloud architectures, private subnets, security groups", priority: "high", completed: false, resources: ["AWS Skill Builder"] },
+          { _id: "ds9", name: "Secrets Management (Vault / AWS SSM)", description: "Dynamic secrets, encryption at rest and in transit", priority: "high", completed: false, resources: ["HashiCorp Vault"] }
+        ]
+      },
+      {
+        _id: "d-p4",
+        phaseNumber: 4,
+        title: "Phase 4: CI/CD & Observability Pipelines",
+        description: "Automated pipelines, Prometheus, Grafana, and incident response.",
+        skills: [
+          { _id: "ds10", name: "GitHub Actions & ArgoCD (GitOps)", description: "Automated build, test, and continuous deployment", priority: "high", completed: false, resources: ["ArgoCD Docs"] },
+          { _id: "ds11", name: "Monitoring with Prometheus & Grafana", description: "PromQL metrics, dashboards, alert manager setup", priority: "high", completed: false, resources: ["Prometheus Guide"] },
+          { _id: "ds12", name: "Centralized Logging (Loki / ELK)", description: "Log aggregation, indexing, error rate tracking", priority: "medium", completed: false, resources: ["Grafana Loki"] }
+        ]
+      }
+    ]
+  },
+  "AI & ML Engineer": {
+    _id: "local-roadmap-aiml",
+    role: "AI & ML Engineer",
+    targetRole: "AI & ML Engineer",
+    completionPercentage: 45,
+    completedSkillsCount: 5,
+    totalSkills: 11,
+    phases: [
+      {
+        _id: "ai-p1",
+        phaseNumber: 1,
+        title: "Phase 1: Python, Mathematics & Data Wrangling",
+        description: "Vector mathematics, NumPy, Pandas, and exploratory data analysis.",
+        skills: [
+          { _id: "ais1", name: "Advanced Python for AI", description: "Generators, async, OOP, memory profiling", priority: "high", completed: true, resources: ["Real Python"] },
+          { _id: "ais2", name: "NumPy & Pandas Data Manipulation", description: "Vectorized operations, broadcasting, feature engineering", priority: "high", completed: true, resources: ["Pandas Docs"] },
+          { _id: "ais3", name: "Linear Algebra & Statistics", description: "Matrices, eigenvalues, probability distributions, calculus", priority: "medium", completed: true, resources: ["3Blue1Brown Linear Algebra"] }
+        ]
+      },
+      {
+        _id: "ai-p2",
+        phaseNumber: 2,
+        title: "Phase 2: Machine Learning & Deep Learning",
+        description: "Scikit-Learn, PyTorch neural networks, and model evaluation metrics.",
+        skills: [
+          { _id: "ais4", name: "Scikit-Learn Algorithms", description: "Classification, regression, ensemble methods, cross-validation", priority: "high", completed: true, resources: ["Scikit-Learn Docs"] },
+          { _id: "ais5", name: "PyTorch & Deep Neural Networks", description: "Tensors, autograd, CNNs, Transformers, loss functions", priority: "high", completed: true, resources: ["PyTorch Tutorials"] },
+          { _id: "ais6", name: "Model Evaluation & Bias Control", description: "Precision, recall, F1, ROC-AUC, overfitting mitigation", priority: "high", completed: false, resources: ["Google ML Crash Course"] }
+        ]
+      },
+      {
+        _id: "ai-p3",
+        phaseNumber: 3,
+        title: "Phase 3: LLMs, RAG & Generative AI",
+        description: "Prompt engineering, Vector DBs, LangChain/LlamaIndex, and model APIs.",
+        skills: [
+          { _id: "ais7", name: "LLM APIs & Prompt Engineering", description: "Gemini 2.0 / OpenAI APIs, function calling, structured JSON", priority: "high", completed: false, resources: ["DeepLearning.AI"] },
+          { _id: "ais8", name: "Retrieval Augmented Generation (RAG)", description: "Embeddings, chunking strategies, Pinecone, Chroma", priority: "high", completed: false, resources: ["Pinecone Learn"] },
+          { _id: "ais9", name: "LangChain / LlamaIndex Frameworks", description: "Chains, memory, retrieval agents, multi-modal agents", priority: "high", completed: false, resources: ["LangChain Docs"] }
+        ]
+      },
+      {
+        _id: "ai-p4",
+        phaseNumber: 4,
+        title: "Phase 4: AI Model Deployment & MLOps",
+        description: "FastAPI serving, quantization, tracking, and inference optimization.",
+        skills: [
+          { _id: "ais10", name: "FastAPI Model Serving & Async", description: "RESTful model endpoints, streaming responses, Dockerization", priority: "high", completed: false, resources: ["FastAPI Docs"] },
+          { _id: "ais11", name: "Model Monitoring & MLflow", description: "Experiment tracking, model registry, drift detection", priority: "medium", completed: false, resources: ["MLflow Docs"] }
+        ]
+      }
+    ]
+  }
 };
+
+const FALLBACK_ROADMAP = FALLBACK_ROADMAPS["MERN Stack Developer"];
 
 const FALLBACK_SKILL_GAP = {
   role: "Frontend Developer",
@@ -133,12 +427,27 @@ export const getJobMatchScore = async (jobId) => {
 // 2. Career Roadmap
 // ============================================================
 export const getCareerRoadmap = async (role = "MERN Stack Developer") => {
+  const fallback = FALLBACK_ROADMAPS[role] || FALLBACK_ROADMAPS["MERN Stack Developer"];
+  const availableRoles = Object.keys(FALLBACK_ROADMAPS);
   try {
     const res = await api.get(`/career/roadmap?role=${encodeURIComponent(role)}`);
-    return res.data?.data || res.data || FALLBACK_ROADMAP;
+    const serverData = res.data?.data || res.data;
+    if (serverData?.roadmap) {
+      return {
+        roadmap: serverData.roadmap,
+        availableRoles: serverData.availableRoles || availableRoles
+      };
+    }
+    if (serverData?.phases) {
+      return {
+        roadmap: serverData,
+        availableRoles
+      };
+    }
+    return { roadmap: fallback, availableRoles };
   } catch (err) {
     console.warn("Roadmap unavailable, using local data:", err.message);
-    return FALLBACK_ROADMAP;
+    return { roadmap: fallback, availableRoles };
   }
 };
 
