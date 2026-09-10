@@ -16,17 +16,8 @@ try {
   // Ignore fallback
 }
 
-// Set storage engine
-const storage = process.env.VERCEL
-  ? multer.memoryStorage()
-  : multer.diskStorage({
-      destination: function (req, file, cb) {
-        cb(null, uploadDir);
-      },
-      filename: function (req, file, cb) {
-        cb(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname));
-      }
-    });
+// Universal in-memory storage: prevents ENOENT errors in serverless and containerized environments
+const storage = multer.memoryStorage();
 
 // Check File Type
 function checkFileType(file, cb) {

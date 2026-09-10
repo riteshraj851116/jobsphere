@@ -83,11 +83,8 @@ export const getUserPosts = async (userId) => {
 };
 
 export const createPost = async (data) => {
-  const isFormData = typeof FormData !== 'undefined' && data instanceof FormData;
-  const config = isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {};
-
   try {
-    const res = await api.post('/posts', data, config);
+    const res = await api.post('/posts', data);
     const newPost = res.data?.post || res.data?.data?.post || res.data;
 
     // Cache locally for instant feedback

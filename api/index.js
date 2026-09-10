@@ -124,12 +124,14 @@ const handler = async (req, res) => {
 };
 
 // Disable Vercel's default bodyParser so Express and Multer handle raw streams & multipart forms cleanly
-handler.config = {
+const serverlessConfig = {
   api: {
     bodyParser: false,
     externalResolver: true
   }
 };
 
+handler.config = serverlessConfig;
 module.exports = handler;
+module.exports.config = serverlessConfig;
 
