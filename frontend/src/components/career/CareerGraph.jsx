@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { ArrowRight, CheckCircle2, Circle, Sparkles, BookOpen, Layers, Target, Briefcase } from "lucide-react";
+import { ArrowRight, Circle, Sparkles, BookOpen, Layers, Target, Briefcase } from "lucide-react";
 
 const STEP_COLORS = [
-  { bg: "rgba(139, 92, 246, 0.12)", border: "rgba(139, 92, 246, 0.35)", icon: "#a78bfa", glow: "rgba(139, 92, 246, 0.2)" },
-  { bg: "rgba(6, 182, 212, 0.12)", border: "rgba(6, 182, 212, 0.35)", icon: "#22d3ee", glow: "rgba(6, 182, 212, 0.2)" },
-  { bg: "rgba(16, 185, 129, 0.12)", border: "rgba(16, 185, 129, 0.35)", icon: "#34d399", glow: "rgba(16, 185, 129, 0.2)" },
-  { bg: "rgba(244, 63, 94, 0.12)", border: "rgba(244, 63, 94, 0.35)", icon: "#fb7185", glow: "rgba(244, 63, 94, 0.2)" },
-  { bg: "rgba(245, 158, 11, 0.12)", border: "rgba(245, 158, 11, 0.35)", icon: "#fbbf24", glow: "rgba(245, 158, 11, 0.2)" },
-  { bg: "rgba(99, 102, 241, 0.12)", border: "rgba(99, 102, 241, 0.35)", icon: "#818cf8", glow: "rgba(99, 102, 241, 0.2)" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
+  { bg: "#f4f4f5", border: "#e4e4e7", icon: "#18181b", activeBorder: "#000000" },
 ];
 
 const CareerGraph = ({
@@ -66,10 +66,10 @@ const CareerGraph = ({
   return (
     <div className="career-graph-wrapper">
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "1.25rem" }}>
-        <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 700, color: "#f1f5f9" }}>
+        <h3 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800, color: "#18181b" }}>
           Interactive Career Progression Graph
         </h3>
-        <span style={{ fontSize: "0.8rem", color: "#64748b" }}>
+        <span style={{ fontSize: "0.8rem", color: "#71717a" }}>
           Click any phase to inspect details
         </span>
       </div>
@@ -95,15 +95,15 @@ const CareerGraph = ({
                   minWidth: "160px",
                   padding: "1.15rem",
                   borderRadius: "14px",
-                  background: isActive ? color.bg : "rgba(15, 23, 42, 0.4)",
+                  background: isActive ? "#ffffff" : "#fafafa",
                   border: isActive
-                    ? `1.5px solid ${color.border}`
-                    : "1px solid rgba(148, 163, 184, 0.08)",
+                    ? `1.5px solid ${color.activeBorder}`
+                    : "1px solid #e4e4e7",
                   cursor: "pointer",
-                  transition: "all 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                  transition: "all 0.2s ease",
                   textAlign: "center",
                   flexShrink: 0,
-                  boxShadow: isActive ? `0 4px 20px ${color.glow}` : "none",
+                  boxShadow: isActive ? "0 4px 14px rgba(0,0,0,0.08)" : "0 1px 2px rgba(0,0,0,0.03)",
                   transform: isActive ? "translateY(-2px)" : "none",
                 }}
               >
@@ -114,22 +114,19 @@ const CareerGraph = ({
                     justifyContent: "center",
                     width: 36,
                     height: 36,
-                    borderRadius: "50%",
-                    background: isActive
-                      ? `linear-gradient(135deg, ${color.icon}, ${color.border})`
-                      : "rgba(51, 65, 85, 0.5)",
-                    color: isActive ? "#ffffff" : "#94a3b8",
+                    borderRadius: "10px",
+                    background: isActive ? "#000000" : "#f4f4f5",
+                    color: isActive ? "#ffffff" : "#52525b",
                     marginBottom: "0.6rem",
-                    boxShadow: isActive ? `0 4px 12px ${color.glow}` : "none",
-                    transition: "all 0.3s ease",
+                    transition: "all 0.2s ease",
                   }}
                 >
                   {step.icon}
                 </div>
-                <div style={{ fontSize: "0.85rem", fontWeight: 700, color: isActive ? "#f1f5f9" : "#cbd5e1", marginBottom: 3 }}>
+                <div style={{ fontSize: "0.85rem", fontWeight: 700, color: isActive ? "#09090b" : "#52525b", marginBottom: 3 }}>
                   {step.label}
                 </div>
-                <div style={{ fontSize: "0.75rem", color: "#94a3b8", marginBottom: 8 }}>
+                <div style={{ fontSize: "0.75rem", color: "#71717a", marginBottom: 8 }}>
                   {step.details}
                 </div>
                 <span
@@ -139,11 +136,9 @@ const CareerGraph = ({
                     fontWeight: 700,
                     padding: "3px 10px",
                     borderRadius: "999px",
-                    background: isActive
-                      ? `linear-gradient(135deg, ${color.icon}, ${color.border})`
-                      : "rgba(51, 65, 85, 0.4)",
-                    color: isActive ? "#ffffff" : "#94a3b8",
-                    border: isActive ? "none" : "1px solid rgba(148, 163, 184, 0.1)",
+                    background: isActive ? "#000000" : "#f4f4f5",
+                    color: isActive ? "#ffffff" : "#71717a",
+                    border: isActive ? "none" : "1px solid #e4e4e7",
                     textTransform: "uppercase",
                     letterSpacing: "0.03em",
                   }}
@@ -161,10 +156,10 @@ const CareerGraph = ({
                   <div style={{
                     width: "20px",
                     height: "2px",
-                    background: "linear-gradient(90deg, rgba(139, 92, 246, 0.3), rgba(6, 182, 212, 0.3))",
+                    background: "#e4e4e7",
                     borderRadius: "1px",
                   }} />
-                  <ArrowRight size={16} color="#64748b" style={{ flexShrink: 0 }} />
+                  <ArrowRight size={16} color="#a1a1aa" style={{ flexShrink: 0 }} />
                 </div>
               )}
             </React.Fragment>
