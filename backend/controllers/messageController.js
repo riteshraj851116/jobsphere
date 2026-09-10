@@ -68,7 +68,12 @@ const sendMessage = async (req, res) => {
     let image = "";
 
     if (req.file) {
-      image = `/uploads/${req.file.filename}`;
+      if (req.file.buffer) {
+        const mime = req.file.mimetype || "image/jpeg";
+        image = `data:${mime};base64,${req.file.buffer.toString("base64")}`;
+      } else if (req.file.filename) {
+        image = `/uploads/${req.file.filename}`;
+      }
     }
 
     // -----------------------------------------------------

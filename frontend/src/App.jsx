@@ -65,20 +65,44 @@ import InterviewPrepare from "./pages/Interview/InterviewPrepare.jsx";
 import PortfolioAuditor from "./pages/Career/PortfolioAuditor.jsx";
 import TalentMarketplace from "./pages/Recruiter/TalentMarketplace.jsx";
 
+import NotFoundScene from "./components/three/NotFoundScene.jsx";
+import { Link } from "react-router-dom";
+
 const NotFound = () => {
   return (
     <div
       style={{
-        minHeight: "60vh",
+        minHeight: "70vh",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: "12px",
+        gap: "16px",
+        padding: "32px 16px",
+        textAlign: "center",
       }}
     >
-      <h2>404</h2>
-      <p>Page not found</p>
+      <NotFoundScene />
+      <h1 style={{ fontSize: "2.5rem", fontWeight: "800", margin: 0, color: "var(--text-primary, #111827)" }}>
+        404
+      </h1>
+      <p style={{ fontSize: "1.1rem", color: "var(--text-secondary, #6b7280)", margin: 0, maxWidth: "420px" }}>
+        We couldn't find the page you're looking for. It might have been moved or doesn't exist.
+      </p>
+      <Link
+        to="/"
+        className="btn-primary"
+        style={{
+          marginTop: "12px",
+          padding: "10px 24px",
+          borderRadius: "8px",
+          textDecoration: "none",
+          fontWeight: 600,
+          display: "inline-block",
+        }}
+      >
+        Back to Home
+      </Link>
     </div>
   );
 };
@@ -111,6 +135,7 @@ const App = () => {
             <Route path="/messages" element={<Messages />} />
             <Route path="/notifications" element={<Notifications />} />
             <Route path="/profile" element={<CandidateProfile />} />
+            <Route path="/candidate-profile" element={<CandidateProfile />} />
             
             {/* AI CAREER OPERATING SYSTEM ROUTES */}
             <Route path="/career" element={<CareerDashboard />} />
