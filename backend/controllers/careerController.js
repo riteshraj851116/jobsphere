@@ -149,21 +149,58 @@ const toggleRoadmapSkill = async (req, res) => {
   try {
     const { roadmapId, phaseId, skillId } = req.body;
 
-    const roadmap = await CareerRoadmap.findOne({
-      _id: roadmapId,
-      user: req.user._id
-    });
+    let roadmap = null;
+    if (roadmapId && mongoose.Types.ObjectId.isValid(roadmapId)) {
+      roadmap = await CareerRoadmap.findOne({
+        _id: roadmapId,
+        user: req.user._id
+      });
+    }
+
+    if (!roadmap && req.user?._id) {
+      roadmap = await CareerRoadmap.findOne({ user: req.user._id }).sort({ updatedAt: -1 });
+    }
 
     if (!roadmap) {
       return res.status(404).json({ success: false, message: "Roadmap not found" });
     }
 
-    const phase = roadmap.phases.id(phaseId);
+    let phase = null;
+    if (phaseId) {
+      phase = roadmap.phases.find(
+        (p) =>
+          p._id?.toString() === phaseId?.toString() ||
+          p.id?.toString() === phaseId?.toString() ||
+          String(p.phaseNumber) === String(phaseId)
+      );
+    }
+
+    if (!phase && roadmap.phases.length > 0) {
+      for (const p of roadmap.phases) {
+        const found = p.skills.find(
+          (s) =>
+            s._id?.toString() === skillId?.toString() ||
+            s.id?.toString() === skillId?.toString() ||
+            s.name?.toLowerCase() === skillId?.toString()?.toLowerCase()
+        );
+        if (found) {
+          phase = p;
+          break;
+        }
+      }
+    }
+
     if (!phase) {
       return res.status(404).json({ success: false, message: "Phase not found" });
     }
 
-    const skill = phase.skills.id(skillId);
+    const skill = phase.skills.find(
+      (s) =>
+        s._id?.toString() === skillId?.toString() ||
+        s.id?.toString() === skillId?.toString() ||
+        s.name?.toLowerCase() === skillId?.toString()?.toLowerCase()
+    );
+
     if (!skill) {
       return res.status(404).json({ success: false, message: "Skill not found" });
     }

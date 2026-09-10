@@ -1,157 +1,71 @@
 /* ==========================================================================
-   Career Roadmap — Clean Editorial Monochrome & High-Contrast Light Theme
-   Matches JobSphere Platform: Resume Analyzer, Interview Practice, Jobs, Dashboard
+   Interactive Career Roadmap — JobSphere Platform Theme
+   Matches Interview Practice, Resume Analyzer, Dashboard & Jobs
    ========================================================================== */
 
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
+/* SubNav styling */
+.career-subnav {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2.25rem;
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+.career-subnav-links {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: #f4f4f5;
+  border: 1px solid #e4e4e7;
+  border-radius: 9999px;
+  padding: 4px 6px;
+  overflow-x: auto;
+  max-width: 100%;
 }
 
-.spin-fast {
-  animation: spin 0.8s linear infinite;
-}
-
-.roadmap-page {
-  min-height: calc(100vh - var(--navbar-height, 72px));
-  background-color: var(--bg-secondary, #fafafa);
-  color: var(--text, #111111);
-  padding: 2.5rem 1.5rem 5rem;
-  position: relative;
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background-image:
-    linear-gradient(to right, rgba(0, 0, 0, 0.035) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.035) 1px, transparent 1px);
-  background-size: 40px 40px;
-}
-
-.roadmap-container {
-  max-width: 1080px;
-  margin: 0 auto;
-  position: relative;
-  z-index: 1;
-}
-
-/* ==========================================================================
-   Header & Intro
-   ========================================================================== */
-.roadmap-header {
-  text-align: center;
-  margin-bottom: 2.5rem;
-  animation: fadeSlideUp 0.4s ease-out;
-}
-
-.roadmap-badge {
+.career-nav-item {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 14px;
-  border-radius: var(--radius-full, 9999px);
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border, #e4e4e7);
+  padding: 6px 14px;
   font-size: 0.8125rem;
+  font-weight: 500;
+  color: #52525b;
+  border-radius: 9999px;
+  text-decoration: none;
+  transition: all 0.18s ease;
+  white-space: nowrap;
+}
+
+.career-nav-item:hover {
+  color: #09090b;
+  background: #e4e4e7;
+}
+
+.career-nav-item.active {
+  background: #09090b;
+  color: #ffffff;
   font-weight: 600;
-  color: var(--accent, #000000);
-  margin-bottom: 1rem;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.roadmap-title {
-  font-size: 2.25rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  color: var(--text-primary, #18181b);
-  margin-bottom: 0.75rem;
-  line-height: 1.2;
-}
-
-.roadmap-subtitle {
-  font-size: 1.05rem;
-  color: var(--text-secondary, #52525b);
-  max-width: 640px;
-  margin: 0 auto 1.75rem;
-  line-height: 1.55;
-}
-
-/* ==========================================================================
-   Role Selector Tabs
-   ========================================================================== */
-.role-selector-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 8px;
-  flex-wrap: wrap;
+/* Setup Card */
+.roadmap-setup-card {
   margin-bottom: 2rem;
 }
 
-.role-tab-btn {
-  padding: 9px 18px;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: 1px solid var(--border, #e4e4e7);
-  background: var(--surface, #ffffff);
-  color: var(--text-secondary, #52525b);
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-}
-
-.role-tab-btn:hover {
-  border-color: #000000;
-  color: #000000;
-  background: #f4f4f5;
-  transform: translateY(-1px);
-}
-
-.role-tab-btn.active {
-  background: #000000;
-  color: #ffffff;
-  border-color: #000000;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
-}
-
-/* Loading box */
-.roadmap-loading-box {
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border, #e4e4e7);
-  border-radius: 18px;
-  padding: 4rem 2rem;
-  text-align: center;
-  color: var(--text-secondary, #52525b);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.roadmap-spinner {
-  color: #000000;
-  animation: spin 1s linear infinite;
-  margin: 0 auto 1.25rem;
-}
-
-/* ==========================================================================
-   Overall Progress Card
-   ========================================================================== */
+/* Progress Card */
 .roadmap-progress-card {
   background: var(--surface, #ffffff);
-  color: var(--text-primary, #18181b);
-  border-radius: 18px;
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: var(--radius-xl, 16px);
   padding: 2rem 2.25rem;
   margin-bottom: 1.5rem;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05), 0 6px 20px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-sm, 0 1px 3px rgba(0,0,0,0.04));
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  animation: fadeSlideUp 0.4s ease-out;
-  border: 1px solid var(--border, #e4e4e7);
+  gap: 2rem;
 }
 
 .progress-info-left {
@@ -167,132 +81,134 @@
   border: 1px solid #e4e4e7;
   padding: 4px 12px;
   border-radius: 9999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: #18181b;
-  margin-bottom: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #09090b;
+  margin-bottom: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .progress-level-badge {
-  background: #000000;
+  background: #09090b;
   color: #ffffff;
-  padding: 2px 7px;
-  border-radius: 6px;
-  font-size: 0.7rem;
-  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 600;
 }
 
 .progress-info-left h2 {
-  font-size: 1.35rem;
+  font-size: 1.45rem;
   font-weight: 800;
-  margin: 0 0 0.35rem;
-  color: #18181b;
+  color: #09090b;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.4rem;
 }
 
 .progress-info-left p {
+  font-size: 0.9375rem;
   color: #52525b;
-  font-size: 0.925rem;
-  margin: 0 0 1.25rem;
+  margin-bottom: 1.25rem;
 }
 
-.progress-info-left strong {
-  color: #18181b;
+.progress-info-left p strong {
+  color: #09090b;
 }
 
+/* Progress Bar */
 .progress-bar-container {
   width: 100%;
-  max-width: 520px;
   height: 10px;
   background: #f4f4f5;
+  border: 1px solid #e4e4e7;
   border-radius: 9999px;
   overflow: hidden;
-  border: 1px solid #e4e4e7;
+  margin-bottom: 0.65rem;
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: #000000;
+  background: #09090b;
   border-radius: 9999px;
-  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .progress-benchmarks {
   display: flex;
   justify-content: space-between;
-  width: 100%;
-  max-width: 520px;
-  font-size: 0.725rem;
+  font-size: 0.72rem;
   color: #71717a;
-  margin-top: 6px;
   font-weight: 500;
 }
 
+/* Right Stat Box */
 .progress-info-right {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
+  align-items: center;
+  justify-content: center;
+  background: #fafafa;
+  border: 1px solid #e4e4e7;
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  min-width: 180px;
 }
 
 .progress-stat-pill {
-  font-size: 2.75rem;
+  font-size: 2.25rem;
   font-weight: 900;
   color: #09090b;
+  letter-spacing: -0.03em;
   line-height: 1;
+  margin-bottom: 0.5rem;
 }
 
 .progress-status-chip {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  font-size: 0.8125rem;
   font-weight: 700;
-  background: #f4f4f5;
-  border: 1px solid #e4e4e7;
-  color: #18181b;
+  color: #15803d;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  padding: 3px 10px;
+  border-radius: 9999px;
+  margin-bottom: 0.65rem;
 }
 
 .progress-est-time {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.775rem;
+  font-size: 0.75rem;
   color: #71717a;
-  margin-top: 4px;
+  font-weight: 500;
 }
 
-/* ==========================================================================
-   Metrics Strip
-   ========================================================================== */
+/* Metrics Strip */
 .roadmap-metrics-strip {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-  gap: 1rem;
-  margin-bottom: 1.75rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 1.5rem;
 }
 
 .metric-strip-card {
   background: var(--surface, #ffffff);
   border: 1px solid var(--border, #e4e4e7);
-  border-radius: 14px;
-  padding: 1.15rem 1.25rem;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
   display: flex;
   align-items: center;
   gap: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-.metric-strip-card:hover {
-  border-color: #000000;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .metric-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 38px;
+  height: 38px;
+  border-radius: 8px;
+  background: #f4f4f5;
+  color: #09090b;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -300,7 +216,7 @@
 }
 
 .metric-val {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #09090b;
   line-height: 1.1;
@@ -309,69 +225,64 @@
 .metric-lbl {
   font-size: 0.75rem;
   color: #71717a;
+  font-weight: 500;
   margin-top: 2px;
 }
 
-/* ==========================================================================
-   Toolbar (Search, Filter, Actions)
-   ========================================================================== */
+/* Toolbar: Search & Filter */
 .roadmap-toolbar {
+  background: var(--surface, #ffffff);
+  border: 1px solid var(--border, #e4e4e7);
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 2rem;
   flex-wrap: wrap;
+  gap: 12px;
 }
 
 .roadmap-search-wrap {
   position: relative;
   flex: 1;
   min-width: 260px;
+  display: flex;
+  align-items: center;
 }
 
-.roadmap-search-wrap .search-icon {
+.search-icon {
   position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
+  left: 12px;
   color: #71717a;
-  pointer-events: none;
 }
 
 .roadmap-search-input {
   width: 100%;
-  padding: 10px 38px 10px 38px;
-  border-radius: 10px;
-  background: var(--surface, #ffffff);
-  border: 1px solid var(--border, #e4e4e7);
-  color: var(--text-primary, #18181b);
+  padding: 9px 36px 9px 38px;
+  border-radius: 8px;
+  border: 1px solid #e4e4e7;
+  background: #fafafa;
   font-size: 0.875rem;
+  color: #09090b;
+  font-family: inherit;
   outline: none;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
 }
 
 .roadmap-search-input:focus {
-  border-color: #000000;
-  box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.08);
+  border-color: #09090b;
+  background: #ffffff;
 }
 
 .clear-search-btn {
   position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  right: 10px;
   background: none;
   border: none;
   color: #71717a;
   cursor: pointer;
-  font-size: 0.85rem;
   padding: 4px;
-}
-
-.clear-search-btn:hover {
-  color: #000000;
 }
 
 .roadmap-filter-chips {
@@ -383,192 +294,118 @@
 
 .filter-chip {
   padding: 7px 14px;
-  border-radius: 999px;
-  font-size: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e4e4e7;
+  background: #ffffff;
+  color: #52525b;
+  font-size: 0.8125rem;
   font-weight: 600;
-  border: 1px solid var(--border, #e4e4e7);
-  background: var(--surface, #ffffff);
-  color: var(--text-secondary, #52525b);
   cursor: pointer;
   transition: all 0.18s ease;
 }
 
 .filter-chip:hover {
-  color: #000000;
-  border-color: #000000;
   background: #f4f4f5;
+  color: #09090b;
+  border-color: #d4d4d8;
 }
 
 .filter-chip.active {
-  background: #000000;
+  background: #09090b;
   color: #ffffff;
-  border-color: #000000;
+  border-color: #09090b;
 }
 
-.roadmap-action-icon-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  border: 1px solid var(--border, #e4e4e7);
-  background: var(--surface, #ffffff);
-  color: var(--text-secondary, #52525b);
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.roadmap-action-icon-btn:hover {
-  color: #000000;
-  border-color: #000000;
-  background: #f4f4f5;
-}
-
-/* ==========================================================================
-   Timeline & Phase Cards
-   ========================================================================== */
-.roadmap-timeline-wrapper {
-  position: relative;
+/* Phase Cards */
+.roadmap-phases-container {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 16px;
+  margin-bottom: 2rem;
 }
 
-.roadmap-timeline-line {
-  position: absolute;
-  top: 35px;
-  bottom: 35px;
-  left: 24px;
-  width: 2px;
-  background: #e4e4e7;
-  pointer-events: none;
-  z-index: 0;
-}
-
-.phase-card {
-  position: relative;
+.roadmap-phase-card {
   background: var(--surface, #ffffff);
   border: 1px solid var(--border, #e4e4e7);
-  border-radius: 18px;
-  padding: 1.75rem 1.75rem 1.75rem 4.5rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.22s ease;
-  animation: fadeSlideUp 0.4s ease-out both;
+  border-radius: 14px;
   overflow: hidden;
-  z-index: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+  transition: border-color 0.2s ease;
 }
 
-.phase-card:hover {
-  border-color: #000000;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-}
-
-.phase-card.phase-completed {
+.roadmap-phase-card.phase-completed {
   border-color: #bbf7d0;
-  background: #fafdfa;
 }
 
-/* Phase timeline node */
-.phase-timeline-node {
-  position: absolute;
-  left: 6px;
-  top: 1.75rem;
-  z-index: 2;
+.phase-card-header {
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  user-select: none;
+  transition: background 0.15s ease;
 }
 
-.node-circle {
-  width: 38px;
-  height: 38px;
-  border-radius: 10px;
-  background: #ffffff;
-  border: 2px solid #e4e4e7;
-  color: #71717a;
+.phase-card-header:hover {
+  background: #fafafa;
+}
+
+.phase-header-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.phase-index-badge {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #09090b;
+  color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.95rem;
   font-weight: 800;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  margin-top: 2px;
 }
 
-.node-circle.active {
-  background: #000000;
-  border-color: #000000;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+.phase-index-badge.done {
+  background: #16a34a;
 }
 
-.node-circle.done {
-  background: #10b981;
-  border-color: #10b981;
-  color: #ffffff;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-}
-
-/* Phase Header */
-.phase-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 14px;
-  cursor: pointer;
-  user-select: none;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-}
-
-.phase-meta-top {
+.phase-title-row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 4px;
+  gap: 10px;
 }
 
-.phase-step-badge {
-  font-size: 0.725rem;
+.phase-title-row h3 {
+  font-size: 1.05rem;
   font-weight: 700;
-  color: #000000;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.phase-status-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.7rem;
-  font-weight: 700;
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-
-.phase-status-tag.completed {
-  background: #dcfce7;
-  color: #166534;
-  border: 1px solid #bbf7d0;
-}
-
-.phase-status-tag.in-progress {
-  background: #f4f4f5;
-  color: #18181b;
-  border: 1px solid #e4e4e7;
-}
-
-.phase-title {
-  font-size: 1.2rem;
-  font-weight: 800;
   color: #09090b;
   margin: 0;
+  letter-spacing: -0.01em;
+}
+
+.phase-tag-complete {
+  background: #f0fdf4;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+  padding: 2px 8px;
+  border-radius: 9999px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
 }
 
 .phase-desc {
   font-size: 0.85rem;
-  color: #52525b;
-  margin: 4px 0 0;
-  line-height: 1.5;
+  color: #71717a;
+  margin: 4px 0 0 0;
+  line-height: 1.45;
 }
 
 .phase-header-right {
@@ -584,384 +421,469 @@
   gap: 4px;
 }
 
-.phase-count-text {
-  font-size: 0.775rem;
-  color: #71717a;
-}
-
-.phase-count-text strong {
-  color: #09090b;
-}
-
-.phase-mini-track {
-  width: 120px;
+.phase-progress-track {
+  width: 80px;
   height: 6px;
   background: #f4f4f5;
-  border-radius: 999px;
+  border-radius: 9999px;
   overflow: hidden;
-  border: 1px solid #e4e4e7;
 }
 
-.phase-mini-fill {
+.phase-progress-fill {
   height: 100%;
-  background: #000000;
-  border-radius: 999px;
-  transition: width 0.4s ease;
+  background: #09090b;
+  border-radius: 9999px;
 }
 
-.collapse-toggle-btn {
-  background: #f4f4f5;
-  border: 1px solid #e4e4e7;
-  color: #52525b;
-  border-radius: 8px;
-  width: 32px;
-  height: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.phase-progress-txt {
+  font-size: 0.72rem;
+  color: #71717a;
+  font-weight: 600;
+}
+
+.phase-collapse-btn {
+  background: none;
+  border: none;
+  color: #71717a;
   cursor: pointer;
-  transition: all 0.2s ease;
+  padding: 4px;
 }
 
-.collapse-toggle-btn:hover {
-  color: #000000;
-  border-color: #000000;
-  background: #ffffff;
-}
-
-/* ==========================================================================
-   Skills Checklist Items
-   ========================================================================== */
-.skills-checklist {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-  gap: 12px;
-  margin-top: 0.75rem;
+/* Phase Skills Checklist */
+.phase-skills-list {
+  padding: 0 1.5rem 1.25rem;
+  border-top: 1px solid #f4f4f5;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 0.25rem;
 }
 
 .no-skills-matched {
-  grid-column: 1 / -1;
   padding: 1.5rem;
   text-align: center;
+  font-size: 0.875rem;
   color: #71717a;
-  font-size: 0.85rem;
-  background: #f4f4f5;
-  border-radius: 12px;
 }
 
-.skill-check-item {
+.skill-checklist-item {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  padding: 13px 15px;
-  border-radius: 12px;
-  border: 1px solid #e4e4e7;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: all 0.15s ease;
+}
+
+.skill-checklist-item:hover {
   background: #fafafa;
-  cursor: pointer;
-  transition: all 0.18s ease;
-  user-select: none;
+  border-color: #f4f4f5;
 }
 
-.skill-check-item:hover {
-  background: #f4f4f5;
-  border-color: #000000;
-  transform: translateY(-1px);
+.skill-checklist-item.is-mastered {
+  opacity: 0.85;
 }
 
-.skill-check-item.completed {
-  background: #f0fdf4;
-  border-color: #bbf7d0;
-}
-
-.custom-checkbox {
+.skill-check-box {
   width: 22px;
   height: 22px;
   border-radius: 6px;
   border: 2px solid #d4d4d8;
+  background: #ffffff;
+  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  color: #ffffff;
   flex-shrink: 0;
   margin-top: 2px;
-  background: #ffffff;
-  transition: all 0.18s ease;
+  transition: all 0.15s ease;
 }
 
-.skill-check-item.completed .custom-checkbox {
-  background: #10b981;
-  border-color: #10b981;
-  color: #ffffff;
+.skill-check-box:hover {
+  border-color: #09090b;
 }
 
-.skill-text-col {
+.skill-check-box.checked {
+  background: #09090b;
+  border-color: #09090b;
+}
+
+.skill-content-wrap {
   flex: 1;
 }
 
-.skill-name-row {
+.skill-title-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 8px;
-  margin-bottom: 3px;
 }
 
-.skill-name {
-  font-size: 0.9rem;
-  font-weight: 700;
+.skill-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
   color: #09090b;
-  line-height: 1.3;
 }
 
-.skill-check-item.completed .skill-name {
+.skill-checklist-item.is-mastered .skill-title {
   text-decoration: line-through;
   color: #71717a;
 }
 
-.skill-desc {
-  font-size: 0.8rem;
-  color: #52525b;
-  line-height: 1.45;
-  margin-bottom: 6px;
-}
-
-/* Priority Tags */
-.priority-tag {
-  display: inline-block;
+.priority-badge {
   font-size: 0.65rem;
-  font-weight: 750;
-  text-transform: uppercase;
+  font-weight: 700;
   padding: 2px 7px;
-  border-radius: 4px;
+  border-radius: 6px;
+  text-transform: uppercase;
   letter-spacing: 0.04em;
-  flex-shrink: 0;
 }
 
-.priority-tag.high {
+.priority-badge.high {
   background: #fef2f2;
-  color: #ef4444;
+  color: #b91c1c;
   border: 1px solid #fecaca;
 }
 
-.priority-tag.medium {
+.priority-badge.medium {
   background: #fffbeb;
-  color: #d97706;
+  color: #b45309;
   border: 1px solid #fde68a;
 }
 
-.priority-tag.optional {
+.priority-badge.low {
   background: #f4f4f5;
-  color: #71717a;
+  color: #52525b;
   border: 1px solid #e4e4e7;
 }
 
-/* Study resource links */
+.skill-description {
+  font-size: 0.8125rem;
+  color: #71717a;
+  margin: 3px 0 6px 0;
+  line-height: 1.45;
+}
+
 .skill-resources-row {
   display: flex;
   align-items: center;
   gap: 6px;
   flex-wrap: wrap;
-  margin-top: 6px;
+  font-size: 0.75rem;
+  margin-top: 4px;
 }
 
-.resources-lbl {
-  font-size: 0.7rem;
-  font-weight: 600;
+.resource-icon {
   color: #71717a;
+}
+
+.resource-label {
+  color: #71717a;
+  font-weight: 500;
 }
 
 .resource-pill-link {
   display: inline-flex;
   align-items: center;
-  gap: 3px;
+  gap: 4px;
   padding: 2px 8px;
-  border-radius: 999px;
-  font-size: 0.7rem;
-  font-weight: 500;
-  background: #ffffff;
+  border-radius: 6px;
+  background: #f4f4f5;
   border: 1px solid #e4e4e7;
   color: #18181b;
   text-decoration: none;
-  transition: all 0.18s ease;
+  font-weight: 500;
+  transition: all 0.15s ease;
 }
 
 .resource-pill-link:hover {
-  background: #000000;
-  color: #ffffff;
-  border-color: #000000;
+  background: #e4e4e7;
+  color: #09090b;
 }
 
-/* ==========================================================================
-   Milestone Celebration & CTAs
-   ========================================================================== */
+/* Celebration Banner */
 .roadmap-celebration-card {
-  background: #fefce8;
-  border: 1px solid #fef08a;
-  border-radius: 18px;
+  background: #ffffff;
+  border: 2px solid #09090b;
+  border-radius: 16px;
   padding: 1.75rem 2rem;
-  margin-top: 2rem;
   display: flex;
   align-items: center;
   gap: 1.5rem;
-  flex-wrap: wrap;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .celebration-icon {
-  width: 52px;
-  height: 52px;
-  border-radius: 12px;
-  background: #fef08a;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   flex-shrink: 0;
 }
 
 .roadmap-celebration-card h3 {
   font-size: 1.15rem;
   font-weight: 800;
-  color: #854d0e;
-  margin: 0 0 4px;
+  color: #09090b;
+  margin: 0 0 0.35rem 0;
 }
 
 .roadmap-celebration-card p {
   font-size: 0.875rem;
-  color: #713f12;
+  color: #52525b;
   margin: 0;
-  max-width: 600px;
+  line-height: 1.5;
 }
 
+/* Next Steps Cards */
 .roadmap-next-steps-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
   margin-top: 2.5rem;
 }
 
 .next-step-card {
   background: var(--surface, #ffffff);
   border: 1px solid var(--border, #e4e4e7);
-  border-radius: 16px;
+  border-radius: 14px;
   padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 1rem;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
-  transition: all 0.2s ease;
-}
-
-.next-step-card:hover {
-  border-color: #000000;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
 }
 
 .next-step-icon {
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
+  background: #f4f4f5;
+  color: #09090b;
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .next-step-info h4 {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #09090b;
-  margin: 0 0 6px;
+  margin: 0 0 0.35rem 0;
 }
 
 .next-step-info p {
-  font-size: 0.825rem;
-  color: #52525b;
-  margin: 0;
+  font-size: 0.8125rem;
+  color: #71717a;
   line-height: 1.5;
+  margin: 0 0 1.25rem 0;
 }
 
 .btn-step-action {
+  margin-top: auto;
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px 14px;
-  border-radius: 8px;
-  background: #f4f4f5;
-  border: 1px solid #e4e4e7;
-  color: #18181b;
-  font-size: 0.825rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.2s ease;
+  gap: 6px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #09090b;
+  text-decoration: underline;
+  transition: transform 0.15s ease;
 }
 
 .btn-step-action:hover {
-  background: #000000;
-  border-color: #000000;
-  color: #ffffff;
+  transform: translateX(3px);
 }
 
-.btn-session {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.75rem 1.4rem;
-  border-radius: 10px;
-  font-size: 0.875rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-session.primary {
-  background: #000000;
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
-
-.btn-session.primary:hover {
-  background: #222222;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-}
-
-/* ==========================================================================
-   Responsive Adaptations
-   ========================================================================== */
-@media (max-width: 840px) {
-  .roadmap-page {
-    padding: 1.5rem 1rem 4rem;
+@media (max-width: 900px) {
+  .roadmap-metrics-strip {
+    grid-template-columns: repeat(2, 1fr);
   }
-
-  .roadmap-title {
-    font-size: 1.85rem;
-  }
-
-  .roadmap-timeline-line {
-    left: 18px;
-  }
-
-  .phase-card {
-    padding: 1.5rem 1.25rem 1.5rem 3.5rem;
-  }
-
-  .node-circle {
-    width: 32px;
-    height: 32px;
-    font-size: 0.85rem;
-  }
-
-  .skills-checklist {
+  .roadmap-next-steps-grid {
     grid-template-columns: 1fr;
   }
-
-  .roadmap-progress-card {
-    padding: 1.5rem;
+  .roadmap-toolbar-actions {
+    margin-left: 0;
+    width: 100%;
+    justify-content: flex-start;
   }
+}
 
+@media (max-width: 600px) {
+  .roadmap-metrics-strip {
+    grid-template-columns: 1fr;
+  }
   .progress-info-right {
-    align-items: flex-start;
+    width: 100%;
+  }
+  .phase-batch-actions {
+    display: none;
+  }
+}
+
+/* Toolbar Action Buttons */
+.roadmap-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.toolbar-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #e4e4e7;
+  background: #ffffff;
+  color: #3f3f46;
+  font-size: 0.78125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.toolbar-action-btn:hover {
+  background: #f4f4f5;
+  color: #09090b;
+  border-color: #d4d4d8;
+}
+
+.toolbar-action-btn.danger {
+  color: #dc2626;
+  border-color: #fecaca;
+  background: #fef2f2;
+}
+
+.toolbar-action-btn.danger:hover {
+  background: #fee2e2;
+  border-color: #fca5a5;
+  color: #b91c1c;
+}
+
+/* Phase Header Batch Actions */
+.phase-batch-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-right: 6px;
+}
+
+.phase-action-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  border: 1px solid #e4e4e7;
+  background: #ffffff;
+  color: #52525b;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.phase-action-link:hover {
+  background: #f4f4f5;
+  color: #09090b;
+}
+
+.phase-action-link.undo:hover {
+  background: #fef2f2;
+  color: #dc2626;
+  border-color: #fecaca;
+}
+
+.phase-action-link.add-skill {
+  background: #fafafa;
+  color: #09090b;
+}
+
+.phase-action-link.add-skill:hover {
+  background: #09090b;
+  color: #ffffff;
+  border-color: #09090b;
+}
+
+/* Delete Custom Skill Button */
+.delete-custom-skill-btn {
+  background: none;
+  border: none;
+  color: #ef4444;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.delete-custom-skill-btn:hover {
+  opacity: 1;
+  background: #fef2f2;
+}
+
+/* Add Skill Modal */
+.roadmap-add-modal {
+  width: 100%;
+  max-width: 480px;
+  padding: 1.5rem;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e4e4e7;
+}
+
+.modal-header h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #09090b;
+  margin: 0;
+}
+
+.modal-close-btn {
+  background: none;
+  border: none;
+  color: #71717a;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+}
+
+.modal-close-btn:hover {
+  background: #f4f4f5;
+  color: #09090b;
+}
+
+.add-skill-form .form-group {
+  margin-bottom: 1rem;
+}
+
+/* Print styling */
+@media print {
+  .interview-header-actions,
+  .career-subnav,
+  .roadmap-toolbar,
+  .phase-batch-actions,
+  .roadmap-next-steps-grid,
+  .phase-collapse-btn {
+    display: none !important;
+  }
+  .roadmap-phase-card {
+    break-inside: avoid;
+    border: 1px solid #ccc !important;
+    margin-bottom: 1rem !important;
+  }
+  .phase-skills-list {
+    display: block !important;
   }
 }

@@ -35,20 +35,30 @@ module.exports = async (req, res) => {
     return res.end();
   }
 
-  // Recover original URL path and preserve query string if rewritten by Vercel
-  const matched = req.headers["x-matched-path"] || "";
-  const queryIndex = req.url ? req.url.indexOf("?") : -1;
-  const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
-  const rawPath = queryIndex !== -1 ? req.url.slice(0, queryIndex) : (req.url || "");
-
-  if (matched && matched.startsWith("/api")) {
-    req.url = matched + queryString;
-  } else if (rawPath === "/api/index.js" || rawPath.startsWith("/api/index.js")) {
-    const fixedPath = rawPath.replace(/^\/api\/index\.js\/?/, "/api/");
-    req.url = fixedPath + queryString;
-  } else if (rawPath && !rawPath.startsWith("/api")) {
-    req.url = "/api" + (rawPath.startsWith("/") ? rawPath : "/" + rawPath) + queryString;
+  // Extract original requested API URL cleanly for Express routing
+  let targetUrl = req.url || "/api";
+  const forwardedUri = req.headers["x-forwarded-uri"] || req.headers["x-original-uri"];
+  
+  if (forwardedUri && forwardedUri.startsWith("/api")) {
+    targetUrl = forwardedUri;
+  } else if (req.url && req.url.startsWith("/api") && !req.url.includes("index.js")) {
+    targetUrl = req.url;
+  } else {
+    const matched = req.headers["x-matched-path"] || "";
+    if (matched && matched.startsWith("/api") && !matched.includes("index.js")) {
+      const queryIndex = req.url ? req.url.indexOf("?") : -1;
+      const queryString = queryIndex !== -1 ? req.url.slice(queryIndex) : "";
+      targetUrl = matched + queryString;
+    }
   }
+
+  // Normalize path removing /api/index.js artifact
+  targetUrl = targetUrl.replace(/\/api\/index\.js\/?/, "/api/");
+  if (!targetUrl.startsWith("/api")) {
+    targetUrl = "/api" + (targetUrl.startsWith("/") ? targetUrl : "/" + targetUrl);
+  }
+
+  req.url = targetUrl;
 
   // If backend failed to load, respond with diagnostic error JSON
   if (loadError) {

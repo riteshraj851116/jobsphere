@@ -426,22 +426,73 @@ export const getJobMatchScore = async (jobId) => {
 // ============================================================
 // 2. Career Roadmap
 // ============================================================
-export const getCareerRoadmap = async (role = "MERN Stack Developer") => {
+export const getLocalRoadmap = (role = "MERN Stack Developer") => {
   const fallback = FALLBACK_ROADMAPS[role] || FALLBACK_ROADMAPS["MERN Stack Developer"];
+  try {
+    const saved = localStorage.getItem(`jobsphere_roadmap_${role}`);
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (parsed && parsed.phases && Array.isArray(parsed.phases)) {
+        return parsed;
+      }
+    }
+  } catch (e) {
+    console.warn("Error reading local roadmap from storage:", e);
+  }
+  return fallback;
+};
+
+export const saveLocalRoadmap = (role, roadmap) => {
+  try {
+    if (role && roadmap) {
+      localStorage.setItem(`jobsphere_roadmap_${role}`, JSON.stringify(roadmap));
+    }
+  } catch (e) {
+    console.warn("Error saving local roadmap to storage:", e);
+  }
+};
+
+export const resetLocalRoadmap = (role = "MERN Stack Developer") => {
+  const fallback = FALLBACK_ROADMAPS[role] || FALLBACK_ROADMAPS["MERN Stack Developer"];
+  try {
+    localStorage.removeItem(`jobsphere_roadmap_${role}`);
+  } catch (e) {
+    console.warn("Error resetting local roadmap in storage:", e);
+  }
+  return fallback;
+};
+
+export const getCareerRoadmap = async (role = "MERN Stack Developer") => {
+  const fallback = getLocalRoadmap(role);
   const availableRoles = Object.keys(FALLBACK_ROADMAPS);
   try {
     const res = await api.get(`/career/roadmap?role=${encodeURIComponent(role)}`);
     const serverData = res.data?.data || res.data;
     if (serverData?.roadmap) {
+      // Merge saved completed statuses from local storage if available
+      const local = getLocalRoadmap(role);
+      let mergedRoadmap = serverData.roadmap;
+      if (local && local.phases) {
+        const completedSkillIds = new Set();
+        local.phases.forEach(p => {
+          p.skills?.forEach(s => {
+            if (s.completed) completedSkillIds.add(s._id || s.id || s.name);
+          });
+        });
+        if (completedSkillIds.size > 0 && mergedRoadmap.phases) {
+          mergedRoadmap.phases = mergedRoadmap.phases.map(p => ({
+            ...p,
+            skills: p.skills.map(s => ({
+              ...s,
+              completed: s.completed || completedSkillIds.has(s._id || s.id || s.name)
+            }))
+          }));
+        }
+      }
+      saveLocalRoadmap(role, mergedRoadmap);
       return {
-        roadmap: serverData.roadmap,
+        roadmap: mergedRoadmap,
         availableRoles: serverData.availableRoles || availableRoles
-      };
-    }
-    if (serverData?.phases) {
-      return {
-        roadmap: serverData,
-        availableRoles
       };
     }
     return { roadmap: fallback, availableRoles };
